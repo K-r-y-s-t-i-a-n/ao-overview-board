@@ -4,8 +4,19 @@ import axios from 'axios';
 const axiosClient = axios.create({
   // baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
   baseURL: `http://localhost:8000`,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  },
   withCredentials: true,
 });
+
+axiosClient.get('/sanctum/csrf-cookie');
+
+// axiosClient.defaults.headers.common['X-Requested-With'] = `XMLHttpRequest`;
+// axiosClient.defaults.headers.common['Content-Type'] = `application/json`;
+// axiosClient.defaults.headers.common['Accept'] = `application/json`;
 
 // axiosClient.interceptors.request.use((config) => {
 //   config.headers.Authorization = `Bearer ${localStorage.getItem('TOKEN')}`;

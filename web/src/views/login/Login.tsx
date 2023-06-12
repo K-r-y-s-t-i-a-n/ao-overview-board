@@ -22,11 +22,19 @@ const Login = () => {
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await axiosClient.get('/sanctum/csrf-cookie');
-    await axiosClient.post('/login', { email, password });
-    const user = await axiosClient.get('/api/user');
-    console.log(user);
-    setUser(user);
+    // await axiosClient.get('/sanctum/csrf-cookie');
+    try {
+      await axiosClient.post('/login', { email, password });
+    } catch (e) {
+      console.log('LOGIN ERROR: ', e);
+    }
+    try {
+      const user = await axiosClient.get('/api/user');
+      setUser(user);
+      console.log(user);
+    } catch (e) {
+      console.log('GET USER ERROR: ', e);
+    }
     setLoading(false);
   };
 
