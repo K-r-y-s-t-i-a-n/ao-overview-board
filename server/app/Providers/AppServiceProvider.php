@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        JsonResource::withoutWrapping();
+
+        Gate::define('view', function (User $user, $model) {
+            return $user->hasAccess("view_{$model}") || $user->hasAccess("edit_{$model}");
+        });
+
+        Gate::define('create', fn (User $user, $model) => $user->hasAccess("create_{$model}"));
+
+        Gate::define('edit', fn (User $user, $model) => $user->hasAccess("edit_{$model}"));
     }
 }

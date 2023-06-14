@@ -29,7 +29,7 @@ const Login = () => {
       console.log('LOGIN ERROR: ', e);
     }
     try {
-      const user = await axiosClient.get('/api/user');
+      const user = await axiosClient.get('/user');
       setUser(user);
       console.log(user);
     } catch (e) {
@@ -39,67 +39,73 @@ const Login = () => {
   };
 
   return (
-    <Box
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === 'dark' ? theme.colors.background[1] : '#F7FAFC',
-        },
-      })}
-    >
-      <Container size={420} my={40}>
-        <Title
-          align="center"
-          sx={(theme) => ({
-            fontFamily: `${theme.fontFamily}`,
-            fontWeight: 900,
-          })}
-          variant="gradient"
-        >
-          Overview Board
-        </Title>
-        <Text color="dimmed" size="sm" align="center" mt={5}>
-          Airways Optical Ltd.
-        </Text>
+    <>
+      <Box
+        styles={(theme) => ({
+          main: {
+            backgroundColor:
+              theme.colorScheme === 'dark' ? theme.colors.background[1] : '#F7FAFC',
+          },
+        })}
+      >
+        <Container size={420} my={40}>
+          <Title
+            align="center"
+            sx={(theme) => ({
+              fontFamily: `${theme.fontFamily}`,
+              fontWeight: 900,
+            })}
+            variant="gradient"
+          >
+            Overview Board
+          </Title>
+          <Text color="dimmed" size="sm" align="center" mt={5}>
+            Airways Optical Ltd.
+          </Text>
 
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-          {/* //* ----------------------- FORM ----------------------*/}
-          <form onSubmit={(e) => login(e)}>
-            <TextInput
-              label="Username "
-              placeholder="name.surname"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <PasswordInput
-              label="Password"
-              placeholder="Your password"
-              required
-              mt="md"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Group position="right" mt="lg">
-              {/* <Checkbox label="Remember me" sx={{ lineHeight: 1 }} /> */}
-              <Anchor<'a'> onClick={(event) => event.preventDefault()} href="#" size="xs">
-                Forgot password?
-              </Anchor>
-            </Group>
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            {/* //* ----------------------- FORM ----------------------*/}
+            <form onSubmit={(e) => login(e)}>
+              <TextInput
+                label="Username "
+                placeholder="name.surname"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <PasswordInput
+                label="Password"
+                placeholder="Your password"
+                required
+                mt="md"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Group position="right" mt="lg">
+                {/* <Checkbox label="Remember me" sx={{ lineHeight: 1 }} /> */}
+                <Anchor<'a'>
+                  onClick={(event) => event.preventDefault()}
+                  href="#"
+                  size="xs"
+                >
+                  Forgot password?
+                </Anchor>
+              </Group>
 
-            <Button
-              fullWidth
-              mt="xl"
-              variant="gradient"
-              type="submit"
-              loaderPosition="left"
-              loading={loading}
-            >
-              Sign in
-            </Button>
-          </form>
-        </Paper>
-        <Paper>{JSON.stringify(user, undefined, 2)}</Paper>
-      </Container>
-    </Box>
+              <Button
+                fullWidth
+                mt="xl"
+                variant="gradient"
+                type="submit"
+                loaderPosition="left"
+                loading={loading}
+              >
+                Sign in
+              </Button>
+            </form>
+          </Paper>
+        </Container>
+      </Box>
+      <Paper>{JSON.stringify(user, undefined, 2)}</Paper>
+    </>
   );
 };
 

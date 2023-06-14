@@ -4,7 +4,7 @@ import { Button } from '@mantine/core';
 
 const CommNotes = () => {
   const getUser = async () => {
-    const user = await axiosClient.get('/api/user');
+    const user = await axiosClient.get('/v1/user');
     console.log(user);
   };
 
