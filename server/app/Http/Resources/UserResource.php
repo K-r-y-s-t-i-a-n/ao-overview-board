@@ -21,6 +21,8 @@ class UserResource extends JsonResource
             'display_name' => $this->display_name,
             'email' => $this->email,
             'role' => new RoleResource($this->whenLoaded('role')),
+            'team' => $this->team->name ?? null,
+            'avatar' => $this->avatar ?? null
         ];
     }
 }

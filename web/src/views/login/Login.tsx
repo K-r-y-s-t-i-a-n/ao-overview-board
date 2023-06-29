@@ -3,52 +3,51 @@ import {
   PasswordInput,
   Anchor,
   Paper,
-  Title,
   Text,
   Container,
   Group,
   Button,
   Box,
+  Flex,
+  MediaQuery,
+  Image,
 } from '@mantine/core';
-import React, { useEffect, useState } from 'react';
-import axiosClient from '../../axios';
+import React, { useState } from 'react';
+import { useUserStore } from '../../app/store';
+import logo from '../../assets/logo.png';
+import img from '../../assets/guest_img.jpg';
+import api from '../../app/api/axios';
 
 const Login = () => {
+  const getUserAfterLogin = useUserStore((state) => state.getUserAfterLogin);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({});
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // await axiosClient.get('/sanctum/csrf-cookie');
     try {
-      await axiosClient.post('/login', { email, password });
+      await api.post('/login', { email, password });
+      getUserAfterLogin();
     } catch (e) {
       console.log('LOGIN ERROR: ', e);
-    }
-    try {
-      const user = await axiosClient.get('/user');
-      setUser(user);
-      console.log(user);
-    } catch (e) {
-      console.log('GET USER ERROR: ', e);
     }
     setLoading(false);
   };
 
   return (
-    <>
-      <Box
-        styles={(theme) => ({
-          main: {
-            backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.background[1] : '#F7FAFC',
-          },
-        })}
-      >
-        <Container size={420} my={40}>
+    <Box
+      sx={{
+        height: '100vh',
+        width: '100%',
+        paddingTop: '24px',
+        background: '#eee',
+      }}
+    >
+      <Container my={80}>
+        {/* <img src={logo} alt="" height={40} style={{ marginTop: '2px' }} />
           <Title
             align="center"
             sx={(theme) => ({
@@ -56,56 +55,94 @@ const Login = () => {
               fontWeight: 900,
             })}
             variant="gradient"
+            gradient={{ from: '#009d56', to: 'green', deg: 105 }}
           >
             Overview Board
           </Title>
           <Text color="dimmed" size="sm" align="center" mt={5}>
             Airways Optical Ltd.
-          </Text>
+          </Text> */}
 
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            {/* //* ----------------------- FORM ----------------------*/}
-            <form onSubmit={(e) => login(e)}>
-              <TextInput
-                label="Username "
-                placeholder="name.surname"
-                required
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <PasswordInput
-                label="Password"
-                placeholder="Your password"
-                required
-                mt="md"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Group position="right" mt="lg">
-                {/* <Checkbox label="Remember me" sx={{ lineHeight: 1 }} /> */}
-                <Anchor<'a'>
-                  onClick={(event) => event.preventDefault()}
-                  href="#"
-                  size="xs"
+        <Paper withBorder shadow="md" mt={30} radius="md">
+          <Flex direction="row">
+            <MediaQuery smallerThan="md" styles={{ display: 'none' }}>
+              <Box sx={{ radius: 'md' }}>
+                <Image src={img} height={'500px'} radius="md" />
+                {/* <div className="image-wrapper">
+                  <img className="image-1" src={img} />
+                  <img className="image-2" src={img} />
+                  <img className="image-3" src={img} />
+                  <img className="image-4" src={img} />
+                </div> */}
+
+                {/* -------------------------------------------------------------------- */}
+              </Box>
+            </MediaQuery>
+            <Container my="auto">
+              <Flex direction="row" gap={12} justify="center" mb={24} mt="xl">
+                <img src={logo} alt="" height={60} />
+
+                <Flex direction="column">
+                  <Text
+                    mt={4}
+                    // variant="gradient"
+                    weight={700}
+                    size={'xl'}
+                    // gradient={{ from: '#009d56', to: 'green', deg: 105 }}
+                    color="#016C42"
+                  >
+                    OVERVIEW BOARD
+                  </Text>
+                  <Text size="xs" color="dimmed" weight={600}>
+                    Airways Optical Ltd
+                  </Text>
+                </Flex>
+              </Flex>
+              {/* //* ----------------------- FORM ----------------------*/}
+              <form onSubmit={(e) => login(e)}>
+                <TextInput
+                  label="Username "
+                  placeholder="name.surname"
+                  required
+                  onChange={(e) => setEmail(e.target.value + '@airwaysoptical.co.uk')}
+                />
+                <PasswordInput
+                  label="Password"
+                  placeholder="Your password"
+                  required
+                  mt="md"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <Group position="right" mt="lg">
+                  {/* <Checkbox label="Remember me" sx={{ lineHeight: 1 }} /> */}
+                  <Anchor<'a'>
+                    onClick={(event) => event.preventDefault()}
+                    href="#"
+                    size="xs"
+                  >
+                    Forgot password?
+                  </Anchor>
+                </Group>
+
+                <Button
+                  fullWidth
+                  mt="xl"
+                  // variant="gradient"
+                  // gradient={{ from: '#009d56', to: 'green', deg: 105 }}
+                  color="spec"
+                  type="submit"
+                  loaderPosition="left"
+                  loading={loading}
+                  mb="xl"
                 >
-                  Forgot password?
-                </Anchor>
-              </Group>
-
-              <Button
-                fullWidth
-                mt="xl"
-                variant="gradient"
-                type="submit"
-                loaderPosition="left"
-                loading={loading}
-              >
-                Sign in
-              </Button>
-            </form>
-          </Paper>
-        </Container>
-      </Box>
-      <Paper>{JSON.stringify(user, undefined, 2)}</Paper>
-    </>
+                  Sign in
+                </Button>
+              </form>
+            </Container>
+          </Flex>
+        </Paper>
+      </Container>
+    </Box>
   );
 };
 

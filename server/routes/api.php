@@ -1,10 +1,13 @@
 <?php
 
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\TeamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     // User Controller
@@ -29,4 +32,18 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // Roles & Permissions
     Route::apiResource('roles', RoleController::class);
     Route::get('permissions', [PermissionController::class, 'index']);
+
+    // Notes
+    Route::get('notes', [NoteController::class, 'index']);
+    Route::post('notes', [NoteController::class, 'store']);
+
+    // Tags
+    Route::get('tags', [TagController::class, 'index']);
+    Route::get('tags-by-category', [TagController::class, 'indexCategories']);
+
+    // Machine categories
+    Route::get('categories', [TagController::class, 'indexCategoriesOnly']);
+
+    // Teams
+    Route::get('teams', [TeamController::class, 'index']);
 });

@@ -23,6 +23,7 @@ class User extends Authenticatable
         'display_name',
         'email',
         'password',
+        'team_id'
     ];
 
     /**
@@ -48,6 +49,11 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function team()
+    {
+        return $this->belongsTo((Team::class));
     }
 
     public function hasAccess($access)

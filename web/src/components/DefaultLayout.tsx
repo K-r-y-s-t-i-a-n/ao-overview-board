@@ -3,7 +3,6 @@ import {
   AppShell,
   Navbar,
   Header,
-  Text,
   MediaQuery,
   Burger,
   useMantineTheme,
@@ -12,9 +11,17 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import AppHeader from './Header';
 
-export default function AppShellDemo() {
+export default function DefaultLayout() {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+
+  // function setNavbarState() {
+  //   setOpened((o) => !o);
+  // }
+
+  function closeNavbar() {
+    setOpened(false);
+  }
   return (
     <AppShell
       //   layout="alt"
@@ -33,7 +40,7 @@ export default function AppShellDemo() {
           hidden={!opened}
           width={{ md: 300, lg: 300 }}
         >
-          <Sidebar />
+          <Sidebar opened={opened} setNavbarState={closeNavbar} />
         </Navbar>
       }
       //   aside={

@@ -18,7 +18,8 @@ class UserSeeder extends Seeder
             'last_name' => 'Admin',
             'display_name' => 'Super Admin',
             'email' => 'super.admin@airwaysoptical.co.uk',
-            'role_id' => 1
+            'role_id' => 1,
+            'password' => 'password'
         ]);
 
         User::factory()->create([
@@ -26,7 +27,18 @@ class UserSeeder extends Seeder
             'last_name' => 'Account',
             'display_name' => 'View Account',
             'email' => 'view.account@airwaysoptical.co.uk',
-            'role_id' => 2
+            'role_id' => 2,
+            'password' => 'password'
+        ]);
+
+        User::factory()->create([
+            'first_name' => 'Krystian',
+            'last_name' => 'Olkowski',
+            'display_name' => 'Krystian Olkowski',
+            'email' => 'k.o@airwaysoptical.co.uk',
+            'role_id' => 1,
+            // 'team_id' => 1,
+            'password' => 'password'
         ]);
     }
 }

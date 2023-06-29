@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-
+use Database\Factories\NoteFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,10 +21,15 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call([
-            PermissionSeeder::class,
-            RoleSeeder::class,
-            UserSeeder::class,
-        ]);
+        // $this->call([
+        //     PermissionSeeder::class,
+        //     RoleSeeder::class,
+        //     UserSeeder::class,
+        //     TeamColorSeeder::class,
+        //     TeamSeeder::class,
+        //     TagSeeder::class,
+        // ]);
+
+        \App\Models\Note::factory(6)->create();
     }
 }

@@ -21,7 +21,8 @@ class UserController extends Controller
 
     public function index()
     {
-        // return User::with('role')->get();
+        $this->authorize('edit', 'users');
+
         return UserResource::collection(User::get());
     }
 

@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { createStyles, Navbar, getStylesRef, rem } from '@mantine/core';
+import { createStyles, Navbar, getStylesRef, rem, Box } from '@mantine/core';
 import { IconSettings, IconLogout } from '@tabler/icons-react';
-import { navigationLinks } from '../router';
+import { navigationLinks } from '../app/router';
+import { NavLink } from 'react-router-dom';
+import { useUserStore } from '../app/store';
+import { useQueryClient } from '@tanstack/react-query';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -47,8 +49,20 @@ const useStyles = createStyles((theme) => ({
     color: theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6],
     marginRight: theme.spacing.sm,
   },
-
+  // SPECSAVERS #E2EFDD #73b143 #008945 #016C42 #004B2E
   linkActive: {
+    '&, &:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? '#004B2E' : '#73b143',
+      // backgroundColor: theme.colorScheme === 'dark' ? '#009D56' : '#008945',
+
+      color: theme.colorScheme === 'dark' ? '#e3e3e3' : '#ffffff',
+      [`& .${getStylesRef('icon')}`]: {
+        color: theme.colorScheme === 'dark' ? '#e3e3e3' : '#ffffff',
+      },
+    },
+  },
+
+  linkActive_old: {
     '&, &:hover': {
       backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
         .background,
@@ -60,23 +74,33 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const Sidebar = () => {
-  const { classes, cx } = useStyles();
-  const [active, setActive] = useState('Communication Notes');
+interface Props {
+  opened: boolean;
+  setNavbarState: () => void;
+}
+
+const Sidebar = ({ opened, setNavbarState }: Props) => {
+  const logout = useUserStore((store) => store.logout);
+  const queryClient = useQueryClient();
+  const { classes } = useStyles();
 
   const links = navigationLinks.map((item) => (
-    <a
-      className={cx(classes.link, { [classes.linkActive]: item.label === active })}
-      href={item.link}
+    <NavLink
+      className={({ isActive }) =>
+        isActive ? classes.link + ' ' + classes.linkActive : classes.link
+      }
+      // className={cx(classes.link, { [classes.linkActive]: item.label === active })}
+      to={item.link}
       key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.label);
-      }}
+      onClick={setNavbarState}
+      // onClick={(event) => {
+      //   event.preventDefault();
+      //   setActive(item.label);
+      // }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
-    </a>
+    </NavLink>
   ));
 
   return (
@@ -84,22 +108,30 @@ const Sidebar = () => {
       <Navbar.Section grow>{links}</Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        <a
-          href="/"
-          className={cx(classes.link, { [classes.linkActive]: 'My Settings' === active })}
-          onClick={(event) => {
-            event.preventDefault();
-            setActive('My Settings');
-          }}
+        {/* <NavLink
+          to="/my-settings"
+          onClick={setNavbarState}
+          className={({ isActive }) =>
+            isActive ? classes.link + ' ' + classes.linkActive : classes.link
+          }
+          // className={cx(classes.link, { [classes.linkActive]: 'My Settings' === active })}
         >
           <IconSettings className={classes.linkIcon} stroke={1.5} />
           <span>My Settings</span>
-        </a>
+        </NavLink> */}
 
-        <a href="/" className={classes.link} onClick={(event) => event.preventDefault()}>
+        <Box
+          className={classes.link}
+          onClick={() => {
+            setNavbarState();
+            queryClient.clear();
+            logout();
+          }}
+          sx={{ '&:hover': { cursor: 'pointer' } }}
+        >
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
-        </a>
+        </Box>
       </Navbar.Section>
     </Navbar>
   );
