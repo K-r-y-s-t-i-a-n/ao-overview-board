@@ -6,6 +6,10 @@ import api from '../../app/api/axios';
 import { useForm } from '@mantine/form';
 import { Note } from '../../app/interfaces';
 import { queryClient } from '../../app/api/queryClient';
+import { useTags } from '../../app/api/hooks/useTags';
+import LoadingElement from '../../components/core/LoadingElement';
+import { queryKeys } from '../../app/api';
+import { useNotesStore } from '../../app/store';
 
 type FormProps = {
   text: string;
@@ -13,31 +17,22 @@ type FormProps = {
 };
 
 const NoteCreateModal = () => {
+  const resetFilters = useNotesStore((store) => store.resetFilters);
+  const { selectTags, isLoading } = useTags();
   const [opened, { open, close }] = useDisclosure(false);
   const mobileScreen = useMediaQuery('(max-width: 48em)');
+  const queryCache = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (newNote: FormProps) => {
       return api.post<Note>('/notes', newNote);
     },
     onSuccess: (res) => {
-      // queryClient.setQueryData(['notes'], cachedNotes: any => {
-      // console.log(cachedNotes);
-      // });
-      // queryClient.invalidateQueries(['notes']);
-      // queryClient.setQueryData(['notes', null, null], oldaData =>  oldaData ? [...oldaData, res.data] :};
-      // queryClient.setQueryData(
-      //   ['notes'],
-      //   // ✅ this is the way
-      //   (oldData) =>
-      //     oldData
-      //       ? {
-      //           ...oldData,
-      //           data.data,
-      //         }
-      //       : oldData
-      // );
-      //! Sprobowac ustawic set
+      queryCache.setQueryData([queryKeys.notes, '', ''], (notes?: Note[]) => {
+        return [res.data, ...(notes || [])];
+      });
+      resetFilters();
+      queryCache.invalidateQueries();
       close();
       form.reset();
     },
@@ -61,66 +56,71 @@ const NoteCreateModal = () => {
       <Modal
         opened={opened}
         onClose={close}
-        title={<h3>New note</h3>}
+        title={
+          <Text size="md" weight="500">
+            New Note
+          </Text>
+        }
         size={mobileScreen ? '100%' : 'xl'}
       >
         {/* Modal content */}
-        <form onSubmit={form.onSubmit((values) => mutation.mutate(values))}>
-          <MultiSelect
-            {...form.getInputProps('tags')}
-            withAsterisk
-            data={[
-              { label: 'OAB 1', value: '1' },
-              { label: 'OAB 2', value: '2' },
-            ]}
-            label="Pick tags"
-            placeholder="Choose tags..."
-            searchable
-            nothingFound="No corresponding tags found, choose “Other“ or speak to Maintenance Manager to add more..."
-            mb={12}
-            clearable
-            disabled={mutation.isLoading}
-          />
-
-          <Textarea
-            {...form.getInputProps('text')}
-            variant="filled"
-            label="Note"
-            withAsterisk
-            autosize
-            minRows={10}
-            id="text"
-            placeholder="Type your note here..."
-            mb={12}
-            disabled={mutation.isLoading}
-          />
-
-          <Group mt="lg" position="right">
-            <Button
-              variant="outline"
-              color="spec"
-              onClick={() => {
-                close();
-                form.reset();
-                // setModalOpen(false);
-                // setSelectedImages([]);
-              }}
+        {isLoading ? (
+          <LoadingElement />
+        ) : (
+          <form onSubmit={form.onSubmit((values) => mutation.mutate(values))}>
+            <MultiSelect
+              {...form.getInputProps('tags')}
+              withAsterisk
+              data={selectTags}
+              label="Pick tags"
+              placeholder="Choose tags..."
+              searchable
+              nothingFound="No corresponding tags found, choose “Other“ or speak to Maintenance Manager to add more..."
+              mb={12}
+              clearable
               disabled={mutation.isLoading}
-            >
-              Cancel
-            </Button>
-            <Button
-              // sx={{
-              //   backgroundColor: theme.colorScheme === 'dark' ? '#0F462A' : '',
-              // }}
-              type="submit"
-              color="spec"
-              loading={mutation.isLoading}
-            >
-              Add
-            </Button>
-          </Group>
-        </form>
+            />
+
+            <Textarea
+              {...form.getInputProps('text')}
+              variant="filled"
+              label="Note"
+              withAsterisk
+              autosize
+              minRows={10}
+              id="text"
+              placeholder="Type your note here..."
+              mb={12}
+              disabled={mutation.isLoading}
+            />
+
+            <Group mt="lg" position="right">
+              <Button
+                variant="outline"
+                color="spec"
+                onClick={() => {
+                  close();
+                  form.reset();
+                  // setModalOpen(false);
+                  // setSelectedImages([]);
+                }}
+                disabled={mutation.isLoading}
+              >
+                Cancel
+              </Button>
+              <Button
+                // sx={{
+                //   backgroundColor: theme.colorScheme === 'dark' ? '#0F462A' : '',
+                // }}
+                type="submit"
+                color="spec"
+                loading={mutation.isLoading}
+              >
+                Add
+              </Button>
+            </Group>
+          </form>
+        )}
       </Modal>
 
       <Group position="center">

@@ -8,8 +8,6 @@ const Header = () => {
   const { pathname } = useLocation();
   const [pageName, setPageName] = useState('');
 
-  console.log('LOCATION: ', pathname);
-
   useEffect(() => {
     switch (pathname) {
       case '/':

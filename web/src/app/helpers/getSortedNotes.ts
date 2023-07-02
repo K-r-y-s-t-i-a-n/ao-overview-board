@@ -14,6 +14,7 @@ export const getSortedNotes = (unsortedNotes: Note[]) => {
   return Object.entries(
     Array.from(notesRegistry.values())
       .sort((a, b) => a.updated_at!.getTime() - b.updated_at!.getTime())
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .reduce((notes: any, note: Note) => {
         const date = format(note.updated_at!, 'dd MMM yyyy - EEEE');
         notes[date] = notes[date] ? [...notes[date], note] : [note];

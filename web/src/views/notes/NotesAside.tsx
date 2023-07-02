@@ -8,8 +8,9 @@ import { useEffect, useState } from 'react';
 import { getTeams } from '../../app/api/teams';
 
 const NotesAside = () => {
-  const setSelectedTagId = useNotesStore((store) => store.setSelectedTagId);
+  // const setSelectedTagId = useNotesStore((store) => store.setSelectedTagId);
   const setSelectedTeamId = useNotesStore((store) => store.setSelectedTeamId);
+  const resetFilters = useNotesStore((store) => store.resetFilters);
   const selectedTeamId = useNotesStore((store) => store.selectedTeamId);
   const [teams, setTeams] = useState<{ value: string; label: string }[]>([]);
 
@@ -42,14 +43,7 @@ const NotesAside = () => {
 
   return (
     <Flex direction="column" gap="7px">
-      <Button
-        variant="outline"
-        color="gray"
-        onClick={() => {
-          setSelectedTagId(undefined);
-          setSelectedTeamId(undefined);
-        }}
-      >
+      <Button variant="outline" color="gray" onClick={resetFilters}>
         Reset filters
       </Button>
       <NativeSelect
@@ -70,7 +64,7 @@ const NotesAside = () => {
               .slice()
               .sort((a, b) => a.name.localeCompare(b.name))
               .map((tag) => (
-                <NotesAsideTag tag={tag} />
+                <NotesAsideTag key={'tag' + tag.name} tag={tag} />
               ))}
           </Box>
         ))}

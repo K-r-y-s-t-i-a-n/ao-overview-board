@@ -1,15 +1,20 @@
 import { create } from 'zustand';
 
 interface NotesState {
-  selectedTagId: string | undefined;
-  selectedTeamId: string | undefined;
+  selectedTagId: string;
+  selectedTeamId: string;
   setSelectedTagId: (id: string | undefined) => void;
   setSelectedTeamId: (id: string | undefined) => void;
+  resetFilters: () => void;
 }
 
 export const useNotesStore = create<NotesState>((set) => ({
-  selectedTagId: undefined,
-  selectedTeamId: undefined,
+  selectedTagId: '',
+  selectedTeamId: '',
   setSelectedTagId: (id) => set({ selectedTagId: id }),
   setSelectedTeamId: (id) => set({ selectedTeamId: id }),
+  resetFilters: () => {
+    set({ selectedTeamId: '' });
+    set({ selectedTagId: '' });
+  },
 }));
