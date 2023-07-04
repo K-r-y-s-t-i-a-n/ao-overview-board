@@ -5,11 +5,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../app/api/axios';
 import { useForm } from '@mantine/form';
 import { Note } from '../../app/interfaces';
-import { queryClient } from '../../app/api/queryClient';
 import { useTags } from '../../app/api/hooks/useTags';
 import LoadingElement from '../../components/core/LoadingElement';
 import { queryKeys } from '../../app/api';
 import { useNotesStore } from '../../app/store';
+import { notesDto } from '../../app/api/types/notes.dto';
 
 type FormProps = {
   text: string;
@@ -28,9 +28,24 @@ const NoteCreateModal = () => {
       return api.post<Note>('/notes', newNote);
     },
     onSuccess: (res) => {
-      queryCache.setQueryData([queryKeys.notes, '', ''], (notes?: Note[]) => {
-        return [res.data, ...(notes || [])];
-      });
+      // try {
+      //   queryCache.setQueryData([queryKeys.notes, '', ''], (notes?: Note[]) => {
+      //     return [res.data, ...(notes || [])];
+      //   });
+      // } catch (e) {
+      //   console.log('E: ', e);
+      // }
+      try {
+        queryCache.setQueryData([queryKeys.notes, '', '', 1], (notes?: notesDto) => {
+          if (notes) {
+            notes.data = [res.data, ...(notes?.data || [])];
+          }
+          return notes || undefined;
+        });
+      } catch (e) {
+        console.log(e);
+      }
+
       resetFilters();
       queryCache.invalidateQueries();
       close();

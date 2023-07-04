@@ -12,6 +12,7 @@ const NotesAside = () => {
   const setSelectedTeamId = useNotesStore((store) => store.setSelectedTeamId);
   const resetFilters = useNotesStore((store) => store.resetFilters);
   const selectedTeamId = useNotesStore((store) => store.selectedTeamId);
+  const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
   const [teams, setTeams] = useState<{ value: string; label: string }[]>([]);
 
   const tagsQuery = useQuery({
@@ -42,7 +43,15 @@ const NotesAside = () => {
   }
 
   return (
-    <Flex direction="column" gap="7px">
+    <Flex
+      direction="column"
+      gap="7px"
+      sx={{
+        animation: 'slide-left .3s',
+        overflowY: 'hidden',
+        overscrollBehaviorY: 'none',
+      }}
+    >
       <Button variant="outline" color="gray" onClick={resetFilters}>
         Reset filters
       </Button>
@@ -50,7 +59,10 @@ const NotesAside = () => {
         data={teams}
         variant="filled"
         size="sm"
-        onChange={(e) => setSelectedTeamId(e.currentTarget.value)}
+        onChange={(e) => {
+          setSelectedTeamId(e.currentTarget.value);
+          setCurrentPage(1);
+        }}
         value={selectedTeamId}
       />
       {tagsQuery.data &&

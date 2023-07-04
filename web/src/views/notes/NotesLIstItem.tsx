@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import AppCard from '../../components/core/AppCard';
 import { Note } from '../../app/interfaces';
 import { useNotesStore } from '../../app/store';
+import { handleScrollToTop } from '../../app/helpers/handleScrollToTop';
 
 interface Props {
   note: Note;
@@ -13,6 +14,8 @@ interface Props {
 // export const NotesListItem = ({ data, setParams }: Props) => {
 export const NotesListItem = ({ note }: Props) => {
   const setSelectedTagId = useNotesStore((store) => store.setSelectedTagId);
+  const setSelectedTeamId = useNotesStore((store) => store.setSelectedTeamId);
+  const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
 
   return (
     <AppCard mb={12}>
@@ -30,17 +33,27 @@ export const NotesListItem = ({ note }: Props) => {
                   key={note.id + tag.name}
                   color="red"
                   variant="dot"
-                  onClick={() => setSelectedTagId(tag.id)}
-                  // onClick={() => {
-                  //   setParams('tags', tag.id, 'page', '1');
-                  // }}
+                  onClick={() => {
+                    setSelectedTagId(tag.id);
+                    setCurrentPage(1);
+                    handleScrollToTop();
+                  }}
                 >
                   {tag.name}
                 </Badge>
               ))}
           </Group>
           {note.team && (
-            <Badge color={note.team.color} variant="light">
+            <Badge
+              sx={{ '&:hover': { cursor: 'pointer' } }}
+              color={note.team.color}
+              variant="light"
+              onClick={() => {
+                setSelectedTeamId(note.team?.id);
+                setCurrentPage(1);
+                handleScrollToTop();
+              }}
+            >
               {note.team.name}
             </Badge>
           )}

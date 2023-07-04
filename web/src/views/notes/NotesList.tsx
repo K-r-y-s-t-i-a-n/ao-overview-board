@@ -1,64 +1,53 @@
-import { Group, Badge } from '@mantine/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Group, Badge, Pagination } from '@mantine/core';
 import { Fragment, useEffect, useState } from 'react';
 import { NotesListItem } from './NotesLIstItem';
-// import { getNotes } from '../../app/api/notes';
-// import { useQuery } from '@tanstack/react-query';
 import LoadingElement from '../../components/core/LoadingElement';
-// import { getSortedNotes } from '../../app/helpers/getSortedNotes';
-// import { useNotesStore } from '../../app/store';
-// import { Note } from '../../app/interfaces';
 import NothingFound from '../../components/core/NothingFound';
 import { useNotes } from '../../app/api/hooks/useNotes';
+import { useNotesStore } from '../../app/store';
+import { handleScrollToTop } from '../../app/helpers/handleScrollToTop';
 
 const NotesList = () => {
   const { sortedNotes, isLoading } = useNotes();
-  // const selectedTagId = useNotesStore((store) => store.selectedTagId);
-  // const selectedTeamId = useNotesStore((store) => store.selectedTeamId);
+  const currentPage = useNotesStore((store) => store.currentPage);
+  const lastPage = useNotesStore((store) => store.lastPage);
+  const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
+  const [showNothingFound, setShowNothingFound] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const [sortedNotes, setSortedNoted] = useState<[string, any][] | undefined>(undefined);
+  useEffect(() => {
+    let timeoutId: any;
 
-  // const { status, error, data }: UseQueryResult<Note[], Error> = useQuery<Note[], Error>({
-  // const notesQuery = useQuery({
-  //   queryKey: ['notes', selectedTeamId, selectedTagId],
-  //   // keepPreviousData: true,
-  //   queryFn: () => getNotes(selectedTeamId, selectedTagId),
-  //   refetchInterval: 6000,
-  // });
+    if (sortedNotes && sortedNotes.length === 0) {
+      timeoutId = setTimeout(() => {
+        setShowNothingFound(true);
+      }, 300);
+    } else {
+      setShowNothingFound(false);
+    }
 
-  // const notesQueryParams = useQuery({
-  //   queryKey: ['notes', selectedTeamId, selectedTagId],
-  //   keepPreviousData: true,
-  //   queryFn: () => getNotes(selectedTeamId, selectedTagId),
-  // });
-
-  // useEffect(() => {
-  //   if (notesQuery.data) {
-  //     setSortedNoted(getSortedNotes(notesQuery.data as Note[]));
-  //   }
-  // }, [notesQuery.data]);
-
-  // if (notesQuery.isError)
-  //   return (
-  //     <>
-  //       <h3>Oops, something went wrong.</h3>
-  //       <p>{notesQuery.error.toString()}</p>
-  //     </>
-  //   );
+    return () => {
+      clearTimeout(timeoutId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(sortedNotes)]);
 
   if (isLoading) {
     return <LoadingElement text="Loading notes..." />;
   }
 
-  if (sortedNotes && sortedNotes.length === 0) {
+  if (showNothingFound) {
     return <NothingFound />;
   }
 
+  // if (sortedNotes && sortedNotes.length === 0) {
+  //   return <NothingFound />;
+  // }
+
   return (
     <>
-      {/* {notesQueryParams.isLoading && <LoadingElement />} */}
+      {/* <Pagination total={lastPage} value={currentPage} onChange={setCurrentPage} /> */}
       {sortedNotes &&
-        // [...sortedNotes].reverse().map(([group, notes]) => (
         [...sortedNotes].reverse().map(([group, notes]) => (
           <Fragment key={group}>
             <Group position="left">
@@ -83,6 +72,17 @@ const NotesList = () => {
             ))}
           </Fragment>
         ))}
+      {sortedNotes && lastPage > 1 && sortedNotes.length > 0 && (
+        <Pagination
+          total={lastPage}
+          value={currentPage}
+          position="center"
+          onChange={(v) => {
+            setCurrentPage(v);
+            handleScrollToTop();
+          }}
+        />
+      )}
     </>
   );
 };

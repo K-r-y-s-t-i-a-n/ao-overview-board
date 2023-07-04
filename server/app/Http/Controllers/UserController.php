@@ -26,6 +26,36 @@ class UserController extends Controller
         return UserResource::collection(User::get());
     }
 
+    // public function storeAvatar(Request $request)
+    // {
+
+
+    //     $request->validate([
+    //         'avatar' => 'required|image|max:1000'
+    //     ]);
+    //     //? $request->file('avatar')->store('/public/avatars');
+
+    //     $user = auth()->user();
+
+    //     $filename = $user->id . '-' . uniqid() . '.jpg';
+    //     $resizedImg = Image::make($request->file('avatar'))->fit(120)->encode('jpg');
+    //     Storage::put('public/avatars_120x120/' . $filename, $resizedImg);
+
+    //     $oldAvatar = $user->avatar;
+
+    //     $user->avatar = $filename;
+    //     /** @var \App\Models\User $user **/
+    //     $user->save();
+
+    //     if ($oldAvatar != '/fallback-avatar.png') {
+    //         Storage::delete(str_replace("/storage/", "public/", $oldAvatar));
+    //     }
+
+    //     return back()->with('success', 'Photo uploaded.');
+    // }
+
+
+
     public function show()
     {
     }

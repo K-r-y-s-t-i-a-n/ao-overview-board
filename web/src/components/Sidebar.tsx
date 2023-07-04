@@ -1,8 +1,8 @@
 import { createStyles, Navbar, getStylesRef, rem, Box } from '@mantine/core';
-import { IconSettings, IconLogout } from '@tabler/icons-react';
+import { IconLogout } from '@tabler/icons-react';
 import { navigationLinks } from '../app/router';
-import { NavLink } from 'react-router-dom';
-import { useUserStore } from '../app/store';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useNotesStore, useUserStore } from '../app/store';
 import { useQueryClient } from '@tanstack/react-query';
 
 const useStyles = createStyles((theme) => ({
@@ -49,10 +49,10 @@ const useStyles = createStyles((theme) => ({
     color: theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6],
     marginRight: theme.spacing.sm,
   },
-  // SPECSAVERS #E2EFDD #73b143 #008945 #016C42 #004B2E
+  // SPECSAVERS #E2EFDD #73b143 #008945 #016C42 #004B2E #0d3f61 #0F462E
   linkActive: {
     '&, &:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? '#004B2E' : '#73b143',
+      backgroundColor: theme.colorScheme === 'dark' ? '#004B2E' : '#0F462E',
       // backgroundColor: theme.colorScheme === 'dark' ? '#009D56' : '#008945',
 
       color: theme.colorScheme === 'dark' ? '#e3e3e3' : '#ffffff',
@@ -79,8 +79,13 @@ interface Props {
   setNavbarState: () => void;
 }
 
-const Sidebar = ({ opened, setNavbarState }: Props) => {
+const Sidebar = ({ setNavbarState }: Props) => {
   const logout = useUserStore((store) => store.logout);
+  const setSelectedTagId = useNotesStore((store) => store.setSelectedTagId);
+  const setSelectedTeamId = useNotesStore((store) => store.setSelectedTeamId);
+  const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
+  const setLastPage = useNotesStore((store) => store.setLastPage);
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { classes } = useStyles();
 
@@ -125,7 +130,12 @@ const Sidebar = ({ opened, setNavbarState }: Props) => {
           onClick={() => {
             setNavbarState();
             queryClient.clear();
+            setSelectedTagId('');
+            setSelectedTeamId('');
+            setCurrentPage(1);
+            setLastPage(1);
             logout();
+            navigate('/');
           }}
           sx={{ '&:hover': { cursor: 'pointer' } }}
         >

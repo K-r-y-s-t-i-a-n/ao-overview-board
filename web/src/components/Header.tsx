@@ -1,5 +1,6 @@
 import { Box, Text, Flex, MediaQuery } from '@mantine/core';
 import logo from '../assets/logo.png';
+// import logo from '../assets/logo_dark.png';
 import HeaderUserInfo from './HeaderUserInfo';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -14,6 +15,8 @@ const Header = () => {
         return setPageName('Communication Notes');
       case '/open-actions':
         return setPageName('Open Actions');
+      case '/my-settings':
+        return setPageName('My Settings');
       default:
         return setPageName('');
     }
@@ -36,7 +39,11 @@ const Header = () => {
                 variant="gradient"
                 weight={700}
                 size={'md'}
-                gradient={{ from: '#009d56', to: 'green', deg: 105 }}
+                // gradient={{ from: '#009d56', to: 'green', deg: 105 }}
+                // gradient={{ from: '#0d3f61', to: 'green', deg: 105 }}
+                // gradient={{ from: '#0f462e', to: '#0d3f61', deg: 105 }}
+                // gradient={{ from: '#0f462e', to: '#009D56', deg: 105 }}
+                gradient={{ from: '#009D56', to: '#1aa96b', deg: 105 }}
               >
                 OVERVIEW BOARD
               </Text>

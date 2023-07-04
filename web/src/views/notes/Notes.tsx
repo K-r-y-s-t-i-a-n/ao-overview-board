@@ -23,7 +23,7 @@ const Notes = () => {
         </Grid.Col>
 
         {/* ASIDE */}
-        <Grid.Col span={4} offset={0.3}>
+        <Grid.Col span={3} offset={0.0}>
           <div style={{ position: 'sticky', top: '86px' }}>
             <NotesAside />
           </div>

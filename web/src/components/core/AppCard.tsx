@@ -8,7 +8,7 @@ interface Props {
 
 const AppCard: FC<Props> = ({ children, mb = 4 }): JSX.Element => {
   return (
-    <Card shadow="sm" radius="sm" mb={mb}>
+    <Card shadow="sm" radius="md" mb={mb}>
       {children}
     </Card>
   );

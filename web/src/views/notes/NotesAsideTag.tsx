@@ -2,10 +2,12 @@ import { Badge } from '@mantine/core';
 import { Tag } from '../../app/interfaces';
 import { useEffect, useState } from 'react';
 import { useNotesStore } from '../../app/store';
+import { handleScrollToTop } from '../../app/helpers/handleScrollToTop';
 
 const NotesAsideTag = ({ tag }: { tag: Tag }) => {
   const selectedTagId = useNotesStore((store) => store.selectedTagId);
   const setSelectedTagId = useNotesStore((store) => store.setSelectedTagId);
+  const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
   const [isSelected, setIsSelected] = useState(false);
   // const [isHovering, setIsHovering] = useState<boolean>(false);
 
@@ -21,7 +23,11 @@ const NotesAsideTag = ({ tag }: { tag: Tag }) => {
       color={isSelected ? 'lime' : 'gray'}
       // onMouseEnter={() => setIsHovering(true)}
       // onMouseLeave={() => setIsHovering(false)}
-      onClick={() => setSelectedTagId(tag.id)}
+      onClick={() => {
+        setSelectedTagId(tag.id);
+        setCurrentPage(1);
+        handleScrollToTop();
+      }}
       // variant={isSelected || isHovering ? 'filled' : 'outline'}
       variant={isSelected ? 'filled' : 'outline'}
       sx={{

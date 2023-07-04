@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from 'zustand';
 import api from '../api/axios';
 import { User } from '../interfaces';
-import { useQueryClient } from '@tanstack/react-query';
 
 interface UserState {
   data: User | undefined;
@@ -44,7 +44,6 @@ export const useUserStore = create<UserState>((set) => ({
   },
 
   updateUserPhoto: async () => {
-    // TODO
     try {
       set({ isLoading: false, isUpdatingPhoto: true });
       await api.post<User>('/me');

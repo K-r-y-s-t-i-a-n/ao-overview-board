@@ -3,6 +3,7 @@ import { IconChevronRight, IconSettings } from '@tabler/icons-react';
 import { Group, Avatar, Text, UnstyledButton, Menu } from '@mantine/core';
 // import ColorSchemeToggleButton from './ColorSchemeToggleButton';
 import { useUserStore } from '../app/store';
+import { useNavigate } from 'react-router-dom';
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   image: string;
@@ -53,6 +54,7 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
 
 const HeaderUserInfo = () => {
   const user = useUserStore((store) => store.data);
+  const navigate = useNavigate();
 
   // const handleClick = () => {
   //   navigate('/my-settings');
@@ -73,7 +75,14 @@ const HeaderUserInfo = () => {
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Label>Application</Menu.Label>
-          <Menu.Item icon={<IconSettings size={14} />}>My settings</Menu.Item>
+          {/* <Link to={'/my-settings'}> */}
+          <Menu.Item
+            icon={<IconSettings size={14} />}
+            onClick={() => navigate('/my-settings')}
+          >
+            My settings
+          </Menu.Item>
+          {/* </Link> */}
           {/* <Menu.Item icon={<IconMessageCircle size={14} />}>Messages</Menu.Item> */}
           {/* <Menu.Item
               icon={<IconSearch size={14} />}

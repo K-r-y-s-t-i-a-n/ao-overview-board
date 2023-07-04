@@ -9,9 +9,17 @@ class Note extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['text', 'added_by', 'team_id', 'is_edited'];
+    protected $casts = [
+        'is_edited' => 'boolean',
+    ];
 
-    protected $hidden = ['team_id'];
+    protected $fillable = [
+        'text', 'added_by', 'team_id', 'is_edited'
+    ];
+
+    protected $hidden = [
+        'team_id'
+    ];
 
     public function team()
     {

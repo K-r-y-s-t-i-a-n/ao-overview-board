@@ -17,7 +17,7 @@ const LoadingApp = () => {
         <Center>
           <Loader variant="dots" size="xl" color="green" />
         </Center>
-        <h4>{isLoggingOut ? 'Logging out.. Bye bye' : 'Loading application...'}</h4>
+        <h4>{isLoggingOut ? 'Logging out...' : 'Loading application...'}</h4>
       </Box>
     </Box>
   );
