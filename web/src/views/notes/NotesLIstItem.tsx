@@ -1,4 +1,4 @@
-import { Card, Group, Text, Badge, Box, Image } from '@mantine/core';
+import { Card, Group, Text, Badge } from '@mantine/core';
 // import { getTeamColor } from 'app/helpers';
 import { format } from 'date-fns';
 import AppCard from '../../components/core/AppCard';
@@ -27,21 +27,23 @@ export const NotesListItem = ({ note }: Props) => {
         <Group position="apart">
           <Group position="left" spacing="xs">
             {note.tags &&
-              note.tags.map((tag) => (
-                <Badge
-                  sx={{ '&:hover': { cursor: 'pointer' } }}
-                  key={note.id + tag.name}
-                  color="red"
-                  variant="dot"
-                  onClick={() => {
-                    setSelectedTagId(tag.id);
-                    setCurrentPage(1);
-                    handleScrollToTop();
-                  }}
-                >
-                  {tag.name}
-                </Badge>
-              ))}
+              note.tags
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((tag) => (
+                  <Badge
+                    sx={{ '&:hover': { cursor: 'pointer' } }}
+                    key={note.id + tag.name}
+                    color="red"
+                    variant="dot"
+                    onClick={() => {
+                      setSelectedTagId(tag.id);
+                      setCurrentPage(1);
+                      handleScrollToTop();
+                    }}
+                  >
+                    {tag.name}
+                  </Badge>
+                ))}
           </Group>
           {note.team && (
             <Badge

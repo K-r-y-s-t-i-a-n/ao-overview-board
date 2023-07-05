@@ -46,4 +46,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Teams
     Route::get('teams', [TeamController::class, 'index']);
+
+    /* == ADMIN ROUTES == */
+    // Employees
+    Route::get('admin/employees', []);
 });

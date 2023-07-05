@@ -12,9 +12,11 @@ import {
   IconActivityHeartbeat,
   IconClipboardCheck,
   IconNotes,
+  IconUsers,
 } from '@tabler/icons-react';
 import OpenActions from '../views/open-actions';
 import MySettings from '../views/my-settings';
+import ManageUsers from '../views/admin/manage-users';
 
 export const navigationLinks = [
   { link: '/', label: 'Communication Notes', icon: IconBellRinging },
@@ -22,7 +24,8 @@ export const navigationLinks = [
   { link: '/open-actions', label: 'Open Actions', icon: IconActivityHeartbeat },
   // { link: '/weekly-updates', label: 'Weekly Updates', icon: IconClipboardCheck },
   // { link: '/overdue-pms', label: 'Overdue PMs', icon: IconKey },
-  // { link: '/users-management', label: 'Users Management', icon: IconDatabaseImport },
+  { link: '/manage-users', label: 'Manage Users', icon: IconUsers },
+
   // { link: '/admin', label: 'Admin Panel', icon: IconShieldLock },
   // { link: '/my-settings', label: 'My Settings', icon: IconSettings },
 ];
@@ -32,7 +35,7 @@ export const adminNavigationLinks = [
   { link: '/open-actions', label: 'Open Actions', icon: IconReceipt2 },
   { link: '/weekly-updates', label: 'Weekly Updates', icon: IconFingerprint },
   { link: '/overdue-pms', label: 'Overdue PMs', icon: IconKey },
-  { link: '/users-management', label: 'Users Management', icon: IconDatabaseImport },
+  { link: '/manage-users', label: 'Manage Users', icon: IconUsers },
   { link: '/admin', label: 'Admin Panel', icon: IconShieldLock },
   { link: '/settings', label: 'Other Settings', icon: IconSettings },
 ];
@@ -63,8 +66,8 @@ const router = createBrowserRouter([
         element: <MySettings />,
       },
       {
-        path: '/users-management',
-        element: <Notes />,
+        path: '/manage-users',
+        element: <ManageUsers />,
       },
       {
         path: '/*',

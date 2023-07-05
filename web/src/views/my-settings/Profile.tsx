@@ -94,7 +94,7 @@ const Profile = () => {
                 <label htmlFor="photo">
                   <Avatar
                     size="xl"
-                    // src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
                     // src={profilePhotoBaseUrl + user?.image}
                     // onClick={handleChangePhoto}
                     sx={{ cursor: 'pointer' }}
@@ -124,11 +124,11 @@ const Profile = () => {
           />
 
           <Flex direction="column">
-            <Text size="md" weight={500}>
+            <Text size="md" weight={700}>
               {user?.display_name || ''}
             </Text>
 
-            <Text size="sm" weight={400}>
+            <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
               {user?.team || ''}
             </Text>
             <Text size="sm" weight={400}>

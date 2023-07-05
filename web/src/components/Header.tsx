@@ -17,6 +17,8 @@ const Header = () => {
         return setPageName('Open Actions');
       case '/my-settings':
         return setPageName('My Settings');
+      case '/manage-users':
+        return setPageName('Manage Users');
       default:
         return setPageName('');
     }
