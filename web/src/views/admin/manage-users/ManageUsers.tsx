@@ -11,12 +11,7 @@ import {
 } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useEmployees } from '../../../app/api/hooks/admin/useEmployees';
-
-// const jobColors: Record<string, string> = {
-//   engineer: 'blue',
-//   manager: 'cyan',
-//   designer: 'pink',
-// };
+import { AppCard } from '../../../components/core';
 
 const ManageUsers = () => {
   const { employees } = useEmployees();
@@ -34,15 +29,15 @@ const ManageUsers = () => {
 
       <td>
         <Badge
-          color={employee.team?.color || ''}
+          color={employee.team.color || 'dark'}
           variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
         >
-          {employee.team?.name || ''}
+          {employee.team.name || 'N/A'}
         </Badge>
       </td>
       <td>
         <Anchor component="button" size="sm">
-          {employee.email}
+          {employee.role || 'No role assigned'}
         </Anchor>
       </td>
       <td>
@@ -64,19 +59,26 @@ const ManageUsers = () => {
   ));
 
   return (
-    <ScrollArea>
-      <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
-        <thead>
-          <tr>
-            <th>Employee</th>
-            <th>Job title</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
+    <ScrollArea sx={{ animation: 'slide-up .3s' }}>
+      <AppCard>
+        <Table
+          sx={{ minWidth: 800, overflow: 'scroll' }}
+          horizontalSpacing="sm"
+          verticalSpacing="sm"
+          highlightOnHover
+        >
+          <thead>
+            <tr>
+              <th>Account Name</th>
+              <th>Team</th>
+              <th>Access</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{rows}</tbody>
+        </Table>
+      </AppCard>
     </ScrollArea>
   );
 };

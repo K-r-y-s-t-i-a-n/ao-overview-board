@@ -5,14 +5,15 @@ export interface Employee {
   last_name: string;
   display_name: string;
   avatar?: string;
-  team?: {
-    id: string;
-    name: string;
-    color: string;
+  team: {
+    id: string | null;
+    name: string | null;
+    color: string | null;
   };
-  role: {
-    id: string;
-    name: string;
-    permissions: [id: string, name: string];
-  };
+  role: string | null;
+  // role: {
+  //   id: string;
+  //   name: string;
+  //   permissions: [id: string, name: string];
+  // };
 }

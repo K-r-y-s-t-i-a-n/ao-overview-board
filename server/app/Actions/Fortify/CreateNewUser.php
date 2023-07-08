@@ -19,7 +19,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        $this->authorize('create', 'employees');
+        // $this->authorize('create', 'employees');
 
         Validator::make($input, [
             'first_name' => ['required', 'string', 'max:255'],

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
@@ -49,5 +50,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     /* == ADMIN ROUTES == */
     // Employees
-    Route::get('admin/employees', []);
+    Route::get('admin/employees', [EmployeeController::class, 'index']);
 });

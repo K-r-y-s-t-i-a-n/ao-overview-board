@@ -20,8 +20,12 @@ class EmployeeResource extends JsonResource
             'last_name' => $this->last_name,
             'display_name' => $this->display_name,
             'email' => $this->email,
-            'role' => new RoleResource($this),
-            'team' => $this->team->name ?? null,
+            'role' => $this->role->name,
+            'team' => [
+                'id' => $this->team->id ?? null,
+                'name' => $this->team->name ?? null,
+                'color' => $this->team->color->color_name ?? null
+            ],
             'avatar' => $this->avatar ?? null
         ];
     }
