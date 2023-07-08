@@ -1,7 +1,7 @@
 import { Box, Center, Loader } from '@mantine/core';
 import { useUserStore } from '../../app/store';
 
-const LoadingApp = () => {
+export const LoadingApp = () => {
   const isLoggingOut = useUserStore((state) => state.isLoggingOut);
   return (
     <Box
@@ -22,5 +22,3 @@ const LoadingApp = () => {
     </Box>
   );
 };
-
-export default LoadingApp;

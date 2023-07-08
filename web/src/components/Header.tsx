@@ -4,10 +4,12 @@ import logo from '../assets/logo.png';
 import HeaderUserInfo from './HeaderUserInfo';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useMediaQuery } from '@mantine/hooks';
 
 const Header = () => {
   const { pathname } = useLocation();
   const [pageName, setPageName] = useState('');
+  const smallScreen = useMediaQuery('(max-width: 60em)');
 
   useEffect(() => {
     switch (pathname) {
@@ -57,7 +59,7 @@ const Header = () => {
         </MediaQuery>
       </Box>
 
-      <Text size="lg" weight={600}>
+      <Text size={smallScreen ? 'md' : 'lg'} weight={600}>
         {pageName}
       </Text>
 

@@ -7,7 +7,7 @@ import { useNotesStore } from '../../app/store';
 import { useEffect, useState } from 'react';
 import { getTeams } from '../../app/api/teams';
 
-const NotesAside = () => {
+const NotesAsideMobile = () => {
   // const setSelectedTagId = useNotesStore((store) => store.setSelectedTagId);
   const setSelectedTeamId = useNotesStore((store) => store.setSelectedTeamId);
   const resetFilters = useNotesStore((store) => store.resetFilters);
@@ -46,11 +46,11 @@ const NotesAside = () => {
     <Flex
       direction="column"
       gap="7px"
-      sx={{
-        animation: 'slide-left .3s',
-        overflowY: 'hidden',
-        overscrollBehaviorY: 'none',
-      }}
+      // sx={{
+      //   animation: 'slide-left .3s',
+      //   overflowY: 'hidden',
+      //   overscrollBehaviorY: 'none',
+      // }}
     >
       <Button variant="outline" color="gray" onClick={resetFilters}>
         Reset filters
@@ -86,4 +86,4 @@ const NotesAside = () => {
   );
 };
 
-export default NotesAside;
+export default NotesAsideMobile;

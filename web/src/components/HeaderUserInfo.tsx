@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 import { IconChevronRight, IconSettings } from '@tabler/icons-react';
-import { Group, Avatar, Text, UnstyledButton, Menu } from '@mantine/core';
+import { Group, Avatar, Text, UnstyledButton, Menu, Box } from '@mantine/core';
 // import ColorSchemeToggleButton from './ColorSchemeToggleButton';
 import { useUserStore } from '../app/store';
 import { useNavigate } from 'react-router-dom';
@@ -36,7 +36,7 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
           {imageLabel}
         </Avatar>
 
-        <div style={{ flex: 1 }}>
+        <Box style={{ flex: 1 }} sx={{ '@media (max-width: 40em)': { display: 'none' } }}>
           <Text size="sm" weight={500}>
             {name}
           </Text>
@@ -44,9 +44,11 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
           <Text color="dimmed" size="xs">
             {position}
           </Text>
-        </div>
+        </Box>
 
-        {icon || <IconChevronRight size={16} />}
+        <Box sx={{ '@media (max-width: 40em)': { display: 'none' } }}>
+          {icon || <IconChevronRight size={16} />}
+        </Box>
       </Group>
     </UnstyledButton>
   )

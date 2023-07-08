@@ -1,0 +1,19 @@
+RewriteEngine on
+
+# force ssl (https)
+RewriteCond     %{SERVER_PORT} ^80$
+RewriteRule     ^(.*)$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
+
+
+# Zmiana sciezki dla angulara (404) 
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^(.*) /index.html [NC,L]
+
+
+# Headers
+# Header set Cross-Origin-Opener-Policy: same-origin
+# Header set Cross-Origin-Embedder-Policy: require-corp
+# Header set Content-Security-Policy "script-src 'self' 'unsafe-inline';"

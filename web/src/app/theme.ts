@@ -3,6 +3,7 @@ import { MantineThemeOverride } from '@mantine/core';
 export const theme: MantineThemeOverride = {
   primaryColor: 'spec',
   fontFamily: 'Poppins',
+  // fontFamily: 'Lato',
   defaultRadius: 'md',
   // defaultGradient: { from: '#073B2C', to: '#197459' },
   // defaultGradient: { from: '#', to: '#2DCC84' },

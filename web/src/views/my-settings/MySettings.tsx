@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid } from '@mantine/core';
+import { Flex } from '@mantine/core';
 import ChangePasswordForm from './ChangePasswordForm';
 import Profile from './Profile';
 

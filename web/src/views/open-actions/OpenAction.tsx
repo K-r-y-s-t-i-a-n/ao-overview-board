@@ -2,23 +2,23 @@ import { Badge, Card, Table } from '@mantine/core';
 // import PageTitle from 'components/PageTitle';
 // import { Stats } from './components/Stats';
 
-const statsData = [
-  {
-    'title': 'Stopeed',
-    'stats': '3',
-    'description': '2 Generatos, 1 Laser',
-  },
-  {
-    'title': 'Running with Issues',
-    'stats': '2',
-    'description': '1 Generator, 1 Dispatch Machine',
-  },
-  {
-    'title': 'Testing',
-    'stats': '1',
-    'description': '1 Generator',
-  },
-];
+// const statsData = [
+//   {
+//     'title': 'Stopeed',
+//     'stats': '3',
+//     'description': '2 Generatos, 1 Laser',
+//   },
+//   {
+//     'title': 'Running with Issues',
+//     'stats': '2',
+//     'description': '1 Generator, 1 Dispatch Machine',
+//   },
+//   {
+//     'title': 'Testing',
+//     'stats': '1',
+//     'description': '1 Generator',
+//   },
+// ];
 
 const elements = [
   {

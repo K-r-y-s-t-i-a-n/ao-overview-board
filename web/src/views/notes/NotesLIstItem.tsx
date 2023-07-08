@@ -1,7 +1,7 @@
 import { Card, Group, Text, Badge } from '@mantine/core';
 // import { getTeamColor } from 'app/helpers';
 import { format } from 'date-fns';
-import AppCard from '../../components/core/AppCard';
+import { AppCard } from '../../components/core';
 import { Note } from '../../app/interfaces';
 import { useNotesStore } from '../../app/store';
 import { handleScrollToTop } from '../../app/helpers/handleScrollToTop';
@@ -18,7 +18,7 @@ export const NotesListItem = ({ note }: Props) => {
   const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
 
   return (
-    <AppCard mb={12}>
+    <AppCard mb={2}>
       <Card.Section
         inheritPadding
         py="xs"
@@ -75,10 +75,11 @@ export const NotesListItem = ({ note }: Props) => {
 
       {/* BOTTOM ROW */}
       <Card.Section py="xs" px="xs" bg={'#f4f6fa'}>
-        <Group position="apart" spacing="xs">
-          <Text mx="xs" color="dimmed" size="xs" weight={600}>
+        <Group position="apart" p={0}>
+          <Text mx="xs" color="dimmed" size="xs" weight={600} m={0}>
             {note.added_by}
           </Text>
+
           <Text mx="xs" color="dimmed" size="xs">
             <Badge
               color="gray"

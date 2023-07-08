@@ -19,7 +19,7 @@ class TeamSeeder extends Seeder
         $teams = ['Maintenance' => 1, 'Manager' => 2, 'CI Team' => 3, 'IT Team' => 4];
 
         foreach ($teams as $team => $color) {
-            DB::table('Teams')->insert([
+            DB::table('teams')->insert([
                 'name' => $team,
                 'color_id' => $color
             ]);

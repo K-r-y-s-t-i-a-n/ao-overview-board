@@ -1,8 +1,7 @@
 import { Group, Avatar, Flex, Box, Loader } from '@mantine/core';
 import { FormEvent, useState } from 'react';
 import { Tooltip, Text } from '@mantine/core';
-import AppCard from '../../components/core/AppCard';
-import CardTitle from '../../components/core/CardTitle';
+import { AppCard, CardTitle } from '../../components/core';
 import { useUserStore } from '../../app/store';
 
 // const uploadImage = async (file: File): Promise<string | null> => {
@@ -45,7 +44,7 @@ const Profile = () => {
 
   const handleChangePhoto = async (e: FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
-    const file: File = (target.files as FileList)[0];
+    // const file: File = (target.files as FileList)[0];
     target.value = ''; // reset input value
 
     // if (!file) {

@@ -1,8 +1,6 @@
-import React from 'react';
-import Login from '../views/login';
 import { useQuery } from '@tanstack/react-query';
 import { getUser } from '../app/api/auth';
-import { Navigate, Outlet, redirect } from 'react-router-dom';
+import { Outlet, redirect } from 'react-router-dom';
 
 const GuestLayout = () => {
   const query = useQuery({

@@ -1,22 +1,12 @@
-import {
-  TextInputProps,
-  ActionIcon,
-  useMantineTheme,
-  MultiSelect,
-  Group,
-  Button,
-  Text,
-} from '@mantine/core';
+import { useMantineTheme, MultiSelect, Group, Button, Text } from '@mantine/core';
 // import { useForm } from '@mantine/form';
-import { useMediaQuery } from '@mantine/hooks';
+// import { useMediaQuery } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 // import { useStore } from 'app/stores/store';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-interface Props {
-  setParams: (key: string, value: string, key2?: string, value2?: string) => void;
-}
+// interface Props {
+//   setParams: (key: string, value: string, key2?: string, value2?: string) => void;
+// }
 
 const NoteSearchInput = () => {
   const theme = useMantineTheme();
@@ -31,7 +21,7 @@ const NoteSearchInput = () => {
 
   // const availableTags = tags.map((tag) => ({ value: tag.id, label: tag.name }));
 
-  const sm = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+  // const sm = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
 
   // const form = useForm({
   //   initialValues: {
@@ -39,36 +29,36 @@ const NoteSearchInput = () => {
   //   },
   // });
 
-  const search = (values: { tags: string[] }) => {
-    let path = '';
-    values.tags.forEach((v) => {
-      path += v + ',';
-    });
-    if (path.length > 1) {
-      path = path.substring(0, path.length - 1);
-    }
-    if (path.length >= 16) {
-      // setParams('tags', path, 'page', '1');
-      // communicationNoteStore.loadCommunicationNotes(
-      //   undefined,
-      //   undefined,
-      //   path,
-      //   null,
-      //   true
-      // );
-      // navigate(`/?tags=${path}`);
-    } else {
-      // communicationNoteStore.loadCommunicationNotes(
-      //   undefined,
-      //   undefined,
-      //   undefined,
-      //   null,
-      //   true
-      // );
-      // navigate('/');
-      // setParams('tags', '', 'page', '');
-    }
-  };
+  // const search = (values: { tags: string[] }) => {
+  //   let path = '';
+  //   values.tags.forEach((v) => {
+  //     path += v + ',';
+  //   });
+  //   if (path.length > 1) {
+  //     path = path.substring(0, path.length - 1);
+  //   }
+  //   if (path.length >= 16) {
+  //     // setParams('tags', path, 'page', '1');
+  //     // communicationNoteStore.loadCommunicationNotes(
+  //     //   undefined,
+  //     //   undefined,
+  //     //   path,
+  //     //   null,
+  //     //   true
+  //     // );
+  //     // navigate(`/?tags=${path}`);
+  //   } else {
+  //     // communicationNoteStore.loadCommunicationNotes(
+  //     //   undefined,
+  //     //   undefined,
+  //     //   undefined,
+  //     //   null,
+  //     //   true
+  //     // );
+  //     // navigate('/');
+  //     // setParams('tags', '', 'page', '');
+  //   }
+  // };
 
   return (
     <form

@@ -6,12 +6,9 @@ import {
   IconFingerprint,
   IconKey,
   IconReceipt2,
-  IconDatabaseImport,
   IconShieldLock,
   IconSettings,
   IconActivityHeartbeat,
-  IconClipboardCheck,
-  IconNotes,
   IconUsers,
 } from '@tabler/icons-react';
 import OpenActions from '../views/open-actions';

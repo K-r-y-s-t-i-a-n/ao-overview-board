@@ -6,7 +6,7 @@ import api from '../../app/api/axios';
 import { useForm } from '@mantine/form';
 import { Note } from '../../app/interfaces';
 import { useTags } from '../../app/api/hooks/useTags';
-import LoadingElement from '../../components/core/LoadingElement';
+import { LoadingElement } from '../../components/core';
 import { queryKeys } from '../../app/api';
 import { useNotesStore } from '../../app/store';
 import { notesDto } from '../../app/api/types/notes.dto';

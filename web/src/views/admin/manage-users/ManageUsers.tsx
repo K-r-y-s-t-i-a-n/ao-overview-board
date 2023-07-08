@@ -12,14 +12,14 @@ import {
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useEmployees } from '../../../app/api/hooks/admin/useEmployees';
 
-const jobColors: Record<string, string> = {
-  engineer: 'blue',
-  manager: 'cyan',
-  designer: 'pink',
-};
+// const jobColors: Record<string, string> = {
+//   engineer: 'blue',
+//   manager: 'cyan',
+//   designer: 'pink',
+// };
 
 const ManageUsers = () => {
-  const { employees, isLoading } = useEmployees();
+  const { employees } = useEmployees();
   const theme = useMantineTheme();
   const rows = employees.map((employee) => (
     <tr key={employee.display_name + employee.id}>

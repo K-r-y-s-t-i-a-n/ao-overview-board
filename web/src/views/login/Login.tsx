@@ -12,28 +12,53 @@ import {
   MediaQuery,
   Image,
 } from '@mantine/core';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useUserStore } from '../../app/store';
 import logo from '../../assets/logo.png';
 import img from '../../assets/guest_img.jpg';
 import api from '../../app/api/axios';
+import { AxiosError } from 'axios';
+import { useForm } from '@mantine/form';
+import { Notification } from '../../components/core';
+
+interface FormProps {
+  email: string;
+  password: string;
+}
 
 const Login = () => {
   const getUserAfterLogin = useUserStore((state) => state.getUserAfterLogin);
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const login = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const form = useForm({
+    initialValues: {
+      name: '',
+      pass: '',
+    },
+    transformValues: (values) => ({
+      email: `${values.name}@airwaysoptical.co.uk`,
+      password: values.pass,
+    }),
+  });
+
+  const login = async (loginData: FormProps) => {
     setLoading(true);
     try {
-      await api.post('/login', { email, password });
+      await api.post('/login', loginData);
       getUserAfterLogin();
+      form.reset();
     } catch (e) {
-      console.log('LOGIN ERROR: ', e);
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 422) {
+          setLoading(false);
+          form.setErrors({ pass: 'Invalid credentials.', name: true });
+          return;
+        }
+        Notification({ error: true, message: 'Something went wrong. Please try again.' });
+        form.reset();
+      }
     }
+    form.reset();
     setLoading(false);
   };
 
@@ -98,20 +123,23 @@ const Login = () => {
                   </Text>
                 </Flex>
               </Flex>
+
               {/* //* ----------------------- FORM ----------------------*/}
-              <form onSubmit={(e) => login(e)}>
+              <form onSubmit={form.onSubmit((v) => login(v))}>
                 <TextInput
                   label="Username "
                   placeholder="name.surname"
+                  disabled={loading}
                   required
-                  onChange={(e) => setEmail(e.target.value + '@airwaysoptical.co.uk')}
+                  {...form.getInputProps('name')}
                 />
                 <PasswordInput
                   label="Password"
+                  disabled={loading}
                   placeholder="Your password"
                   required
                   mt="md"
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...form.getInputProps('pass')}
                 />
                 <Group position="right" mt="lg">
                   {/* <Checkbox label="Remember me" sx={{ lineHeight: 1 }} /> */}

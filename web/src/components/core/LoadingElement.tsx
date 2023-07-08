@@ -4,7 +4,7 @@ interface Props {
   text?: string | undefined;
 }
 
-const LoadingElement = ({ text = undefined }: Props) => {
+export const LoadingElement = ({ text = undefined }: Props) => {
   return (
     <Card>
       <Center mb={10}>
@@ -20,5 +20,3 @@ const LoadingElement = ({ text = undefined }: Props) => {
     </Card>
   );
 };
-
-export default LoadingElement;

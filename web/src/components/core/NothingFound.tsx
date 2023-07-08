@@ -1,7 +1,8 @@
-import { Box, Card, Center, Loader, Text } from '@mantine/core';
+import { Box, Card, Center, Text } from '@mantine/core';
 import img1 from '../../assets/nothing_found1.svg';
 import img2 from '../../assets/nothing_found2.svg';
 import img3 from '../../assets/nothing_found3.svg';
+import { useScreenSize } from '../../app/hooks/useScreenSize';
 
 interface Props {
   text?: string | undefined;
@@ -9,7 +10,8 @@ interface Props {
 
 const images = [img1, img2, img3];
 
-const NothingFound = ({ text = 'Nothing Found' }: Props) => {
+export const NothingFound = ({ text = 'Nothing Found' }: Props) => {
+  const { mdMaxScreen } = useScreenSize();
   const rndIndex = Math.floor(Math.random() * images.length);
   const rndImg = images[rndIndex];
 
@@ -23,12 +25,10 @@ const NothingFound = ({ text = 'Nothing Found' }: Props) => {
         </Center>
       )}
       <Center mb={10}>
-        <Box w={350}>
+        <Box sx={mdMaxScreen ? { width: '100%' } : { width: 350 }}>
           <img src={rndImg} />
         </Box>
       </Center>
     </Card>
   );
 };
-
-export default NothingFound;

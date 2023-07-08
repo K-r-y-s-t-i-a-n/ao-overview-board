@@ -21,15 +21,15 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // $this->call([
-        //     PermissionSeeder::class,
-        //     RoleSeeder::class,
-        //     UserSeeder::class,
-        //     TeamColorSeeder::class,
-        //     TeamSeeder::class,
-        //     TagSeeder::class,
-        // ]);
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            UserSeeder::class,
+            TeamColorSeeder::class,
+            TeamSeeder::class,
+            TagSeeder::class,
+        ]);
 
-        \App\Models\Note::factory(6)->create();
+        // \App\Models\Note::factory(6)->create();
     }
 }

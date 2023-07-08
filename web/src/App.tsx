@@ -12,7 +12,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useUserStore } from './app/store';
 import Login from './views/login';
 import { useEffect } from 'react';
-import LoadingApp from './components/core/LoadingApp';
+import { LoadingApp } from './components/core';
 import { queryClient } from './app/api/queryClient';
 
 function App() {

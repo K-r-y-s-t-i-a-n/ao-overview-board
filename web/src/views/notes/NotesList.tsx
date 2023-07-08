@@ -2,8 +2,7 @@
 import { Group, Badge, Pagination } from '@mantine/core';
 import { Fragment, useEffect, useState } from 'react';
 import { NotesListItem } from './NotesLIstItem';
-import LoadingElement from '../../components/core/LoadingElement';
-import NothingFound from '../../components/core/NothingFound';
+import { LoadingElement, NothingFound } from '../../components/core';
 import { useNotes } from '../../app/api/hooks/useNotes';
 import { useNotesStore } from '../../app/store';
 import { handleScrollToTop } from '../../app/helpers/handleScrollToTop';
