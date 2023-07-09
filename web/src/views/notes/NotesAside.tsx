@@ -1,11 +1,12 @@
-import { getTagsByCategory } from '../../app/api/tags';
+import { getTagsByCategory } from '../../app/api/axios/tags';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingElement } from '../../components/core';
 import { Flex, Text, Box, NativeSelect, Button } from '@mantine/core';
 import NotesAsideTag from './NotesAsideTag';
 import { useNotesStore } from '../../app/store';
 import { useEffect, useState } from 'react';
-import { getTeams } from '../../app/api/teams';
+import { getTeams } from '../../app/api/axios/teams';
+import { queryKeys } from '../../app/api';
 
 const NotesAside = () => {
   // const setSelectedTagId = useNotesStore((store) => store.setSelectedTagId);
@@ -21,7 +22,7 @@ const NotesAside = () => {
   });
 
   const categoriesQuery = useQuery({
-    queryKey: ['teams'],
+    queryKey: [queryKeys.teams],
     queryFn: getTeams,
   });
 

@@ -1,4 +1,4 @@
-import { Category, CategoryTags, Tag } from '../interfaces';
+import { Category, CategoryTags, Tag } from '../../interfaces';
 import api from './axios';
 
 export async function getTags() {

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '../..';
 import { Employee } from '../../../interfaces';
-import api from '../../axios';
+import api from '../../axios/axios';
 
 export async function getEmployees() {
   return await api.get<Employee[]>('/admin/employees').then((res) => res.data);

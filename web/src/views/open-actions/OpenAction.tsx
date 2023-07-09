@@ -1,4 +1,6 @@
-import { Badge, Card, Table } from '@mantine/core';
+import { Anchor, Badge, Card, Table, Text } from '@mantine/core';
+import NewActionModal from './NewActionModal';
+import { NothingFound } from '../../components/core';
 // import PageTitle from 'components/PageTitle';
 // import { Stats } from './components/Stats';
 
@@ -20,13 +22,15 @@ import { Badge, Card, Table } from '@mantine/core';
 //   },
 // ];
 
+// const elements = [];
+
 const elements = [
   {
     id: '0',
     asset: 'G25',
     status: 'stopped',
     issue: 'CX Axis Rails U/S',
-    currentStatus: 'Schneider due to visit 16/1/22',
+    currentStep: 'Schneider due to visit 16/1/22',
     lastUpdated: '14/01 11:05',
   },
   {
@@ -34,7 +38,7 @@ const elements = [
     asset: 'Laser 2',
     status: 'stopped',
     issue: 'Poor Engraving',
-    currentStatus: 'Waiting response from laser Op',
+    currentStep: 'Waiting response from laser Op',
     lastUpdated: '14/01 11:05',
   },
   {
@@ -42,7 +46,7 @@ const elements = [
     asset: 'G19',
     status: 'testing',
     issue: 'Diamond Crash',
-    currentStatus: 'Requesting verification of actions from Schneider',
+    currentStep: 'Schneider adjusted software settings',
     lastUpdated: '14/01 11:05',
   },
   {
@@ -50,7 +54,7 @@ const elements = [
     asset: 'G18',
     status: 'rwi',
     issue: 'Lens icorrectly inserted',
-    currentStatus: 'Shock absorber ordered - waiting for delivery',
+    currentStep: 'Shock absorber ordered - waiting for delivery',
     lastUpdated: '14/01 11:05',
   },
   {
@@ -58,7 +62,7 @@ const elements = [
     asset: 'Dispatch 1',
     status: 'rwi',
     issue: 'Not closing envelopes',
-    currentStatus: 'A&R',
+    currentStep: 'A&R',
     lastUpdated: '14/01 11:05',
   },
   {
@@ -66,7 +70,7 @@ const elements = [
     asset: 'G22',
     status: 'stopped',
     issue: 'C Axis concern',
-    currentStatus: 'Test lenses sent to Schenider but stuck in custom',
+    currentStep: 'Test lenses sent to Schenider but stuck in custom',
     lastUpdated: '14/01 11:05',
   },
 ];
@@ -75,16 +79,38 @@ const OpenActions = () => {
   const ths = (
     <tr>
       <th>Asset</th>
-      <th>Status</th>
+      <th>Current Step</th>
       <th>Issue</th>
-      <th>Current Status</th>
+      <th>Status</th>
       <th>Last updated</th>
     </tr>
   );
 
   const rows = elements.map((el) => (
     <tr key={el.id}>
-      <td>{el.asset}</td>
+      <td>
+        <Text fw={500}>{el.asset}</Text>
+      </td>
+
+      <td>
+        <Anchor component="button">
+          <Text
+            // fw={500}
+            color={
+              el.status === 'stopped'
+                ? 'red'
+                : el.status === 'rwi'
+                ? 'blue'
+                : el.status === 'testing'
+                ? 'green'
+                : 'gray'
+            }
+          >
+            {el.currentStep}
+          </Text>
+        </Anchor>
+      </td>
+      <td>{el.issue}</td>
       <td>
         <Badge
           color={
@@ -100,8 +126,6 @@ const OpenActions = () => {
           {el.status}
         </Badge>
       </td>
-      <td>{el.issue}</td>
-      <td>{el.currentStatus}</td>
       <td>{el.lastUpdated}</td>
     </tr>
   ));
@@ -110,13 +134,18 @@ const OpenActions = () => {
     <>
       {/* <PageTitle title="Open actions" /> */}
       {/* <Stats data={statsData} /> */}
+      <NewActionModal />
 
-      <Card shadow="md" radius="md" sx={{ animation: 'slide-up .3s' }}>
-        <Table striped highlightOnHover withColumnBorders>
-          <thead>{ths}</thead>
-          <tbody>{rows}</tbody>
-        </Table>
-      </Card>
+      {elements.length === 0 ? (
+        <NothingFound text="Looks like there are no actions at the moment" />
+      ) : (
+        <Card shadow="md" radius="md" sx={{ animation: 'slide-up .3s' }}>
+          <Table striped highlightOnHover withColumnBorders>
+            <thead>{ths}</thead>
+            <tbody>{rows}</tbody>
+          </Table>
+        </Card>
+      )}
     </>
   );
 };

@@ -2,7 +2,7 @@ import { Box, Button, SimpleGrid, TextInput } from '@mantine/core';
 import { CardTitle, AppCard, Notification } from '../../components/core';
 import { useMutation } from '@tanstack/react-query';
 import { UseFormReturnType, useForm } from '@mantine/form';
-import api from '../../app/api/axios';
+import api from '../../app/api/axios/axios';
 import { AxiosError } from 'axios';
 
 interface UpdatePasswordFormProps {
@@ -95,6 +95,7 @@ const ChangePasswordForm = () => {
               label="New password"
               withAsterisk
               type="password"
+              autoComplete="new-password"
             />
             <TextInput
               {...updatePasswordForm.getInputProps('password_confirmation')}

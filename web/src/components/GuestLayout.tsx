@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getUser } from '../app/api/auth';
+import { getUser } from '../app/api/axios/auth';
 import { Outlet, redirect } from 'react-router-dom';
 
 const GuestLayout = () => {

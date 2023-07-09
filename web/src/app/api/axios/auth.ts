@@ -1,4 +1,4 @@
-import { User } from '../interfaces';
+import { User } from '../../interfaces';
 import api from './axios';
 
 export async function getUser() {

@@ -19,6 +19,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
+        $this->authorize('create', 'blocked');
         // $this->authorize('create', 'employees');
 
         Validator::make($input, [

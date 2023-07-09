@@ -1,4 +1,4 @@
-import { Team } from '../interfaces';
+import { Team } from '../../interfaces';
 import api from './axios';
 
 export async function getTeams() {

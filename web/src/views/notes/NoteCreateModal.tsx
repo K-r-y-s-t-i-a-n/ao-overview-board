@@ -2,11 +2,11 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Modal, Button, Group, Text, MultiSelect, Textarea } from '@mantine/core';
 import { IconNewSection } from '@tabler/icons-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import api from '../../app/api/axios';
+import api from '../../app/api/axios/axios';
 import { useForm } from '@mantine/form';
 import { Note } from '../../app/interfaces';
 import { useTags } from '../../app/api/hooks/useTags';
-import { LoadingElement } from '../../components/core';
+import { LoadingElement, ModalTitle } from '../../components/core';
 import { queryKeys } from '../../app/api';
 import { useNotesStore } from '../../app/store';
 import { notesDto } from '../../app/api/types/notes.dto';
@@ -71,11 +71,7 @@ const NoteCreateModal = () => {
       <Modal
         opened={opened}
         onClose={close}
-        title={
-          <Text size="md" weight="500">
-            New Note
-          </Text>
-        }
+        title={<ModalTitle text="New Note" />}
         size={mobileScreen ? '100%' : 'xl'}
       >
         {/* Modal content */}
@@ -111,8 +107,8 @@ const NoteCreateModal = () => {
 
             <Group mt="lg" position="right">
               <Button
-                variant="outline"
-                color="spec"
+                variant="white"
+                // color="spec"
                 onClick={() => {
                   close();
                   form.reset();

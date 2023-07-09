@@ -16,7 +16,7 @@ import { useState } from 'react';
 import { useUserStore } from '../../app/store';
 import logo from '../../assets/logo.png';
 import img from '../../assets/guest_img.jpg';
-import api from '../../app/api/axios';
+import api from '../../app/api/axios/axios';
 import { AxiosError } from 'axios';
 import { useForm } from '@mantine/form';
 import { Notification } from '../../components/core';

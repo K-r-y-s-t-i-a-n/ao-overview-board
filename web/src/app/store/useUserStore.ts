@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from 'zustand';
-import api from '../api/axios';
+import api from '../api/axios/axios';
 import { User } from '../interfaces';
 
 interface UserState {
@@ -29,7 +29,7 @@ export const useUserStore = create<UserState>((set) => ({
       const res = await api.get<User>('/me');
       set({ isLoading: false, data: res.data });
     } catch (err: any) {
-      set({ error: err.message, isLoading: false });
+      set({ error: err.message, isLoading: false, data: undefined }); // added data undefined
     }
   },
 

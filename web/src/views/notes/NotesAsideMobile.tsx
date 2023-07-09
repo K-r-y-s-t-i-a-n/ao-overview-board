@@ -1,11 +1,11 @@
-import { getTagsByCategory } from '../../app/api/tags';
+import { getTagsByCategory } from '../../app/api/axios/tags';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingElement } from '../../components/core';
 import { Flex, Text, Box, NativeSelect, Button } from '@mantine/core';
 import NotesAsideTag from './NotesAsideTag';
 import { useNotesStore } from '../../app/store';
 import { useEffect, useState } from 'react';
-import { getTeams } from '../../app/api/teams';
+import { getTeams } from '../../app/api/axios/teams';
 
 const NotesAsideMobile = () => {
   // const setSelectedTagId = useNotesStore((store) => store.setSelectedTagId);

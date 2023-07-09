@@ -14,6 +14,7 @@ interface Props {
 // export const NotesListItem = ({ data, setParams }: Props) => {
 export const NotesListItem = ({ note }: Props) => {
   const setSelectedTagId = useNotesStore((store) => store.setSelectedTagId);
+  const selectedTagId = useNotesStore((store) => store.selectedTagId);
   const setSelectedTeamId = useNotesStore((store) => store.setSelectedTeamId);
   const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
 
@@ -33,8 +34,9 @@ export const NotesListItem = ({ note }: Props) => {
                   <Badge
                     sx={{ '&:hover': { cursor: 'pointer' } }}
                     key={note.id + tag.name}
-                    color="red"
-                    variant="dot"
+                    // color="red"
+                    // variant="dot"
+                    variant={selectedTagId === tag.id ? 'filled' : 'light'}
                     onClick={() => {
                       setSelectedTagId(tag.id);
                       setCurrentPage(1);

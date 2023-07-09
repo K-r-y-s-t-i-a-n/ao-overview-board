@@ -51,4 +51,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     /* == ADMIN ROUTES == */
     // Employees
     Route::get('admin/employees', [EmployeeController::class, 'index']);
+    Route::post('admin/employees', [EmployeeController::class, 'store']);
 });
