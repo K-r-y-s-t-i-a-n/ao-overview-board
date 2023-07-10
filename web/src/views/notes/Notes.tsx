@@ -1,13 +1,4 @@
-import {
-  Box,
-  Grid,
-  Stack,
-  MediaQuery,
-  Accordion,
-  Alert,
-  Center,
-  Text,
-} from '@mantine/core';
+import { Grid, Stack, MediaQuery, Accordion, Alert, Center, Text } from '@mantine/core';
 import NoteCreateModal from './NoteCreateModal';
 import NotesAside from './NotesAside';
 import NotesList from './NotesList';
@@ -18,6 +9,7 @@ import { useNotesStore } from '../../app/store';
 import { useEffect, useState } from 'react';
 import { usePermissions } from '../../app/hooks';
 import { PERMISSIONS } from '../../app/constants/permissions';
+import { ViewWrapper } from '../../components/core';
 
 const Notes = () => {
   const { smMaxScreen } = useScreenSize();
@@ -42,7 +34,7 @@ const Notes = () => {
   }, [selectedTeamId, selectedTagId, canCreateNote]);
 
   return (
-    <Box sx={{ maxWidth: '1600px', marginLeft: 'auto', marginRight: 'auto' }}>
+    <ViewWrapper>
       {/* NOTES */}
       <Grid>
         <Grid.Col span="auto" sx={getPadding()}>
@@ -101,7 +93,7 @@ const Notes = () => {
           </Grid.Col>
         </MediaQuery>
       </Grid>
-    </Box>
+    </ViewWrapper>
   );
 };
 

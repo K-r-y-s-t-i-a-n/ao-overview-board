@@ -51,8 +51,7 @@ const NewActionModal = () => {
         value.length < 2 ? 'Asset needs to be at least 2 characters long' : null,
       issue: (value) =>
         value.length < 8 ? 'Issue needs to be at least 8 characters long' : null,
-      status: (value) =>
-        value.length < 8 ? 'Password needs to be at least 8 characters long' : null,
+      status: (value) => (value.length < 2 ? 'Status is required.' : null),
     },
   });
 

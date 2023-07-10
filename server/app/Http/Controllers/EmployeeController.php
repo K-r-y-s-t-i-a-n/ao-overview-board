@@ -15,7 +15,7 @@ class EmployeeController extends Controller
 {
     public function index()
     {
-        $this->authorize('edit', 'users');
+        // $this->authorize('edit', 'users');
         return EmployeeResource::collection(User::all());
     }
 

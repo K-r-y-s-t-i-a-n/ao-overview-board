@@ -34,6 +34,6 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('edit', fn (User $user, $model) => $user->hasAccess("edit_{$model}"));
 
-        Gate::define('edit', fn (User $user, $model) => $user->hasAccess("delete_{$model}"));
+        Gate::define('delete', fn (User $user, $model) => $user->hasAccess("delete_{$model}"));
     }
 }

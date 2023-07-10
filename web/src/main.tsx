@@ -19,24 +19,23 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 // =============================================================================
 //. NA TERAZ
+// - correct wide screen --> DONE
+// - no team - no adding notes or anhything --> DONE
 //! - poprawic wylogowanie po czasie (mutate) --> DONE TO CHECK useUserStore.ts --> moze uczyc mutate zamiast useEffect i sprawdzac co pol minuty?
-//* no team - no adding notes or anhything
-//* - reset hasla
+//* - Global server error handling
 //* - logowanie - zapamietaj (Remember Me)
 //* - administracja uzytkownikami
 //* - upload avatarow
-//* - correct wide screen
+//* - reset hasla
 
 //. ==== REACT ====
 // Prompt PWA update --> DONE
-//* Global server error handling
 //* Dodac slidy zdjec na loginie
 
 //. ==== SERVER ====
-
 //* EMAIL..
-//* Dodac powiadomienie o zmianie hasla przez email (ChangePasswordForm)
 // Zmienic glowna strone api na not authorized? Airways Logo? 404? --> 404 DONE
+//* Dodac powiadomienie o zmianie hasla przez email (ChangePasswordForm)
 
 //. MOZE POZNIEJ
 //* - Wylogowanie z innych urzadzen

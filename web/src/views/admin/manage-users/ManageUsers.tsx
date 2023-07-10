@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useEmployees } from '../../../app/api/hooks/admin/useEmployees';
-import { AppCard, LoadingElement } from '../../../components/core';
+import { AppCard, LoadingElement, ViewWrapper } from '../../../components/core';
 import NewUserModal from './NewUserModal';
 import { usePermissions } from '../../../app/hooks';
 import { PERMISSIONS } from '../../../app/constants/permissions';
@@ -82,7 +82,7 @@ const ManageUsers = () => {
     ));
 
   return (
-    <>
+    <ViewWrapper>
       {/* <Button size="sm" mb={16} variant="light">
         + NEW USER
       </Button> */}
@@ -113,7 +113,7 @@ const ManageUsers = () => {
           )}
         </AppCard>
       </ScrollArea>
-    </>
+    </ViewWrapper>
   );
 };
 

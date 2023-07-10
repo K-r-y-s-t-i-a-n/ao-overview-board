@@ -1,6 +1,6 @@
 import { Anchor, Badge, Card, Table, Text } from '@mantine/core';
 import NewActionModal from './NewActionModal';
-import { NothingFound } from '../../components/core';
+import { NothingFound, ViewWrapper } from '../../components/core';
 import { usePermissions } from '../../app/hooks';
 import { PERMISSIONS } from '../../app/constants/permissions';
 // import PageTitle from 'components/PageTitle';
@@ -135,7 +135,7 @@ const OpenActions = () => {
   ));
 
   return (
-    <>
+    <ViewWrapper>
       {/* <PageTitle title="Open actions" /> */}
       {/* <Stats data={statsData} /> */}
       {canCreateActions && <NewActionModal />}
@@ -150,7 +150,7 @@ const OpenActions = () => {
           </Table>
         </Card>
       )}
-    </>
+    </ViewWrapper>
   );
 };
 
