@@ -54,12 +54,14 @@ const Login = () => {
           form.setErrors({ pass: 'Invalid credentials.', name: true });
           return;
         }
-        Notification({ error: true, message: 'Something went wrong. Please try again.' });
         form.reset();
+        setLoading(false);
+        Notification({ error: true, message: e.message });
       }
     }
     form.reset();
     setLoading(false);
+    Notification({ error: true, message: 'Something went wrong. Please try again.' });
   };
 
   return (

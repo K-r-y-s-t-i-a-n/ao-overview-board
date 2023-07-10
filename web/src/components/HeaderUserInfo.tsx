@@ -2,8 +2,10 @@ import { forwardRef } from 'react';
 import { IconChevronRight, IconSettings } from '@tabler/icons-react';
 import { Group, Avatar, Text, UnstyledButton, Menu, Box } from '@mantine/core';
 // import ColorSchemeToggleButton from './ColorSchemeToggleButton';
-import { useUserStore } from '../app/store';
+// import { useUserStore } from '../app/store';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../app/api/hooks/useUser';
+import { useUserStore } from '../app/store';
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   image: string;
@@ -56,6 +58,7 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
 
 const HeaderUserInfo = () => {
   const user = useUserStore((store) => store.data);
+  useUser();
   const navigate = useNavigate();
 
   // const handleClick = () => {

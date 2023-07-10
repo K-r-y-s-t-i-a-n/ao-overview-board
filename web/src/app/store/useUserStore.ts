@@ -14,8 +14,12 @@ interface UserState {
   getUserAfterLogin: () => void;
   updateUserPhoto: () => void;
   logout: () => void;
+  // ============
+  setUser: (user: User | undefined) => void;
+  setLoading: (isLoading: boolean) => void;
 }
 
+// =====================
 export const useUserStore = create<UserState>((set) => ({
   data: undefined,
   isLoading: false,
@@ -63,5 +67,14 @@ export const useUserStore = create<UserState>((set) => ({
       set({ isLoggingOut: false, isLoading: false });
       console.log(err.message);
     }
+  },
+
+  // ===========================
+
+  setUser: (user) => {
+    set({ data: user });
+  },
+  setLoading: (isLoading) => {
+    set({ isLoading: isLoading });
   },
 }));
