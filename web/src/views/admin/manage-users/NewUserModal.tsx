@@ -106,7 +106,12 @@ const NewUserModal = () => {
     mutationFn: (userData: FormProps) => {
       const newUser = {
         ...userData,
-        email: userData.first_name + userData.last_name + '@airwaysoptical.co.uk',
+        email: (
+          userData.first_name +
+          '.' +
+          userData.last_name +
+          '@airwaysoptical.co.uk'
+        ).toLowerCase(),
       };
       return api.post('/admin/employees', newUser);
     },
