@@ -1,2 +1,2 @@
-import OpenActions from './OpenAction';
+import OpenActions from './OpenActions';
 export default OpenActions;

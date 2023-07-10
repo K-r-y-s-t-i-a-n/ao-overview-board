@@ -1,6 +1,8 @@
 import { Anchor, Badge, Card, Table, Text } from '@mantine/core';
 import NewActionModal from './NewActionModal';
 import { NothingFound } from '../../components/core';
+import { usePermissions } from '../../app/hooks';
+import { PERMISSIONS } from '../../app/constants/permissions';
 // import PageTitle from 'components/PageTitle';
 // import { Stats } from './components/Stats';
 
@@ -76,6 +78,8 @@ const elements = [
 ];
 
 const OpenActions = () => {
+  const canCreateActions = usePermissions(PERMISSIONS.CREATE_ACTIONS);
+
   const ths = (
     <tr>
       <th>Asset</th>
@@ -134,7 +138,7 @@ const OpenActions = () => {
     <>
       {/* <PageTitle title="Open actions" /> */}
       {/* <Stats data={statsData} /> */}
-      <NewActionModal />
+      {canCreateActions && <NewActionModal />}
 
       {elements.length === 0 ? (
         <NothingFound text="Looks like there are no actions at the moment" />
