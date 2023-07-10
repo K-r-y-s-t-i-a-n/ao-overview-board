@@ -14,6 +14,8 @@ class NoteController extends Controller
 {
     public function index(Request $request)
     {
+        $this->authorize('view', 'notes');
+
         if ($request->tag_id && $request->team_id) {
             $notes = Note::whereHas('tags', function ($q) use ($request) {
                 $q->where('id', $request->tag_id);

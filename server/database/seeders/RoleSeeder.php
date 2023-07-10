@@ -26,11 +26,11 @@ class RoleSeeder extends Seeder
             'name' => 'Maintenance Engineer'
         ]);
 
-        Role::factory([
+        Role::factory()->create([
             'name' => 'CI Team Member'
         ]);
 
-        Role::factory([
+        Role::factory()->create([
             'name' => 'Shift Leader'
         ]);
 
@@ -38,6 +38,6 @@ class RoleSeeder extends Seeder
 
         $admin->permissions()->attach($permissions->pluck('id'));
 
-        $viewer->permissions()->attach(3);
+        $viewer->permissions()->attach([3, 5]);
     }
 }

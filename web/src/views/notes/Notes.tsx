@@ -16,12 +16,15 @@ import { useScreenSize } from '../../app/hooks/useScreenSize';
 import { IconAlertCircle, IconFilter } from '@tabler/icons-react';
 import { useNotesStore } from '../../app/store';
 import { useEffect, useState } from 'react';
+import { usePermissions } from '../../app/hooks';
+import { PERMISSIONS } from '../../app/constants/permissions';
 
 const Notes = () => {
   const { smMaxScreen } = useScreenSize();
   const selectedTeamId = useNotesStore((store) => store.selectedTeamId);
   const selectedTagId = useNotesStore((store) => store.selectedTagId);
   const [filterText, setFilterText] = useState('');
+  const canCreateNote = usePermissions(PERMISSIONS.CREATE_NOTES);
 
   const getPadding = () => {
     if (smMaxScreen) {
@@ -30,12 +33,13 @@ const Notes = () => {
   };
 
   useEffect(() => {
+    console.log('CAN CREATE NOTES: ', canCreateNote);
     if (selectedTagId && selectedTeamId)
       return setFilterText('Team and tag filters applied.');
     if (selectedTagId) return setFilterText('Tag filter applied.');
     if (selectedTeamId) return setFilterText('Team filter applied.');
     setFilterText('');
-  }, [selectedTeamId, selectedTagId]);
+  }, [selectedTeamId, selectedTagId, canCreateNote]);
 
   return (
     <Box sx={{ maxWidth: '1600px', marginLeft: 'auto', marginRight: 'auto' }}>
@@ -50,7 +54,7 @@ const Notes = () => {
             }}
           >
             {/* ADD NOTE MODAL */}
-            <NoteCreateModal />
+            {canCreateNote && <NoteCreateModal />}
 
             {/* FILTER NOTIFICATION */}
             {filterText && (

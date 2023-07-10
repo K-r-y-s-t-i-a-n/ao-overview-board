@@ -4,6 +4,8 @@ import { navigationLinks } from '../app/router';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useNotesStore, useUserStore } from '../app/store';
 import { useQueryClient } from '@tanstack/react-query';
+import { usePermissions } from '../app/hooks';
+import { PERMISSIONS } from '../app/constants/permissions';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -85,28 +87,35 @@ const Sidebar = ({ setNavbarState }: Props) => {
   const setSelectedTeamId = useNotesStore((store) => store.setSelectedTeamId);
   const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
   const setLastPage = useNotesStore((store) => store.setLastPage);
+  const canManageUsers = usePermissions(PERMISSIONS.EDIT_USERS);
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { classes } = useStyles();
 
-  const links = navigationLinks.map((item) => (
-    <NavLink
-      className={({ isActive }) =>
-        isActive ? classes.link + ' ' + classes.linkActive : classes.link
-      }
-      // className={cx(classes.link, { [classes.linkActive]: item.label === active })}
-      to={item.link}
-      key={item.label}
-      onClick={setNavbarState}
-      // onClick={(event) => {
-      //   event.preventDefault();
-      //   setActive(item.label);
-      // }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </NavLink>
-  ));
+  const links = navigationLinks.map((item) => {
+    if (item.link === '/manage-users') {
+      if (!canManageUsers) return;
+    }
+    return (
+      <NavLink
+        className={({ isActive }) =>
+          isActive ? classes.link + ' ' + classes.linkActive : classes.link
+        }
+        // className={cx(classes.link, { [classes.linkActive]: item.label === active })}
+        to={item.link}
+        key={item.label}
+        onClick={setNavbarState}
+        // onClick={(event) => {
+        //   event.preventDefault();
+        //   setActive(item.label);
+        // }}
+      >
+        <item.icon className={classes.linkIcon} stroke={1.5} />
+        <span>{item.label}</span>
+      </NavLink>
+    );
+  });
 
   return (
     <Navbar height="100vh - 60" width={{ sm: 300 }} p="md">

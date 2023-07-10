@@ -15,7 +15,7 @@ class EmployeeController extends Controller
 {
     public function index()
     {
-        // $this->authorize('view', 'employees');
+        $this->authorize('edit', 'users');
         return EmployeeResource::collection(User::all());
     }
 
@@ -29,7 +29,7 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
-        // $this->authorize('create', 'employees');
+        $this->authorize('edit', 'users');
 
         $input = $request->input();
 

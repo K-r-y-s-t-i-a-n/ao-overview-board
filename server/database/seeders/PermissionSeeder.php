@@ -22,6 +22,8 @@ class PermissionSeeder extends Seeder
             // ['name' => 'edit_products', 'display_name' => 'View users'],
             // ['name' => 'view_orders', 'display_name' => 'View users'],
             // ['name' => 'edit_orders', 'display_name' => 'View users'],
+            ['name' => 'view_actions', 'display_name' => 'View Actions'],
+            ['name' => 'create_actions', 'display_name' => 'Add new actions'],
         ]);
     }
 }

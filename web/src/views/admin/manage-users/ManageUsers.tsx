@@ -13,10 +13,23 @@ import { IconPencil, IconTrash } from '@tabler/icons-react';
 import { useEmployees } from '../../../app/api/hooks/admin/useEmployees';
 import { AppCard, LoadingElement } from '../../../components/core';
 import NewUserModal from './NewUserModal';
+import { usePermissions } from '../../../app/hooks';
+import { PERMISSIONS } from '../../../app/constants/permissions';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ManageUsers = () => {
+  const canManageUsers = usePermissions(PERMISSIONS.EDIT_USERS);
+  const navigate = useNavigate();
   const { employees, isLoading } = useEmployees();
   const theme = useMantineTheme();
+
+  useEffect(() => {
+    if (!canManageUsers) navigate('/');
+  }, [canManageUsers, navigate]);
+
+  if (!canManageUsers) return;
+
   const rows = employees
     .sort((a, b) => a.email.localeCompare(b.email))
     .map((employee) => (
@@ -54,14 +67,16 @@ const ManageUsers = () => {
           </Text>
         </td>
         <td>
-          <Group spacing={0} position="right">
-            <ActionIcon>
-              <IconPencil size="1rem" stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon color="red">
-              <IconTrash size="1rem" stroke={1.5} />
-            </ActionIcon>
-          </Group>
+          {employee.display_name !== 'View Account' && (
+            <Group spacing={0} position="right">
+              <ActionIcon>
+                <IconPencil size="1rem" stroke={1.5} />
+              </ActionIcon>
+              <ActionIcon color="red">
+                <IconTrash size="1rem" stroke={1.5} />
+              </ActionIcon>
+            </Group>
+          )}
         </td>
       </tr>
     ));
