@@ -52,4 +52,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // Employees
     Route::get('admin/employees', [EmployeeController::class, 'index']);
     Route::post('admin/employees', [EmployeeController::class, 'store']);
+    Route::put('admin/employees/{id}', [EmployeeController::class, 'update']);
+    Route::delete('admin/employees/{id}', [EmployeeController::class, 'delete']);
 });

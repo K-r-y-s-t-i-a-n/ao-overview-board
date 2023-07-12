@@ -21,12 +21,12 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 //. NA TERAZ
 // - correct wide screen --> DONE
 // - no team - no adding notes or anhything --> DONE
-//! - poprawic wylogowanie po czasie (mutate) --> DONE TO CHECK useUserStore.ts --> moze uczyc mutate zamiast useEffect i sprawdzac co pol minuty?
-//* - Global server error handling
-//* - logowanie - zapamietaj (Remember Me)
-//* - administracja uzytkownikami
-//* - upload avatarow
-//* - reset hasla
+// - poprawic wylogowanie po czasie (mutate) --> DONE in HeaderInfo (useUser())
+//* - H - Global server error handling
+//* - H - logowanie - zapamietaj (Remember Me)
+//* - H - administracja uzytkownikami
+//* - H - upload avatarow
+//* - H - reset hasla
 
 //. ==== REACT ====
 // Prompt PWA update --> DONE

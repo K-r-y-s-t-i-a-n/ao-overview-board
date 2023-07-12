@@ -1,5 +1,5 @@
 import { Category, CategoryTags, Tag } from '../../interfaces';
-import api from './axios';
+import { api } from './axios';
 
 export async function getTags() {
   return await api.get<Tag[]>('/tags').then((res) => res.data);

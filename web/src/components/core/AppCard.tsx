@@ -4,11 +4,13 @@ import { FC, ReactNode } from 'react';
 interface Props {
   children?: ReactNode;
   mb?: number;
+  p?: number;
+  px?: number;
 }
 
-export const AppCard: FC<Props> = ({ children, mb = 4 }): JSX.Element => {
+export const AppCard: FC<Props> = ({ children, mb = 4, p, px }): JSX.Element => {
   return (
-    <Card shadow="sm" radius="md" mb={mb}>
+    <Card shadow="sm" radius="md" mb={mb} p={p} px={px}>
       {children}
     </Card>
   );

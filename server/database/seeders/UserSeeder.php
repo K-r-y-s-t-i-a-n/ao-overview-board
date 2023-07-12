@@ -13,14 +13,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'first_name' => 'Super',
-            'last_name' => 'Admin',
-            'display_name' => 'Super Admin',
-            'email' => 'super.admin@airwaysoptical.co.uk',
-            'role_id' => 1,
-            'password' => 'password'
-        ]);
+        // User::factory()->create([
+        //     'first_name' => 'Super',
+        //     'last_name' => 'Admin',
+        //     'display_name' => 'Super Admin',
+        //     'email' => 'super.admin@airwaysoptical.co.uk',
+        //     'role_id' => 1,
+        //     'password' => 'password'
+        // ]);
 
         User::factory()->create([
             'first_name' => 'View',
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             'first_name' => 'Krystian',
             'last_name' => 'Olkowski',
             'display_name' => 'Krystian Olkowski',
-            'email' => 'k.o@airwaysoptical.co.uk',
+            'email' => 'krystian.olkowski@airwaysoptical.co.uk',
             'role_id' => 1,
             // 'team_id' => 1,
             'password' => 'password'

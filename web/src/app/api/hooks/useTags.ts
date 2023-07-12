@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Category, CategoryTags, Tag } from '../../interfaces';
-import api from '../axios/axios';
+import { api } from '../axios/axios';
 import { queryKeys } from '..';
 import { useEffect, useState } from 'react';
 

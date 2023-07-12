@@ -6,14 +6,13 @@ export interface Employee {
   display_name: string;
   avatar?: string;
   team: {
-    id: string | null;
-    name: string | null;
-    color: string | null;
+    id: string | undefined;
+    name: string | undefined;
+    color: string | undefined;
   };
-  role: string | null;
-  // role: {
-  //   id: string;
-  //   name: string;
-  //   permissions: [id: string, name: string];
-  // };
+  role: {
+    id: string | undefined;
+    name: string | undefined;
+    // permissions: [id: string, name: string];
+  };
 }

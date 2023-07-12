@@ -2,7 +2,7 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { Modal, Button, Group, Text, MultiSelect, Textarea } from '@mantine/core';
 import { IconNewSection } from '@tabler/icons-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import api from '../../app/api/axios/axios';
+import { api } from '../../app/api/axios';
 import { useForm } from '@mantine/form';
 import { Note } from '../../app/interfaces';
 import { useTags } from '../../app/api/hooks/useTags';

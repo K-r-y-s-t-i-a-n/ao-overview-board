@@ -1,7 +1,7 @@
-import { Anchor, Badge, Card, Table, Text } from '@mantine/core';
+import { Anchor, Badge, Card, Grid, Group, ScrollArea, Table, Text } from '@mantine/core';
 import NewActionModal from './NewActionModal';
-import { NothingFound, ViewWrapper } from '../../components/core';
-import { usePermissions } from '../../app/hooks';
+import { AppCard, NothingFound, ViewWrapper } from '../../components/core';
+import { usePermissions, useScreenSize } from '../../app/hooks';
 import { PERMISSIONS } from '../../app/constants/permissions';
 // import PageTitle from 'components/PageTitle';
 // import { Stats } from './components/Stats';
@@ -77,8 +77,25 @@ const elements = [
   },
 ];
 
+const getColor = (status: string) => {
+  return status === 'stopped'
+    ? 'red'
+    : status === 'rwi'
+    ? 'blue'
+    : status === 'testing'
+    ? 'green'
+    : 'gray';
+};
+
 const OpenActions = () => {
   const canCreateActions = usePermissions(PERMISSIONS.CREATE_ACTIONS);
+  const { smMaxScreen } = useScreenSize();
+
+  const getPadding = () => {
+    if (smMaxScreen) {
+      return { paddingLeft: 0, paddingRight: 0 };
+    }
+  };
 
   const ths = (
     <tr>
@@ -100,15 +117,7 @@ const OpenActions = () => {
         <Anchor component="button">
           <Text
             // fw={500}
-            color={
-              el.status === 'stopped'
-                ? 'red'
-                : el.status === 'rwi'
-                ? 'blue'
-                : el.status === 'testing'
-                ? 'green'
-                : 'gray'
-            }
+            color={getColor(el.status)}
           >
             {el.currentStep}
           </Text>
@@ -116,19 +125,7 @@ const OpenActions = () => {
       </td>
       <td>{el.issue}</td>
       <td>
-        <Badge
-          color={
-            el.status === 'stopped'
-              ? 'red'
-              : el.status === 'rwi'
-              ? 'blue'
-              : el.status === 'testing'
-              ? 'green'
-              : 'gray'
-          }
-        >
-          {el.status}
-        </Badge>
+        <Badge color={getColor(el.status)}>{el.status}</Badge>
       </td>
       <td>{el.lastUpdated}</td>
     </tr>
@@ -136,20 +133,70 @@ const OpenActions = () => {
 
   return (
     <ViewWrapper>
-      {/* <PageTitle title="Open actions" /> */}
-      {/* <Stats data={statsData} /> */}
-      {canCreateActions && <NewActionModal />}
+      <Grid>
+        <Grid.Col span="auto" sx={getPadding()}>
+          {/* <PageTitle title="Open actions" /> */}
+          {/* <Stats data={statsData} /> */}
+          {canCreateActions && <NewActionModal />}
 
-      {elements.length === 0 ? (
-        <NothingFound text="Looks like there are no actions at the moment" />
-      ) : (
-        <Card shadow="md" radius="md" sx={{ animation: 'slide-up .3s' }}>
-          <Table striped highlightOnHover withColumnBorders>
-            <thead>{ths}</thead>
-            <tbody>{rows}</tbody>
-          </Table>
-        </Card>
-      )}
+          {elements.length === 0 ? (
+            <NothingFound text="Looks like there are no actions at the moment" />
+          ) : (
+            <>
+              {smMaxScreen ? (
+                elements.map((el) => (
+                  <AppCard key={el.id + 'el'} p={4} mb={8}>
+                    <Badge
+                      color={getColor(el.status)}
+                      radius="sm"
+                      w="100%"
+                      m={0}
+                      mb={4}
+                      size="lg"
+                      // variant="filled"
+                    >
+                      {el.asset}
+                    </Badge>
+                    <Group>
+                      <Text fw={600} fz="sm" ml={2}>
+                        Issue:
+                      </Text>
+                      <Text fw={500} fz="sm">
+                        {el.issue}
+                      </Text>
+                    </Group>
+                    <Group>
+                      <Text fw={600} fz="sm" ml={2}>
+                        Current step:
+                      </Text>
+                      <Text fw={500} fz="sm">
+                        {el.currentStep}
+                      </Text>
+                    </Group>
+                    <Group>
+                      <Text fw={600} fz="sm" ml={2}>
+                        Last updated:
+                      </Text>
+                      <Text fw={500} fz="sm">
+                        {el.lastUpdated}
+                      </Text>
+                    </Group>
+                  </AppCard>
+                ))
+              ) : (
+                <Card shadow="md" m={0} radius="md" sx={{ animation: 'slide-up .3s' }}>
+                  <ScrollArea>
+                    <Table striped highlightOnHover withColumnBorders>
+                      <thead>{ths}</thead>
+                      <tbody>{rows}</tbody>
+                    </Table>
+                  </ScrollArea>
+                </Card>
+              )}
+            </>
+          )}
+        </Grid.Col>
+      </Grid>
     </ViewWrapper>
   );
 };

@@ -41,7 +41,9 @@ class RoleController extends Controller
 
         $role = Role::find($id);
 
-        //! Make NOT FOUND exception...
+        if (!$role) {
+            return response(Response::HTTP_NOT_FOUND);
+        }
 
         $role->update($request->only('name'));
 

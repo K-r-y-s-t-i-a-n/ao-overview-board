@@ -25,7 +25,6 @@ const Notes = () => {
   };
 
   useEffect(() => {
-    console.log('CAN CREATE NOTES: ', canCreateNote);
     if (selectedTagId && selectedTeamId)
       return setFilterText('Team and tag filters applied.');
     if (selectedTagId) return setFilterText('Tag filter applied.');

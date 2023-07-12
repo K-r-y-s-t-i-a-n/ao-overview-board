@@ -5,6 +5,7 @@ import { AppCard } from '../../components/core';
 import { Note } from '../../app/interfaces';
 import { useNotesStore } from '../../app/store';
 import { handleScrollToTop } from '../../app/helpers/handleScrollToTop';
+import { useScreenSize } from '../../app/hooks';
 
 interface Props {
   note: Note;
@@ -17,12 +18,14 @@ export const NotesListItem = ({ note }: Props) => {
   const selectedTagId = useNotesStore((store) => store.selectedTagId);
   const setSelectedTeamId = useNotesStore((store) => store.setSelectedTeamId);
   const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
+  const { smMaxScreen } = useScreenSize();
 
   return (
     <AppCard mb={2}>
       <Card.Section
         inheritPadding
-        py="xs"
+        py={'xs'}
+        px={smMaxScreen ? '8px' : 'md'}
         // bg={'#eef9ed'}
       >
         <Group position="apart">
@@ -66,7 +69,7 @@ export const NotesListItem = ({ note }: Props) => {
 
       {/* MIDDLE ROW TEXT */}
       <Card.Section
-        px="xs"
+        px={smMaxScreen ? '0px' : 'xs'}
         mb="xs"
         // mt="xs"
       >
@@ -76,7 +79,7 @@ export const NotesListItem = ({ note }: Props) => {
       </Card.Section>
 
       {/* BOTTOM ROW */}
-      <Card.Section py="xs" px="xs" bg={'#f4f6fa'}>
+      <Card.Section py="xs" px={smMaxScreen ? '0px' : 'xs'} bg={'#f4f6fa'}>
         <Group position="apart" p={0}>
           <Text mx="xs" color="dimmed" size="xs" weight={600} m={0}>
             {note.added_by}

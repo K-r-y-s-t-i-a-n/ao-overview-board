@@ -3,6 +3,7 @@ export const queryKeys = {
   notes: 'notes',
   tags: 'tags',
   employees: 'employees',
+  employee: 'employee',
   teams: 'teams',
   roles: 'roles',
 };
