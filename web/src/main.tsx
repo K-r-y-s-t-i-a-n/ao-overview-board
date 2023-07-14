@@ -22,7 +22,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 // - correct wide screen --> DONE
 // - no team - no adding notes or anhything --> DONE
 // - poprawic wylogowanie po czasie (mutate) --> DONE in HeaderInfo (useUser())
-//* - H - Global server error handling
 //* - H - logowanie - zapamietaj (Remember Me)
 //* - H - administracja uzytkownikami
 //* - H - upload avatarow
@@ -30,7 +29,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
 //. ==== REACT ====
 // Prompt PWA update --> DONE
+//* Preload on hover (sidebar links)
 //* Dodac slidy zdjec na loginie
+//* Global server error handling for erros > 500
 
 //. ==== SERVER ====
 //* EMAIL..

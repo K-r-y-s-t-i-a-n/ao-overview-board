@@ -3,6 +3,7 @@ import img1 from '../../assets/nothing_found1.svg';
 import img2 from '../../assets/nothing_found2.svg';
 import img3 from '../../assets/nothing_found3.svg';
 import { useScreenSize } from '../../app/hooks/useScreenSize';
+import { ViewWrapper } from '.';
 
 interface Props {
   text?: string | undefined;
@@ -16,19 +17,21 @@ export const NothingFound = ({ text = 'Nothing Found' }: Props) => {
   const rndImg = images[rndIndex];
 
   return (
-    <Card>
-      {text && (
-        <Center>
-          <Text size="xl" weight="600">
-            {text}
-          </Text>
+    <ViewWrapper>
+      <Card>
+        {text && (
+          <Center>
+            <Text size="xl" weight="600">
+              {text}
+            </Text>
+          </Center>
+        )}
+        <Center mb={10}>
+          <Box sx={mdMaxScreen ? { width: '100%' } : { width: 350 }}>
+            <img src={rndImg} />
+          </Box>
         </Center>
-      )}
-      <Center mb={10}>
-        <Box sx={mdMaxScreen ? { width: '100%' } : { width: 350 }}>
-          <img src={rndImg} />
-        </Box>
-      </Center>
-    </Card>
+      </Card>
+    </ViewWrapper>
   );
 };

@@ -29,6 +29,7 @@ import { openConfirmModal } from '@mantine/modals';
 import { api, queryKeys } from '../../../app/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Employee } from '../../../app/interfaces';
+import { AxiosError } from 'axios';
 
 const ManageUsers = () => {
   const queryCache = useQueryClient();
@@ -42,14 +43,26 @@ const ManageUsers = () => {
     mutationFn: (id: string) => {
       return api.delete(`/admin/employees/${id}`);
     },
-    onSuccess: () => {
-      // queryCache.setQueryData([queryKeys.employees], () => []);
+    onSuccess: (res) => {
+      queryCache.setQueryData([queryKeys.employees], (employees?: Employee[]) => {
+        if (employees) {
+          const filteredEmployees = employees.filter((obj) => obj.id != res.data.id);
+          return filteredEmployees || undefined;
+        }
+      });
       queryCache.invalidateQueries([queryKeys.employees]);
+      queryCache.invalidateQueries([queryKeys.user]);
       Notification({ success: true, message: 'The account has been deleted.' });
     },
 
-    onError: ({ err }) =>
-      Notification({ error: true, message: `Could not delete account: ${err.message}` }),
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        Notification({
+          error: true,
+          message: `Could not delete the action. ${err.message}`,
+        });
+      }
+    },
   });
 
   useEffect(() => {
@@ -167,7 +180,7 @@ const ManageUsers = () => {
       </Button> */}
           <NewUserModal />
           {isLoading ? (
-            <LoadingElement />
+            <LoadingElement text="Loading users" />
           ) : smMaxScreen ? (
             employees
               .sort((a, b) => a.email.localeCompare(b.email))

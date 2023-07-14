@@ -1,57 +1,76 @@
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { Modal, Button, Group, Text, SimpleGrid, TextInput } from '@mantine/core';
+import { Modal, Button, Group, Text, SimpleGrid, Textarea, Select } from '@mantine/core';
 import { IconNewSection } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
-import { ModalTitle } from '../../components/core';
+import { LoadingElement, ModalTitle, Notification } from '../../components/core';
+import { api, queryKeys } from '../../app/api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Action } from '../../app/interfaces';
+import { useTags } from '../../app/api/hooks/useTags';
 // import { LoadingElement } from '../../../components/core';
 
-// type FormProps = {
-//   text: string;
-//   tags: string[];
-// };
+type FormProps = {
+  asset: string | null;
+  status: 'Stopped' | 'RWI' | 'Testing' | 'Other';
+  issue: string;
+  step: string;
+};
 
 const NewActionModal = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const { selectTags, isLoading } = useTags();
   const mobileScreen = useMediaQuery('(max-width: 48em)');
-  // const queryCache = useQueryClient();
+  const queryCache = useQueryClient();
   // const isLoading = false;
 
-  // const mutation = useMutation({
-  //   mutationFn: (newNote: FormProps) => {
-  //     return api.post<Note>('/notes', newNote);
-  //   },
-  //   onSuccess: (res) => {
-  //     try {
-  //       queryCache.setQueryData([queryKeys.notes, '', '', 1], (notes?: notesDto) => {
-  //         if (notes) {
-  //           notes.data = [res.data, ...(notes?.data || [])];
-  //         }
-  //         return notes || undefined;
-  //       });
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-
-  //     resetFilters();
-  //     queryCache.invalidateQueries();
-  //     close();
-  //     form.reset();
-  //   },
-  // });
+  const mutation = useMutation({
+    mutationFn: (newAction: FormProps) => {
+      return api.post<Action>('/actions', newAction);
+    },
+    onSuccess: (res) => {
+      try {
+        queryCache.setQueryData([queryKeys.actions], (actions?: Action[]) => {
+          if (actions) {
+            actions = [res.data, ...(actions || [])];
+          }
+          return actions || undefined;
+        });
+      } catch (e) {
+        console.log(e);
+      }
+      queryCache.invalidateQueries([queryKeys.actions]);
+      close();
+      form.reset();
+      Notification({ message: 'Action has been created.' });
+    },
+  });
 
   const form = useForm({
     initialValues: {
-      asset: '',
-      issue: '',
+      asset: null,
       status: '',
+      issue: '',
+      step: '',
     },
 
     validate: {
-      asset: (value) =>
-        value.length < 2 ? 'Asset needs to be at least 2 characters long' : null,
+      asset: (value) => (value === null ? 'Asset is required' : null),
       issue: (value) =>
-        value.length < 8 ? 'Issue needs to be at least 8 characters long' : null,
-      status: (value) => (value.length < 2 ? 'Status is required.' : null),
+        value.length < 5
+          ? 'Issue needs to be at least 5 characters long'
+          : value.length > 255
+          ? 'Maximum 255 characters.'
+          : null,
+      step: (value) =>
+        value.length < 5
+          ? 'Action needs to be at least 5 characters long'
+          : value.length > 1000
+          ? 'Maximum 1000 characters.'
+          : null,
+      status: (value) =>
+        value !== 'Stopped' && value !== 'RWI' && value !== 'Testing' && value !== 'Other'
+          ? 'Choose status.'
+          : null,
     },
   });
 
@@ -64,102 +83,100 @@ const NewActionModal = () => {
         size={mobileScreen ? '100%' : 'xl'}
       >
         {/* Modal content */}
-        <form
-          onSubmit={form.onSubmit(() => {
-            // createUser();
-          })}
-        >
-          <SimpleGrid
-            cols={2}
-            breakpoints={[
-              { maxWidth: 'sm', cols: 1 },
-              { maxWidth: 'md', cols: 1 },
-              { maxWidth: 'xl', cols: 2 },
-            ]}
-            // sx={{ animation: 'slide-up .3s' }}
+        {isLoading ? (
+          <LoadingElement />
+        ) : (
+          <form
+            onSubmit={form.onSubmit((values) => {
+              mutation.mutate(values as FormProps);
+            })}
           >
-            <TextInput
+            <SimpleGrid
+              cols={2}
+              breakpoints={[
+                { maxWidth: 'sm', cols: 1 },
+                { maxWidth: 'md', cols: 1 },
+                { maxWidth: 'xl', cols: 2 },
+              ]}
+              mb={'1rem'}
+            >
+              {/* <TextInput
               variant="filled"
               placeholder="Asset name"
               label="Asset"
               withAsterisk
+              disabled={mutation.isLoading}
               {...form.getInputProps('asset')}
-            />
+            /> */}
 
-            <TextInput
-              variant="filled"
-              placeholder="Short issue description"
-              label="Issue"
-              withAsterisk
-              {...form.getInputProps('issue')}
-            />
-
-            <TextInput
-              variant="filled"
-              placeholder="Status"
-              label="Status"
-              withAsterisk
-              {...form.getInputProps('status')}
-            />
-
-            <TextInput
-              variant="filled"
-              placeholder="Current action step"
-              label="Action"
-              withAsterisk
-              {...form.getInputProps('step')}
-            />
-            {/* 
-              <NativeSelect
+              <Select
+                {...form.getInputProps('asset')}
                 withAsterisk
-                data={roles}
-                onChange={(e) => {
-                  setUsersRoleError('');
-                  setUsersRole(e.target.value);
-                }}
-                label="Role"
-                error={usersRoleError}
-              /> */}
-
-            {/* <NativeSelect
-                data={teams}
-                onChange={(e) => {
-                  setUsersTeamError('');
-                  setUsersTeam(e.target.value);
-                }}
+                variant="filled"
+                data={selectTags}
+                label="Asset"
+                placeholder="Choose tag"
+                searchable
+                nothingFound="No corresponding tags found, choose “Other“ or speak to Maintenance Manager to add more..."
+                mb={12}
+                clearable
+                disabled={mutation.isLoading}
+              />
+              <Select
+                variant="filled"
+                placeholder="Status"
+                label="Status"
                 withAsterisk
-                label="Team"
-                error={usersTeamError}
-              /> */}
+                data={['Stopped', 'RWI', 'Testing', 'Other']}
+                disabled={mutation.isLoading}
+                {...form.getInputProps('status')}
+              />
+            </SimpleGrid>
 
-            {/* <NativeSelect
+            <SimpleGrid>
+              <Textarea
+                variant="filled"
+                placeholder="Short issue description"
+                label="Issue"
                 withAsterisk
-                data={positions || [{ value: '', label: '' }]}
-                onChange={(e) => {
-                  setUsersPositionError('');
-                  setUsersPosition(e.target.value);
+                autosize
+                minRows={1}
+                maxRows={2}
+                disabled={mutation.isLoading}
+                {...form.getInputProps('issue')}
+              />
+
+              <Textarea
+                variant="filled"
+                placeholder="Current action step"
+                label="Action"
+                withAsterisk
+                autosize
+                minRows={1}
+                maxRows={4}
+                disabled={mutation.isLoading}
+                {...form.getInputProps('step')}
+              />
+            </SimpleGrid>
+
+            <Group mt="sm" position="right">
+              <Button
+                variant="white"
+                // color="spec"
+                onClick={() => {
+                  close();
+                  form.reset();
                 }}
-                label="Position"
-                error={usersPositionError}
-              /> */}
-          </SimpleGrid>
-          <Group mt="sm" position="right">
-            <Button
-              variant="white"
-              // color="spec"
-              onClick={() => {
-                close();
-                form.reset();
-                // setModalOpen(false);
-                // setSelectedImages([]);
-              }}
-              // disabled={mutation.isLoading}
-            >
-              Cancel
-            </Button>
-            <Button type="submit">Save</Button>
-          </Group>
-        </form>
+                disabled={mutation.isLoading}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" loading={mutation.isLoading}>
+                Save
+              </Button>
+            </Group>
+          </form>
+        )}
       </Modal>
 
       <Group position="center">

@@ -7,7 +7,15 @@ interface Props {
 
 export const ViewWrapper: FC<Props> = ({ children }): JSX.Element => {
   return (
-    <Box sx={{ maxWidth: '1600px', marginLeft: 'auto', marginRight: 'auto', padding: 0 }}>
+    <Box
+      sx={{
+        width: '100%',
+        maxWidth: '1600px',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        padding: 0,
+      }}
+    >
       {children}
     </Box>
   );

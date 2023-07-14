@@ -6,11 +6,12 @@ interface Props {
   mb?: number;
   p?: number;
   px?: number;
+  bg?: string;
 }
 
-export const AppCard: FC<Props> = ({ children, mb = 4, p, px }): JSX.Element => {
+export const AppCard: FC<Props> = ({ children, mb = 4, p, px, bg }): JSX.Element => {
   return (
-    <Card shadow="sm" radius="md" mb={mb} p={p} px={px}>
+    <Card shadow="sm" radius="md" mb={mb} p={p} px={px} bg={bg}>
       {children}
     </Card>
   );

@@ -12,7 +12,6 @@ import {
   Text,
   createStyles,
 } from '@mantine/core';
-import NewActionModal from './NewActionModal';
 import {
   AppCard,
   LoadingElement,
@@ -22,7 +21,6 @@ import {
 } from '../../components/core';
 import { usePermissions, useScreenSize } from '../../app/hooks';
 import { PERMISSIONS } from '../../app/constants/permissions';
-import { useActions } from '../../app/api/hooks/useActions';
 import { useState } from 'react';
 import { Action } from '../../app/interfaces';
 import { format } from 'date-fns';
@@ -30,9 +28,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, queryKeys } from '../../app/api';
 import { openConfirmModal } from '@mantine/modals';
 import { AxiosError } from 'axios';
-import UpdateActionModal from './UpdateActionModal';
-import AddStepModal from './AddStepModal';
 import { useDeletedActions } from '../../app/api/hooks/useDeletedActions';
+import { useActions } from '../../app/api/hooks/useActions';
 
 const getColor = (status: string) => {
   return status === 'Stopped'
@@ -45,7 +42,11 @@ const getColor = (status: string) => {
 };
 
 const deleteRequest = async (id: string) => {
-  return await api.delete('actions/' + id).then((res) => res.data);
+  return await api.delete(`/actions/force/${id}`).then((res) => res.data);
+};
+
+const restoreRequest = async (id: string) => {
+  return await api.get(`/actions/restore/${id}`).then((res) => res.data);
 };
 
 const useStyles = createStyles(() => ({
@@ -54,32 +55,36 @@ const useStyles = createStyles(() => ({
   },
 }));
 
-const OpenActions = () => {
-  const [isDeleting, setDeleting] = useState(false);
+const DeletedActions = () => {
+  const [isMutating, setMutating] = useState(false);
+  const { refetch: refetchActions } = useActions();
+  const { actions, isLoading } = useDeletedActions();
   const queryCache = useQueryClient();
   const { classes } = useStyles();
   const canCreateActions = usePermissions(PERMISSIONS.CREATE_ACTIONS);
   const { smMaxScreen } = useScreenSize();
-  const { actions, isLoading } = useActions();
-  const { refetch: refetchDeletedActions } = useDeletedActions();
   const [showActionDetails, setshowActionDetails] = useState<Action | undefined>(
     undefined
   );
-
   const deleteActionMutation = useMutation({
     mutationFn: (id: string) => deleteRequest(id),
     onSuccess: (res) => {
-      queryCache.setQueryData([queryKeys.actions], (actions?: Action[]) => {
+      queryCache.setQueryData([queryKeys.deletedActions], (actions?: Action[]) => {
         if (actions) {
           const filteredActions = actions.filter((obj) => obj.id != res.id);
           return filteredActions || undefined;
         }
       });
-      queryCache.invalidateQueries([queryKeys.actions]);
-      refetchDeletedActions();
+      refetchActions();
+      queryCache.invalidateQueries([queryKeys.deletedActions]);
+      // queryCache.invalidateQueries([queryKeys.actions]);
       queryCache.invalidateQueries([queryKeys.user]);
-      setDeleting(false);
-      Notification({ success: true, message: 'The action has been deleted.' });
+
+      setMutating(false);
+      Notification({
+        success: true,
+        message: 'The action has been permanently deleted.',
+      });
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
@@ -88,7 +93,34 @@ const OpenActions = () => {
           message: `Could not delete the action. ${err.message}`,
         });
       }
-      setDeleting(false);
+      setMutating(false);
+    },
+  });
+
+  const restoreActionMutation = useMutation({
+    mutationFn: (id: string) => restoreRequest(id),
+    onSuccess: (res) => {
+      queryCache.setQueryData([queryKeys.deletedActions], (actions?: Action[]) => {
+        if (actions) {
+          const filteredActions = actions.filter((obj) => obj.id != res.id);
+          return filteredActions || undefined;
+        }
+      });
+      queryCache.invalidateQueries([queryKeys.actions]);
+      queryCache.invalidateQueries([queryKeys.deletedActions]);
+      queryCache.invalidateQueries([queryKeys.user]);
+
+      setMutating(false);
+      Notification({ success: true, message: 'The action has been restored.' });
+    },
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        Notification({
+          error: true,
+          message: `Could not restore the action. ${err.message}`,
+        });
+      }
+      setMutating(false);
     },
   });
 
@@ -109,11 +141,74 @@ const OpenActions = () => {
           </Button>
 
           <Group>
-            <AddStepModal action={showActionDetails} setAction={setshowActionDetails} />
-            <UpdateActionModal
-              action={showActionDetails}
-              setAction={setshowActionDetails}
-            />
+            <Button
+              variant="outline"
+              color="green"
+              mb={16}
+              onClick={() => {
+                openConfirmModal({
+                  title: (
+                    <Text fz={'md'} weight={600}>
+                      Are you sure you want to restore action?
+                    </Text>
+                  ),
+                  // centered: true,
+                  confirmProps: {
+                    color: 'green',
+                    size: 'sm',
+                    radius: 'md',
+                  },
+                  cancelProps: {
+                    color: 'gray',
+                    size: 'sm',
+                    radius: 'md',
+                  },
+                  children: (
+                    <Box
+                      sx={{
+                        background: 'rgb(246, 255, 245, 1)',
+                        color: '#52fa76',
+                        padding: '1rem',
+                        borderRadius: '0.5rem',
+                        border: '0.0625rem solid transparent',
+                      }}
+                    >
+                      <Group>
+                        <Text fz={'1rem'} fw={700} lineClamp={1.55}>
+                          Asset:
+                        </Text>
+                        <Text fz={'1rem'} fw={600} lineClamp={1.55}>
+                          {showActionDetails.asset.name}
+                        </Text>
+                      </Group>
+
+                      <Group>
+                        <Text fz={'1rem'} fw={700} lineClamp={1.55}>
+                          Issue:
+                        </Text>
+                        <Text fz={'1rem'} fw={600} lineClamp={1.55} ml="3px">
+                          {showActionDetails.issue}
+                        </Text>
+                      </Group>
+                    </Box>
+                  ),
+                  labels: {
+                    confirm: 'RESTORE',
+                    cancel: 'Cancel',
+                  },
+                  onCancel: () => {
+                    // setSelectedTagId(undefined);
+                  },
+                  onConfirm: () => {
+                    restoreActionMutation.mutate(showActionDetails.id);
+                    setshowActionDetails(undefined);
+                    setMutating(true);
+                  },
+                });
+              }}
+            >
+              RESTORE ACTION
+            </Button>
             <Button
               variant="outline"
               color="red"
@@ -122,7 +217,7 @@ const OpenActions = () => {
                 openConfirmModal({
                   title: (
                     <Text fz={'md'} weight={600}>
-                      Are you sure you want to delete action?
+                      Do you want to permanently delete the action?
                     </Text>
                   ),
                   // centered: true,
@@ -175,12 +270,12 @@ const OpenActions = () => {
                   onConfirm: () => {
                     deleteActionMutation.mutate(showActionDetails.id);
                     setshowActionDetails(undefined);
-                    setDeleting(true);
+                    setMutating(true);
                   },
                 });
               }}
             >
-              DELETE ACTION
+              PERMANENTLY DELETE ACTION
             </Button>
           </Group>
         </Group>
@@ -191,7 +286,7 @@ const OpenActions = () => {
         <AppCard
           mb={16}
           // bg={getColor(showActionDetails.status)}
-          bg="#E2EFDD"
+          bg="#efdfdd"
         >
           <SimpleGrid cols={5} spacing={'sm'}>
             <Box>
@@ -230,14 +325,11 @@ const OpenActions = () => {
             <>
               <Box>
                 <Text fz={'md'} fw={700} color="brand">
-                  Updated
+                  Deleted
                 </Text>
                 <Text fw={500} color="brand">
-                  {showActionDetails.created_at !== showActionDetails.steps[0].updated_at
-                    ? format(
-                        new Date(showActionDetails.steps[0].updated_at),
-                        'dd MMMM yyyy'
-                      )
+                  {showActionDetails.created_at !== showActionDetails.deleted_at
+                    ? format(new Date(showActionDetails.deleted_at), 'dd MMMM yyyy')
                     : 'N/A'}
                 </Text>
               </Box>
@@ -311,7 +403,7 @@ const OpenActions = () => {
                     size="md"
                     //  bg="#f4f6fa"
                   >
-                    {format(new Date(step.updated_at), 'dd/MM/yyyy')}
+                    {format(new Date(step.updated_at), 'dd.MM.yyyy')}
                   </Badge>
                 </Group>
               </Card.Section>
@@ -327,14 +419,12 @@ const OpenActions = () => {
     <ViewWrapper>
       <Grid>
         <Grid.Col span="auto" sx={getPadding()}>
-          {canCreateActions && <NewActionModal />}
-
           {isLoading ? (
             <LoadingElement text="Loading actions..." />
           ) : (
             <>
               {actions.length === 0 ? (
-                <NothingFound text="Looks like there are no actions at the moment" />
+                <NothingFound text="No actions here..." />
               ) : (
                 <>
                   {/* ========== ACTIONS MOBILE VIEW ============== */}
@@ -373,14 +463,14 @@ const OpenActions = () => {
                             Last updated:
                           </Text>
                           <Text fw={500} fz="sm">
-                            {format(new Date(el.steps[0].updated_at), 'dd MMM yyyy')}
+                            DATE HERE
                           </Text>
                         </Group>
                       </AppCard>
                     ))
                   ) : (
                     <Card shadow="md" m={0} radius="md">
-                      <LoadingOverlay visible={isDeleting} overlayBlur={2} />
+                      <LoadingOverlay visible={isMutating} overlayBlur={2} />
                       <ScrollArea sx={{ animation: 'slide-up .3s' }}>
                         <Table striped highlightOnHover withColumnBorders>
                           <thead>
@@ -424,7 +514,7 @@ const OpenActions = () => {
                                   <Text fw={500}>
                                     {format(
                                       new Date(el.steps[0].updated_at),
-                                      'dd/MM/yyyy'
+                                      'dd.MM.yyyy'
                                     )}
                                   </Text>
                                 </td>
@@ -445,4 +535,4 @@ const OpenActions = () => {
   );
 };
 
-export default OpenActions;
+export default DeletedActions;

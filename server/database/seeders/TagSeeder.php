@@ -83,7 +83,7 @@ class TagSeeder extends Seeder
             'SYR'   =>  [1, 2]
         ];
 
-        $other_tags = ['OTHER', 'CONVEYORS'];
+        $other_tags = ['OTHER', 'CONVEYORS', 'FACILITIES'];
 
         $category_id = 1;
 

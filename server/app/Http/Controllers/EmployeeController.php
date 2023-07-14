@@ -125,11 +125,11 @@ class EmployeeController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response(Response::HTTP_BAD_REQUEST);
+            return response('', Response::HTTP_BAD_REQUEST);
         }
 
         $user->delete();
 
-        return response(Response::HTTP_NO_CONTENT);
+        return response(["id" => $id], Response::HTTP_ACCEPTED);
     }
 }

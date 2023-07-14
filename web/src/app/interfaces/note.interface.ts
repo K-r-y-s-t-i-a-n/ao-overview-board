@@ -1,3 +1,5 @@
+import { Tag } from '.';
+
 export interface Note {
   id: string;
   text: string;
@@ -10,8 +12,5 @@ export interface Note {
     name: string;
     color: string;
   };
-  tags?: {
-    id: string;
-    name: string;
-  }[];
+  tags?: Tag[];
 }

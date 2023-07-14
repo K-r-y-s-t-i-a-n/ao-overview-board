@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class NoteRequest extends FormRequest
+class ActionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,10 @@ class NoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'text' => ['required', 'string', 'min:10', 'max:65000'],
-            'tags' => ['required', 'array'],
-            'tags.*' => ['integer', 'distinct', Rule::exists('tags', 'id')],
+            'asset' => ['integer', Rule::exists('tags', 'id')],
+            'status' => 'required|in:RWI,Stopped,Testing,Other',
+            'issue' => ['required', 'string', 'max:255'],
+            'step' => ['required', 'string', 'max:1000']
         ];
     }
 }

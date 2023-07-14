@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActionController;
 use App\Http\Controllers\EmployeeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('roles', RoleController::class);
     Route::get('permissions', [PermissionController::class, 'index']);
 
+    // ==================== NOTES ==================
+
     // Notes
     Route::get('notes', [NoteController::class, 'index']);
     Route::post('notes', [NoteController::class, 'store']);
@@ -48,7 +51,18 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // Teams
     Route::get('teams', [TeamController::class, 'index']);
 
-    /* == ADMIN ROUTES == */
+    // ==================== ACTIONS ==================
+    Route::get('actions', [ActionController::class, 'index']);
+    Route::post('actions', [ActionController::class, 'store']);
+    Route::put('actions/{id}', [ActionController::class, 'update']);
+    Route::post('actions/{id}/steps', [ActionController::class, 'storeStep']);
+    Route::get('actions/restore/{id}', [ActionController::class, 'restore']);
+    Route::delete('actions/{id}', [ActionController::class, 'destroy']);
+    Route::delete('actions/force/{id}', [ActionController::class, 'forceDelete']);
+    // Route::get('actions/restore-all', [PostController::class, 'restoreAll']);
+
+
+    // ==================== ADMIN ROUTES ==================
     // Employees
     Route::get('admin/employees', [EmployeeController::class, 'index']);
     Route::post('admin/employees', [EmployeeController::class, 'store']);

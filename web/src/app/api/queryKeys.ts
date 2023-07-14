@@ -6,4 +6,6 @@ export const queryKeys = {
   employee: 'employee',
   teams: 'teams',
   roles: 'roles',
+  actions: 'actions',
+  deletedActions: 'actions-deleted',
 };

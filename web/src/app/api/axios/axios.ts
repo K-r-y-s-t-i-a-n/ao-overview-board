@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const baseURL = `http://localhost:8000`;
-// const baseURL = `https://apiv2.olkowski.dev`
+// const baseURL = `https://apiv2.olkowski.dev`;
 
 const headers = {
   'X-Requested-With': 'XMLHttpRequest',

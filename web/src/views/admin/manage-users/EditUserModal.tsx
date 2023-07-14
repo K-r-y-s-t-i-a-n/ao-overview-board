@@ -86,7 +86,9 @@ const EditUserModal = ({ id, employee }: Props) => {
           label: team.name,
         };
       });
-      setTeams(c);
+      if (c) {
+        setTeams(c);
+      }
     }
   }, [teamsQuery.data]);
 
@@ -99,7 +101,9 @@ const EditUserModal = ({ id, employee }: Props) => {
           label: role.name,
         };
       });
-      setRoles(c);
+      if (c) {
+        setRoles(c);
+      }
     }
   }, [rolesQuery.data]);
 
@@ -125,7 +129,7 @@ const EditUserModal = ({ id, employee }: Props) => {
     if (!employee.role.id) {
       setRoles((roles) => [{ value: '', label: 'Choose team' }, ...roles]);
     }
-  }, [employee, form]);
+  }, [employee.role.id, employee.team.id]);
 
   //* =======================    RETURN JSX    ========================
   return (

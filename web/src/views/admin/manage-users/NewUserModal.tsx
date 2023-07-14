@@ -195,7 +195,7 @@ const NewUserModal = () => {
                 disabled={mutation.isLoading}
                 variant="filled"
                 placeholder="Password"
-                label="Confirm password"
+                label="Confirm Password"
                 type="password"
                 autoComplete="off"
                 withAsterisk

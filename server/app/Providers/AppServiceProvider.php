@@ -25,12 +25,17 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
 
         Gate::define('view', function (User $user, $model) {
-            return $user->hasAccess("view_{$model}") || $user->hasAccess("edit_{$model}");
+            return $user->hasAccess("view_{$model}")
+                || $user->hasAccess("create_{$model}")
+                || $user->hasAccess("edit_{$model}")
+                || $user->hasAccess("delete_{$model}");
         });
 
-        Gate::define('create', function (User $user, $model) {
-            return $user->hasAccess("create_{$model}") || $user->hasAccess("edit_{$model}");
-        });
+        // Gate::define('create', function (User $user, $model) {
+        //     return $user->hasAccess("create_{$model}");
+        // });
+
+        Gate::define('create', fn (User $user, $model) => $user->hasAccess("create{$model}"));
 
         Gate::define('edit', fn (User $user, $model) => $user->hasAccess("edit_{$model}"));
 

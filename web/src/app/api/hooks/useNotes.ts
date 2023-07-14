@@ -70,7 +70,7 @@ export function useNotes(): UseNotes {
   } = useQuery({
     queryKey: [queryKeys.notes, selectedTeamId, selectedTagId, currentPage],
     queryFn: () => getNotes(selectedTeamId, selectedTagId, currentPage),
-    refetchInterval: 10000,
+    refetchInterval: 6000,
   });
 
   useEffect(() => {

@@ -17,6 +17,8 @@ const Header = () => {
         return setPageName('Communication Notes');
       case '/open-actions':
         return setPageName('Open Actions');
+      case '/deleted-actions':
+        return setPageName('Deleted Actions');
       case '/my-settings':
         return setPageName('My Settings');
       case '/manage-users':
