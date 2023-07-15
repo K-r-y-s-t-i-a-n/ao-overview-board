@@ -11,32 +11,26 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ActionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
-        //! Add permissions
-
         if ($request->has('trashed')) {
+            $this->authorize('view', 'actionsDeleted');
             $actions = Action::onlyTrashed()
                 ->get();
         } else {
+            $this->authorize('view', 'actions');
             $actions = Action::orderBy('updated_at', 'desc')
                 ->get();
         }
 
-
         return ActionResource::collection($actions);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(ActionRequest $request)
     {
-        //! Add permissions
-        // Moze dodac unique together asset and issue --> errro taka maszyna z tymm problemem juz istnieje
+        $this->authorize('create', 'actions');
+
         $action = new Action();
         $action->tag_id = request('asset');
         $action->status = request('status');
@@ -53,7 +47,8 @@ class ActionController extends Controller
 
     public function storeStep(Request $request, $id)
     {
-        //! Add permissions
+        $this->authorize('edit', 'actions');
+
         $request->validate([
             'step' => ['required', 'string', 'max:1000']
         ]);
@@ -73,6 +68,8 @@ class ActionController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        $this->authorize('edit', 'actionsStatus');
+
         $data = $request->validate([
             'status' => 'required|in:RWI,Stopped,Testing,Other',
         ]);
@@ -86,11 +83,11 @@ class ActionController extends Controller
         return response(new ActionResource($action), Response::HTTP_ACCEPTED);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function forceDelete($id)
     {
+        $this->authorize('delete', 'actionsPerm');
+
         $action = Action::withTrashed()->find($id);
         if (!$action) {
             return response('', Response::HTTP_BAD_REQUEST);
@@ -102,6 +99,8 @@ class ActionController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('delete', 'actions');
+
         $action = Action::find($id);
         if (!$action) {
             return response('', Response::HTTP_BAD_REQUEST);
@@ -113,6 +112,8 @@ class ActionController extends Controller
 
     public function restore($id)
     {
+        $this->authorize('edit', 'actionsPerm');
+
         $action = Action::withTrashed()->find($id);
         if (!$action) {
             return response('', Response::HTTP_BAD_REQUEST);

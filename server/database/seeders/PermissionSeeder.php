@@ -26,7 +26,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'edit_actions', 'display_name' => 'Add next steps to actions'],
             ['name' => 'edit_actionsStatus', 'display_name' => "Change action's status"],
             ['name' => 'delete_actions', 'display_name' => 'Close actions'],
-            ['name' => 'view_actionsDeleted', 'display_name' => 'View closed actions'],
+            ['name' => 'view_actionsDeleted', 'display_name' => 'View archived actions'],
             ['name' => 'delete_actionsPerm', 'display_name' => 'Delete actions permanently'],
             ['name' => 'edit_actionsPerm', 'display_name' => 'Restore actions'],
         ]);
