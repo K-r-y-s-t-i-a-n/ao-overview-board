@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   Table,
   Text,
+  Title,
   createStyles,
 } from '@mantine/core';
 import {
@@ -409,6 +410,7 @@ const DeletedActions = () => {
 
   return (
     <ViewWrapper>
+      <Title mb={12}>Archived Actions</Title>
       <Grid>
         <Grid.Col span="auto" sx={getPadding()}>
           {isLoading ? (

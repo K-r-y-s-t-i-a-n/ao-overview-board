@@ -22,7 +22,7 @@ export const navigationLinks = [
   { link: '/', label: 'Communication Notes', icon: IconBellRinging },
   // { link: '/', label: 'Communication Notes', icon: IconNotes },
   { link: '/open-actions', label: 'Open Actions', icon: IconActivityHeartbeat },
-  { link: '/deleted-actions', label: 'Archived Actions', icon: IconArchive },
+  { link: '/archived-actions', label: 'Archived Actions', icon: IconArchive },
   // { link: '/weekly-updates', label: 'Weekly Updates', icon: IconClipboardCheck },
   // { link: '/overdue-pms', label: 'Overdue PMs', icon: IconKey },
   { link: '/manage-users', label: 'Manage Users', icon: IconUsers },
@@ -34,7 +34,7 @@ export const navigationLinks = [
 export const adminNavigationLinks = [
   { link: '/', label: 'Communication Notes', icon: IconBellRinging },
   { link: '/open-actions', label: 'Open Actions', icon: IconReceipt2 },
-  { link: '/deleted-actions', label: 'Archived Actions', icon: IconTrash },
+  { link: '/archived-actions', label: 'Archived Actions', icon: IconTrash },
   { link: '/weekly-updates', label: 'Weekly Updates', icon: IconFingerprint },
   { link: '/overdue-pms', label: 'Overdue PMs', icon: IconKey },
   { link: '/manage-users', label: 'Manage Users', icon: IconUsers },
@@ -56,7 +56,7 @@ const router = createBrowserRouter([
         element: <OpenActions />,
       },
       {
-        path: '/deleted-actions',
+        path: '/archived-actions',
         element: <DeletedActions />,
       },
       {

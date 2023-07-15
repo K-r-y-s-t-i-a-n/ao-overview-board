@@ -1,5 +1,6 @@
 <?php
 
+use Laravel\Fortify\RoutePath;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
+// });
+
+// Route::get(RoutePath::for('password.reset', '/reset-password/{token}'), [NewPasswordController::class, 'create'])
+//     ->middleware(['guest:' . config('fortify.guard')])
+//     ->name('password.reset');
+
+// Route::get(RoutePath::for('password.reset', '/reset-password/{token}'), function ($token) {
+//     return $token;
 // });

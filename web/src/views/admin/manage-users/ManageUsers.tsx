@@ -10,6 +10,7 @@ import {
   useMantineTheme,
   Grid,
   Alert,
+  Title,
 } from '@mantine/core';
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react';
 import { useEmployees } from '../../../app/api/hooks/admin/useEmployees';
@@ -173,6 +174,7 @@ const ManageUsers = () => {
 
   return (
     <ViewWrapper>
+      <Title mb={12}>Manage Users</Title>
       <Grid>
         <Grid.Col span="auto" sx={getPadding()}>
           {/* <Button size="sm" mb={16} variant="light">

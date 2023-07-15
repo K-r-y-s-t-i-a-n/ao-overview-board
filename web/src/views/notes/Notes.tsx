@@ -1,4 +1,13 @@
-import { Grid, Stack, MediaQuery, Accordion, Alert, Center, Text } from '@mantine/core';
+import {
+  Grid,
+  Stack,
+  MediaQuery,
+  Accordion,
+  Alert,
+  Center,
+  Text,
+  Title,
+} from '@mantine/core';
 import NoteCreateModal from './NoteCreateModal';
 import NotesAside from './NotesAside';
 import NotesList from './NotesList';
@@ -34,6 +43,7 @@ const Notes = () => {
 
   return (
     <ViewWrapper>
+      <Title mb={12}>Communication Notes</Title>
       {/* NOTES */}
       <Grid>
         <Grid.Col span="auto" sx={getPadding()}>

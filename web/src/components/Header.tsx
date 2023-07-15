@@ -11,22 +11,22 @@ const Header = () => {
   const [pageName, setPageName] = useState('');
   const smallScreen = useMediaQuery('(max-width: 60em)');
 
-  useEffect(() => {
-    switch (pathname) {
-      case '/':
-        return setPageName('Communication Notes');
-      case '/open-actions':
-        return setPageName('Open Actions');
-      case '/deleted-actions':
-        return setPageName('Archived Actions');
-      case '/my-settings':
-        return setPageName('My Settings');
-      case '/manage-users':
-        return setPageName('Manage Users');
-      default:
-        return setPageName('');
-    }
-  }, [pathname]);
+  // useEffect(() => {
+  //   switch (pathname) {
+  //     case '/':
+  //       return setPageName('Communication Notes');
+  //     case '/open-actions':
+  //       return setPageName('Open Actions');
+  //     case '/deleted-actions':
+  //       return setPageName('Archived Actions');
+  //     case '/my-settings':
+  //       return setPageName('My Settings');
+  //     case '/manage-users':
+  //       return setPageName('Manage Users');
+  //     default:
+  //       return setPageName('');
+  //   }
+  // }, [pathname]);
 
   return (
     <Box
@@ -61,9 +61,9 @@ const Header = () => {
         </MediaQuery>
       </Box>
 
-      <Text size={smallScreen ? 'md' : 'lg'} weight={600}>
+      {/* <Text size={smallScreen ? 'md' : 'lg'} weight={600}>
         {pageName}
-      </Text>
+      </Text> */}
 
       <HeaderUserInfo />
     </Box>

@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   Table,
   Text,
+  Title,
   createStyles,
 } from '@mantine/core';
 import NewActionModal from './NewActionModal';
@@ -104,11 +105,11 @@ const OpenActions = () => {
   if (showActionDetails)
     return (
       <ViewWrapper>
+        <Title mb={12}> Action Details</Title>
         <Group position="apart">
           <Button color="dark" onClick={() => setshowActionDetails(undefined)} mb={16}>
             Back to table
           </Button>
-
           <Group>
             <AddStepModal action={showActionDetails} setAction={setshowActionDetails} />
             <UpdateActionModal
@@ -190,63 +191,6 @@ const OpenActions = () => {
           <strong>ACTION DETAILS</strong>
         </Box> */}
         <StatsGroup data={showActionDetails} />
-        {/* <AppCard
-          mb={16}
-          // bg={getColor(showActionDetails.status)}
-          bg="#E2EFDD"
-        >
-          <SimpleGrid cols={5} spacing={'sm'}>
-            <Box>
-              <Text fz={'md'} fw={700} color="brand">
-                Asset
-              </Text>
-              <Text color="brand" fw={500}>
-                {showActionDetails?.asset.name || '-'}
-              </Text>
-            </Box>
-            <Box>
-              <Text fz={'md'} fw={700} color="brand">
-                Status
-              </Text>
-              <Text color="brand" fw={500}>
-                {showActionDetails.status}
-              </Text>
-            </Box>
-            <Box>
-              <Text fz={'md'} fw={700} color="brand">
-                Issue
-              </Text>
-              <Text color="brand" fw={500}>
-                {showActionDetails?.issue || '-'}
-              </Text>
-            </Box>
-            <Box>
-              <Text fz={'md'} fw={700} color="brand">
-                Created
-              </Text>
-              <Text fw={500} color="brand">
-                {format(new Date(showActionDetails.created_at), 'dd MMMM yyyy')}
-              </Text>
-            </Box>
-
-            <>
-              <Box>
-                <Text fz={'md'} fw={700} color="brand">
-                  Updated
-                </Text>
-                <Text fw={500} color="brand">
-                    {showActionDetails.created_at !== showActionDetails.steps[0].updated_at
-                      ? format(
-                          new Date(showActionDetails.steps[0].updated_at),
-                          'dd MMMM yyyy'
-                        )
-                      : 'N/A'}
-                </Text>
-              </Box>
-            </>
-          </SimpleGrid>
-        </AppCard> */}
-
         <Box mb="sm">
           <strong>Current step:</strong>
         </Box>
@@ -278,13 +222,11 @@ const OpenActions = () => {
             </Group>
           </Card.Section>
         </AppCard>
-
         {showActionDetails.steps.length > 1 && (
           <Box mb="sm">
             <strong>Steps taken:</strong>
           </Box>
         )}
-
         {showActionDetails.steps.map((step, i) => {
           if (i === 0) {
             return null;
@@ -327,6 +269,7 @@ const OpenActions = () => {
 
   return (
     <ViewWrapper>
+      <Title mb={12}>Open Actions</Title>
       <Grid>
         <Grid.Col span="auto" sx={getPadding()}>
           {canCreateActions && <NewActionModal />}

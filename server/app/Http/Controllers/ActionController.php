@@ -41,7 +41,6 @@ class ActionController extends Controller
         $action->tag_id = request('asset');
         $action->status = request('status');
         $action->issue = request('issue');
-
         $action->save();
 
         $step = new ActionStep();
@@ -55,14 +54,11 @@ class ActionController extends Controller
     public function storeStep(Request $request, $id)
     {
         //! Add permissions
-
         $request->validate([
             'step' => ['required', 'string', 'max:1000']
         ]);
 
         $action = Action::find($id);
-
-
         if (!$action) {
             return response('', Response::HTTP_BAD_REQUEST);
         }
@@ -75,42 +71,16 @@ class ActionController extends Controller
         return new ActionResource($action);
     }
 
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Action $action)
+    public function updateStatus(Request $request, $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Action $action)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-
         $data = $request->validate([
             'status' => 'required|in:RWI,Stopped,Testing,Other',
         ]);
-
         // $action = Action::onlyTrashed()->first($id);
         $action = Action::find($id);
-
         if (!$action) {
             return response('', Response::HTTP_BAD_REQUEST);
         }
-
         $action->update($data);
 
         return response(new ActionResource($action), Response::HTTP_ACCEPTED);
@@ -122,7 +92,6 @@ class ActionController extends Controller
     public function forceDelete($id)
     {
         $action = Action::withTrashed()->find($id);
-
         if (!$action) {
             return response('', Response::HTTP_BAD_REQUEST);
         }
@@ -134,11 +103,9 @@ class ActionController extends Controller
     public function destroy($id)
     {
         $action = Action::find($id);
-
         if (!$action) {
             return response('', Response::HTTP_BAD_REQUEST);
         }
-
         $action->delete();
         // Action::destroy($id);
         return response(["id" => $id], Response::HTTP_ACCEPTED);
@@ -146,13 +113,10 @@ class ActionController extends Controller
 
     public function restore($id)
     {
-
         $action = Action::withTrashed()->find($id);
-
         if (!$action) {
             return response('', Response::HTTP_BAD_REQUEST);
         }
-
         Action::withTrashed()->find($id)->restore();
 
         return  response(["id" => $id], Response::HTTP_ACCEPTED);
@@ -161,7 +125,6 @@ class ActionController extends Controller
     // public function restoreAll()
     // {
     //     Action::onlyTrashed()->restore();
-
     //     return response(null, Response::HTTP_ACCEPTED);
     // }
 }

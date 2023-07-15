@@ -54,7 +54,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // ==================== ACTIONS ==================
     Route::get('actions', [ActionController::class, 'index']);
     Route::post('actions', [ActionController::class, 'store']);
-    Route::put('actions/{id}', [ActionController::class, 'update']);
+    Route::put('actions/{id}', [ActionController::class, 'updateStatus']);
     Route::post('actions/{id}/steps', [ActionController::class, 'storeStep']);
     Route::get('actions/restore/{id}', [ActionController::class, 'restore']);
     Route::delete('actions/{id}', [ActionController::class, 'destroy']);

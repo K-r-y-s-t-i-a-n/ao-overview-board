@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         //     return $user->hasAccess("create_{$model}");
         // });
 
-        Gate::define('create', fn (User $user, $model) => $user->hasAccess("create{$model}"));
+        Gate::define('create', fn (User $user, $model) => $user->hasAccess("create_{$model}"));
 
         Gate::define('edit', fn (User $user, $model) => $user->hasAccess("edit_{$model}"));
 
