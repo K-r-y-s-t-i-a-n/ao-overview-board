@@ -33,6 +33,7 @@ import { AxiosError } from 'axios';
 import UpdateActionModal from './UpdateActionModal';
 import AddStepModal from './AddStepModal';
 import { useDeletedActions } from '../../app/api/hooks/useDeletedActions';
+import { StatsGroup } from './Stats';
 
 const getColor = (status: string) => {
   return status === 'Stopped'
@@ -79,13 +80,13 @@ const OpenActions = () => {
       refetchDeletedActions();
       queryCache.invalidateQueries([queryKeys.user]);
       setDeleting(false);
-      Notification({ success: true, message: 'The action has been deleted.' });
+      Notification({ success: true, message: 'The action has been closed.' });
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
         Notification({
           error: true,
-          message: `Could not delete the action. ${err.message}`,
+          message: `Could not close the action. ${err.message}`,
         });
       }
       setDeleting(false);
@@ -122,7 +123,7 @@ const OpenActions = () => {
                 openConfirmModal({
                   title: (
                     <Text fz={'md'} weight={600}>
-                      Are you sure you want to delete action?
+                      Are you sure you want to close the action?
                     </Text>
                   ),
                   // centered: true,
@@ -166,7 +167,7 @@ const OpenActions = () => {
                     </Box>
                   ),
                   labels: {
-                    confirm: 'DELETE',
+                    confirm: 'CLOSE',
                     cancel: 'Cancel',
                   },
                   onCancel: () => {
@@ -180,7 +181,7 @@ const OpenActions = () => {
                 });
               }}
             >
-              DELETE ACTION
+              CLOSE ACTION
             </Button>
           </Group>
         </Group>
@@ -188,7 +189,8 @@ const OpenActions = () => {
         <Box mb={16}>
           <strong>ACTION DETAILS</strong>
         </Box> */}
-        <AppCard
+        <StatsGroup data={showActionDetails} />
+        {/* <AppCard
           mb={16}
           // bg={getColor(showActionDetails.status)}
           bg="#E2EFDD"
@@ -233,17 +235,17 @@ const OpenActions = () => {
                   Updated
                 </Text>
                 <Text fw={500} color="brand">
-                  {showActionDetails.created_at !== showActionDetails.steps[0].updated_at
-                    ? format(
-                        new Date(showActionDetails.steps[0].updated_at),
-                        'dd MMMM yyyy'
-                      )
-                    : 'N/A'}
+                    {showActionDetails.created_at !== showActionDetails.steps[0].updated_at
+                      ? format(
+                          new Date(showActionDetails.steps[0].updated_at),
+                          'dd MMMM yyyy'
+                        )
+                      : 'N/A'}
                 </Text>
               </Box>
             </>
           </SimpleGrid>
-        </AppCard>
+        </AppCard> */}
 
         <Box mb="sm">
           <strong>Current step:</strong>

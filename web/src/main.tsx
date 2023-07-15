@@ -26,6 +26,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 //* - H - administracja uzytkownikami
 //* - H - upload avatarow
 //* - H - reset hasla
+//* - H - block users route
 
 //. ==== REACT ====
 // Prompt PWA update --> DONE

@@ -18,7 +18,7 @@ const Header = () => {
       case '/open-actions':
         return setPageName('Open Actions');
       case '/deleted-actions':
-        return setPageName('Deleted Actions');
+        return setPageName('Archived Actions');
       case '/my-settings':
         return setPageName('My Settings');
       case '/manage-users':

@@ -19,8 +19,7 @@ import {
   Notification,
   ViewWrapper,
 } from '../../components/core';
-import { usePermissions, useScreenSize } from '../../app/hooks';
-import { PERMISSIONS } from '../../app/constants/permissions';
+import { useScreenSize } from '../../app/hooks';
 import { useState } from 'react';
 import { Action } from '../../app/interfaces';
 import { format } from 'date-fns';
@@ -61,7 +60,7 @@ const DeletedActions = () => {
   const { actions, isLoading } = useDeletedActions();
   const queryCache = useQueryClient();
   const { classes } = useStyles();
-  const canCreateActions = usePermissions(PERMISSIONS.CREATE_ACTIONS);
+  // const canCreateActions = usePermissions(PERMISSIONS.CREATE_ACTIONS);
   const { smMaxScreen } = useScreenSize();
   const [showActionDetails, setshowActionDetails] = useState<Action | undefined>(
     undefined
@@ -275,7 +274,7 @@ const DeletedActions = () => {
                 });
               }}
             >
-              PERMANENTLY DELETE ACTION
+              DELETE ACTION
             </Button>
           </Group>
         </Group>
@@ -288,7 +287,7 @@ const DeletedActions = () => {
           // bg={getColor(showActionDetails.status)}
           bg="#efdfdd"
         >
-          <SimpleGrid cols={5} spacing={'sm'}>
+          <SimpleGrid cols={4} spacing={'sm'}>
             <Box>
               <Text fz={'md'} fw={700} color="brand">
                 Asset
@@ -297,14 +296,7 @@ const DeletedActions = () => {
                 {showActionDetails?.asset.name || '-'}
               </Text>
             </Box>
-            <Box>
-              <Text fz={'md'} fw={700} color="brand">
-                Status
-              </Text>
-              <Text color="brand" fw={500}>
-                {showActionDetails.status}
-              </Text>
-            </Box>
+
             <Box>
               <Text fz={'md'} fw={700} color="brand">
                 Issue
@@ -325,10 +317,10 @@ const DeletedActions = () => {
             <>
               <Box>
                 <Text fz={'md'} fw={700} color="brand">
-                  Deleted
+                  Closed
                 </Text>
                 <Text fw={500} color="brand">
-                  {showActionDetails.created_at !== showActionDetails.deleted_at
+                  {showActionDetails.deleted_at
                     ? format(new Date(showActionDetails.deleted_at), 'dd MMMM yyyy')
                     : 'N/A'}
                 </Text>
@@ -403,7 +395,7 @@ const DeletedActions = () => {
                     size="md"
                     //  bg="#f4f6fa"
                   >
-                    {format(new Date(step.updated_at), 'dd.MM.yyyy')}
+                    {format(new Date(step.updated_at), 'dd/MM/yyyy')}
                   </Badge>
                 </Group>
               </Card.Section>
@@ -476,10 +468,9 @@ const DeletedActions = () => {
                           <thead>
                             <tr>
                               <th>Asset</th>
-                              <th>Status</th>
                               <th>Issue</th>
                               <th>Current step</th>
-                              <th>Last updated</th>
+                              <th>Closed</th>
                             </tr>
                           </thead>
                           {/* =========== ACTIONS TABLE ROWS ============= */}
@@ -495,9 +486,6 @@ const DeletedActions = () => {
                                 <td>
                                   <Text fw={500}>{el.asset.name}</Text>
                                 </td>
-                                <td>
-                                  <Badge color={getColor(el.status)}>{el.status}</Badge>
-                                </td>
 
                                 <td>
                                   <Text fw={500}>{el.issue}</Text>
@@ -512,10 +500,7 @@ const DeletedActions = () => {
                                 </td>
                                 <td>
                                   <Text fw={500}>
-                                    {format(
-                                      new Date(el.steps[0].updated_at),
-                                      'dd.MM.yyyy'
-                                    )}
+                                    {format(new Date(el.deleted_at), 'dd/MM/yyyy')}
                                   </Text>
                                 </td>
                               </tr>

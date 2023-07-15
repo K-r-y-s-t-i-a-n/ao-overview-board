@@ -40,7 +40,7 @@ const UpdateActionModal = ({ action, setAction }: Props) => {
       }
       queryCache.invalidateQueries([queryKeys.actions]);
       close();
-      Notification({ message: `Status of ${action.asset}. has been changed.` });
+      Notification({ message: `Status of ${action.asset.name} has been changed.` });
     },
     onError: (err) => {
       if (err instanceof AxiosError) {

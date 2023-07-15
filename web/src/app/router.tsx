@@ -11,6 +11,7 @@ import {
   IconActivityHeartbeat,
   IconUsers,
   IconTrash,
+  IconArchive,
 } from '@tabler/icons-react';
 import OpenActions from '../views/open-actions';
 import MySettings from '../views/my-settings';
@@ -21,7 +22,7 @@ export const navigationLinks = [
   { link: '/', label: 'Communication Notes', icon: IconBellRinging },
   // { link: '/', label: 'Communication Notes', icon: IconNotes },
   { link: '/open-actions', label: 'Open Actions', icon: IconActivityHeartbeat },
-  { link: '/deleted-actions', label: 'Deleted Actions', icon: IconTrash },
+  { link: '/deleted-actions', label: 'Archived Actions', icon: IconArchive },
   // { link: '/weekly-updates', label: 'Weekly Updates', icon: IconClipboardCheck },
   // { link: '/overdue-pms', label: 'Overdue PMs', icon: IconKey },
   { link: '/manage-users', label: 'Manage Users', icon: IconUsers },
@@ -33,7 +34,7 @@ export const navigationLinks = [
 export const adminNavigationLinks = [
   { link: '/', label: 'Communication Notes', icon: IconBellRinging },
   { link: '/open-actions', label: 'Open Actions', icon: IconReceipt2 },
-  { link: '/deleted-actions', label: 'Deleted Actions', icon: IconTrash },
+  { link: '/deleted-actions', label: 'Archived Actions', icon: IconTrash },
   { link: '/weekly-updates', label: 'Weekly Updates', icon: IconFingerprint },
   { link: '/overdue-pms', label: 'Overdue PMs', icon: IconKey },
   { link: '/manage-users', label: 'Manage Users', icon: IconUsers },
