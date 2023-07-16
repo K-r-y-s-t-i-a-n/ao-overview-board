@@ -14,9 +14,10 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         Permission::insert([
-            // ROLES
-            ['name' => 'edit_users', 'display_name' => 'Edit users'],
-            ['name' => 'edit_roles', 'display_name' => 'Edit roles'],
+            // ADMIN
+            ['name' => 'edit_users', 'display_name' => 'Manage users and teams'],
+            ['name' => 'edit_roles', 'display_name' => 'Manage roles and permissions'],
+            ['name' => 'edit_tags', 'display_name' => 'Manage tags and categories'],
             // NOTES
             ['name' => 'view_notes', 'display_name' => 'View notes'],
             ['name' => 'create_notes', 'display_name' => 'Add notes'],
@@ -29,6 +30,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'view_actionsDeleted', 'display_name' => 'View archived actions'],
             ['name' => 'delete_actionsPerm', 'display_name' => 'Delete actions permanently'],
             ['name' => 'edit_actionsPerm', 'display_name' => 'Restore actions'],
+            //
         ]);
     }
 }

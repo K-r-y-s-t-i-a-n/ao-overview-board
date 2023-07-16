@@ -7,7 +7,7 @@ import {
   Group,
   LoadingOverlay,
   ScrollArea,
-  SimpleGrid,
+  // SimpleGrid,
   Table,
   Text,
   Title,
@@ -24,7 +24,7 @@ import {
 import { usePermissions, useScreenSize } from '../../app/hooks';
 import { PERMISSIONS } from '../../app/constants/permissions';
 import { useActions } from '../../app/api/hooks/useActions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Action } from '../../app/interfaces';
 import { format } from 'date-fns';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -35,6 +35,7 @@ import UpdateActionModal from './UpdateActionModal';
 import AddStepModal from './AddStepModal';
 import { useDeletedActions } from '../../app/api/hooks/useDeletedActions';
 import { StatsGroup } from './Stats';
+import { useNavigate } from 'react-router-dom';
 
 const getColor = (status: string) => {
   return status === 'Stopped'
@@ -60,13 +61,36 @@ const OpenActions = () => {
   const [isDeleting, setDeleting] = useState(false);
   const queryCache = useQueryClient();
   const { classes } = useStyles();
+  const canViewActions = usePermissions(PERMISSIONS.VIEW_ACTIONS);
   const canCreateActions = usePermissions(PERMISSIONS.CREATE_ACTIONS);
+  const canAddSteps = usePermissions(PERMISSIONS.CREATE_ACTION_STEPS);
+  const canChangeStatus = usePermissions(PERMISSIONS.EDIT_ACTION_STATUS);
+  const canCloseAction = usePermissions(PERMISSIONS.CLOSE_DELETE_ACTION);
   const { smMaxScreen } = useScreenSize();
   const { actions, isLoading } = useActions();
   const { refetch: refetchDeletedActions } = useDeletedActions();
   const [showActionDetails, setshowActionDetails] = useState<Action | undefined>(
     undefined
   );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (
+      !canViewActions ||
+      !canCreateActions ||
+      !canAddSteps ||
+      !canChangeStatus ||
+      !canCloseAction
+    )
+      navigate('/');
+  }, [
+    canViewActions,
+    canCreateActions,
+    canAddSteps,
+    canChangeStatus,
+    canCloseAction,
+    navigate,
+  ]);
 
   const deleteActionMutation = useMutation({
     mutationFn: (id: string) => deleteRequest(id),
@@ -111,79 +135,85 @@ const OpenActions = () => {
             Back to table
           </Button>
           <Group>
-            <AddStepModal action={showActionDetails} setAction={setshowActionDetails} />
-            <UpdateActionModal
-              action={showActionDetails}
-              setAction={setshowActionDetails}
-            />
-            <Button
-              variant="outline"
-              color="red"
-              mb={16}
-              onClick={() => {
-                openConfirmModal({
-                  title: (
-                    <Text fz={'md'} weight={600}>
-                      Are you sure you want to close the action?
-                    </Text>
-                  ),
-                  // centered: true,
-                  confirmProps: {
-                    color: 'red',
-                    size: 'sm',
-                    radius: 'md',
-                  },
-                  cancelProps: {
-                    color: 'gray',
-                    size: 'sm',
-                    radius: 'md',
-                  },
-                  children: (
-                    <Box
-                      sx={{
-                        background: 'rgb(255, 245, 245, 1)',
-                        color: '#fa5252',
-                        padding: '1rem',
-                        borderRadius: '0.5rem',
-                        border: '0.0625rem solid transparent',
-                      }}
-                    >
-                      <Group>
-                        <Text fz={'1rem'} fw={700} lineClamp={1.55}>
-                          Asset:
-                        </Text>
-                        <Text fz={'1rem'} fw={600} lineClamp={1.55}>
-                          {showActionDetails.asset.name}
-                        </Text>
-                      </Group>
+            {canAddSteps && (
+              <AddStepModal action={showActionDetails} setAction={setshowActionDetails} />
+            )}
+            {canChangeStatus && (
+              <UpdateActionModal
+                action={showActionDetails}
+                setAction={setshowActionDetails}
+              />
+            )}
+            {canCloseAction && (
+              <Button
+                variant="outline"
+                color="red"
+                mb={16}
+                onClick={() => {
+                  openConfirmModal({
+                    title: (
+                      <Text fz={'md'} weight={600}>
+                        Are you sure you want to close the action?
+                      </Text>
+                    ),
+                    // centered: true,
+                    confirmProps: {
+                      color: 'red',
+                      size: 'sm',
+                      radius: 'md',
+                    },
+                    cancelProps: {
+                      color: 'gray',
+                      size: 'sm',
+                      radius: 'md',
+                    },
+                    children: (
+                      <Box
+                        sx={{
+                          background: 'rgb(255, 245, 245, 1)',
+                          color: '#fa5252',
+                          padding: '1rem',
+                          borderRadius: '0.5rem',
+                          border: '0.0625rem solid transparent',
+                        }}
+                      >
+                        <Group>
+                          <Text fz={'1rem'} fw={700} lineClamp={1.55}>
+                            Asset:
+                          </Text>
+                          <Text fz={'1rem'} fw={600} lineClamp={1.55}>
+                            {showActionDetails.asset.name}
+                          </Text>
+                        </Group>
 
-                      <Group>
-                        <Text fz={'1rem'} fw={700} lineClamp={1.55}>
-                          Issue:
-                        </Text>
-                        <Text fz={'1rem'} fw={600} lineClamp={1.55} ml="3px">
-                          {showActionDetails.issue}
-                        </Text>
-                      </Group>
-                    </Box>
-                  ),
-                  labels: {
-                    confirm: 'CLOSE',
-                    cancel: 'Cancel',
-                  },
-                  onCancel: () => {
-                    // setSelectedTagId(undefined);
-                  },
-                  onConfirm: () => {
-                    deleteActionMutation.mutate(showActionDetails.id);
-                    setshowActionDetails(undefined);
-                    setDeleting(true);
-                  },
-                });
-              }}
-            >
-              CLOSE ACTION
-            </Button>
+                        <Group>
+                          <Text fz={'1rem'} fw={700} lineClamp={1.55}>
+                            Issue:
+                          </Text>
+                          <Text fz={'1rem'} fw={600} lineClamp={1.55} ml="3px">
+                            {showActionDetails.issue}
+                          </Text>
+                        </Group>
+                      </Box>
+                    ),
+                    labels: {
+                      confirm: 'CLOSE',
+                      cancel: 'Cancel',
+                    },
+                    onCancel: () => {
+                      // setSelectedTagId(undefined);
+                    },
+                    onConfirm: () => {
+                      deleteActionMutation.mutate(showActionDetails.id);
+                      setshowActionDetails(undefined);
+                      setDeleting(true);
+                    },
+                  });
+                }}
+              >
+                CLOSE ACTION
+              </Button>
+            )}
           </Group>
         </Group>
         {/* 

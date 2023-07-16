@@ -20,8 +20,8 @@ import {
   Notification,
   ViewWrapper,
 } from '../../components/core';
-import { useScreenSize } from '../../app/hooks';
-import { useState } from 'react';
+import { usePermissions, useScreenSize } from '../../app/hooks';
+import { useEffect, useState } from 'react';
 import { Action } from '../../app/interfaces';
 import { format } from 'date-fns';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -30,6 +30,8 @@ import { openConfirmModal } from '@mantine/modals';
 import { AxiosError } from 'axios';
 import { useDeletedActions } from '../../app/api/hooks/useDeletedActions';
 import { useActions } from '../../app/api/hooks/useActions';
+import { useNavigate } from 'react-router-dom';
+import { PERMISSIONS } from '../../app/constants/permissions';
 
 const getColor = (status: string) => {
   return status === 'Stopped'
@@ -66,6 +68,16 @@ const DeletedActions = () => {
   const [showActionDetails, setshowActionDetails] = useState<Action | undefined>(
     undefined
   );
+  const canViewArchivedActions = usePermissions(PERMISSIONS.VIEW_ARCHIVED_ACTIONS);
+  const canRestoreActions = usePermissions(PERMISSIONS.RESTORE_DELETED_ACTION);
+  const canDeletePermDeleteActions = usePermissions(PERMISSIONS.DELETE_PERM_ACTIONS);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!canViewArchivedActions || !canRestoreActions || !canDeletePermDeleteActions)
+      navigate('/');
+  }, [canViewArchivedActions, canRestoreActions, canDeletePermDeleteActions, navigate]);
+
   const deleteActionMutation = useMutation({
     mutationFn: (id: string) => deleteRequest(id),
     onSuccess: (res) => {
@@ -141,142 +153,147 @@ const DeletedActions = () => {
           </Button>
 
           <Group>
-            <Button
-              variant="outline"
-              color="green"
-              mb={16}
-              onClick={() => {
-                openConfirmModal({
-                  title: (
-                    <Text fz={'md'} weight={600}>
-                      Are you sure you want to restore action?
-                    </Text>
-                  ),
-                  // centered: true,
-                  confirmProps: {
-                    color: 'green',
-                    size: 'sm',
-                    radius: 'md',
-                  },
-                  cancelProps: {
-                    color: 'gray',
-                    size: 'sm',
-                    radius: 'md',
-                  },
-                  children: (
-                    <Box
-                      sx={{
-                        background: 'rgb(246, 255, 245, 1)',
-                        color: '#52fa76',
-                        padding: '1rem',
-                        borderRadius: '0.5rem',
-                        border: '0.0625rem solid transparent',
-                      }}
-                    >
-                      <Group>
-                        <Text fz={'1rem'} fw={700} lineClamp={1.55}>
-                          Asset:
-                        </Text>
-                        <Text fz={'1rem'} fw={600} lineClamp={1.55}>
-                          {showActionDetails.asset.name}
-                        </Text>
-                      </Group>
+            {canRestoreActions && (
+              <Button
+                variant="outline"
+                color="green"
+                mb={16}
+                onClick={() => {
+                  openConfirmModal({
+                    title: (
+                      <Text fz={'md'} weight={600}>
+                        Are you sure you want to restore action?
+                      </Text>
+                    ),
+                    // centered: true,
+                    confirmProps: {
+                      color: 'green',
+                      size: 'sm',
+                      radius: 'md',
+                    },
+                    cancelProps: {
+                      color: 'gray',
+                      size: 'sm',
+                      radius: 'md',
+                    },
+                    children: (
+                      <Box
+                        sx={{
+                          background: 'rgb(246, 255, 245, 1)',
+                          color: '#52fa76',
+                          padding: '1rem',
+                          borderRadius: '0.5rem',
+                          border: '0.0625rem solid transparent',
+                        }}
+                      >
+                        <Group>
+                          <Text fz={'1rem'} fw={700} lineClamp={1.55}>
+                            Asset:
+                          </Text>
+                          <Text fz={'1rem'} fw={600} lineClamp={1.55}>
+                            {showActionDetails.asset.name}
+                          </Text>
+                        </Group>
 
-                      <Group>
-                        <Text fz={'1rem'} fw={700} lineClamp={1.55}>
-                          Issue:
-                        </Text>
-                        <Text fz={'1rem'} fw={600} lineClamp={1.55} ml="3px">
-                          {showActionDetails.issue}
-                        </Text>
-                      </Group>
-                    </Box>
-                  ),
-                  labels: {
-                    confirm: 'RESTORE',
-                    cancel: 'Cancel',
-                  },
-                  onCancel: () => {
-                    // setSelectedTagId(undefined);
-                  },
-                  onConfirm: () => {
-                    restoreActionMutation.mutate(showActionDetails.id);
-                    setshowActionDetails(undefined);
-                    setMutating(true);
-                  },
-                });
-              }}
-            >
-              RESTORE ACTION
-            </Button>
-            <Button
-              variant="outline"
-              color="red"
-              mb={16}
-              onClick={() => {
-                openConfirmModal({
-                  title: (
-                    <Text fz={'md'} weight={600}>
-                      Do you want to permanently delete the action?
-                    </Text>
-                  ),
-                  // centered: true,
-                  confirmProps: {
-                    color: 'red',
-                    size: 'sm',
-                    radius: 'md',
-                  },
-                  cancelProps: {
-                    color: 'gray',
-                    size: 'sm',
-                    radius: 'md',
-                  },
-                  children: (
-                    <Box
-                      sx={{
-                        background: 'rgb(255, 245, 245, 1)',
-                        color: '#fa5252',
-                        padding: '1rem',
-                        borderRadius: '0.5rem',
-                        border: '0.0625rem solid transparent',
-                      }}
-                    >
-                      <Group>
-                        <Text fz={'1rem'} fw={700} lineClamp={1.55}>
-                          Asset:
-                        </Text>
-                        <Text fz={'1rem'} fw={600} lineClamp={1.55}>
-                          {showActionDetails.asset.name}
-                        </Text>
-                      </Group>
+                        <Group>
+                          <Text fz={'1rem'} fw={700} lineClamp={1.55}>
+                            Issue:
+                          </Text>
+                          <Text fz={'1rem'} fw={600} lineClamp={1.55} ml="3px">
+                            {showActionDetails.issue}
+                          </Text>
+                        </Group>
+                      </Box>
+                    ),
+                    labels: {
+                      confirm: 'RESTORE',
+                      cancel: 'Cancel',
+                    },
+                    onCancel: () => {
+                      // setSelectedTagId(undefined);
+                    },
+                    onConfirm: () => {
+                      restoreActionMutation.mutate(showActionDetails.id);
+                      setshowActionDetails(undefined);
+                      setMutating(true);
+                    },
+                  });
+                }}
+              >
+                RESTORE ACTION
+              </Button>
+            )}
 
-                      <Group>
-                        <Text fz={'1rem'} fw={700} lineClamp={1.55}>
-                          Issue:
-                        </Text>
-                        <Text fz={'1rem'} fw={600} lineClamp={1.55} ml="3px">
-                          {showActionDetails.issue}
-                        </Text>
-                      </Group>
-                    </Box>
-                  ),
-                  labels: {
-                    confirm: 'DELETE',
-                    cancel: 'Cancel',
-                  },
-                  onCancel: () => {
-                    // setSelectedTagId(undefined);
-                  },
-                  onConfirm: () => {
-                    deleteActionMutation.mutate(showActionDetails.id);
-                    setshowActionDetails(undefined);
-                    setMutating(true);
-                  },
-                });
-              }}
-            >
-              DELETE ACTION
-            </Button>
+            {canDeletePermDeleteActions && (
+              <Button
+                variant="outline"
+                color="red"
+                mb={16}
+                onClick={() => {
+                  openConfirmModal({
+                    title: (
+                      <Text fz={'md'} weight={600}>
+                        Do you want to permanently delete the action?
+                      </Text>
+                    ),
+                    // centered: true,
+                    confirmProps: {
+                      color: 'red',
+                      size: 'sm',
+                      radius: 'md',
+                    },
+                    cancelProps: {
+                      color: 'gray',
+                      size: 'sm',
+                      radius: 'md',
+                    },
+                    children: (
+                      <Box
+                        sx={{
+                          background: 'rgb(255, 245, 245, 1)',
+                          color: '#fa5252',
+                          padding: '1rem',
+                          borderRadius: '0.5rem',
+                          border: '0.0625rem solid transparent',
+                        }}
+                      >
+                        <Group>
+                          <Text fz={'1rem'} fw={700} lineClamp={1.55}>
+                            Asset:
+                          </Text>
+                          <Text fz={'1rem'} fw={600} lineClamp={1.55}>
+                            {showActionDetails.asset.name}
+                          </Text>
+                        </Group>
+
+                        <Group>
+                          <Text fz={'1rem'} fw={700} lineClamp={1.55}>
+                            Issue:
+                          </Text>
+                          <Text fz={'1rem'} fw={600} lineClamp={1.55} ml="3px">
+                            {showActionDetails.issue}
+                          </Text>
+                        </Group>
+                      </Box>
+                    ),
+                    labels: {
+                      confirm: 'DELETE',
+                      cancel: 'Cancel',
+                    },
+                    onCancel: () => {
+                      // setSelectedTagId(undefined);
+                    },
+                    onConfirm: () => {
+                      deleteActionMutation.mutate(showActionDetails.id);
+                      setshowActionDetails(undefined);
+                      setMutating(true);
+                    },
+                  });
+                }}
+              >
+                DELETE ACTION
+              </Button>
+            )}
           </Group>
         </Group>
         {/* 

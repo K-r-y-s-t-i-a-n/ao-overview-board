@@ -1,29 +1,19 @@
 export const PERMISSIONS = {
-  // USER ROUTES
+  // ROLES
+  EDIT_USERS: 'edit_users',
+  EDIT_ROLES: 'edit_roles',
+  // NOTES
   VIEW_NOTES: 'view_notes',
   CREATE_NOTES: 'create_notes',
+  //ACTIONS
   VIEW_ACTIONS: 'view_actions',
-  // EDIT_OPEN_ACTIONS: 'edit_openActions',
   CREATE_ACTIONS: 'create_actions',
-  // DELETE_OPEN_ACTIONS: 'delete_openActions',
-  // VIEW_WEEKLY_UPDATES: 'view_weeklyUpdates',
-  // DELETE_WEEKLY_UPDATES: 'delete_weeklyUpdates',
-  // EDIT_WEEKLY_UPDATES: 'edit_weeklyUpdates',
-  // CREATE_WEEKLY_UPDATES: 'create_weeklyUpdates',
-  // VIEW_OVERDUE_PMS: 'view_overduePms',
-  // CREATE_OVERDUE_PMS: 'create_overduePms',
-  // EDIT_OVERDUE_PMS: 'edit_overduePms',
-  // DELETE_OVERDUE_PMS: 'delete_overduePms',
-
-  // ADMIN ROUTES
-  // VIEW_USERS_MANAGEMENT: 'view_usersManagement',
-  // CREATE_USERS: 'create_usersManagement',
-  EDIT_USERS: 'edit_users',
-  // DELETE_USERS: 'delete_usersManagement',
-  // VIEW_ROLES_AND_PERMISSIONS: 'view_rolesAndPermissions',
-  // CREATE_ROLES_AND_PERMISSIONS: 'create_rolesAndPermissions',
-  EDIT_ROLES: 'edit_roles',
-  // DELETE_ROLES_AND_PERMISSIONS: 'delete_rolesAndPermissions',
+  CREATE_ACTION_STEPS: 'edit_actions',
+  EDIT_ACTION_STATUS: 'edit_actionsStatus',
+  CLOSE_DELETE_ACTION: 'delete_actions',
+  VIEW_ARCHIVED_ACTIONS: 'view_actionsDeleted',
+  DELETE_PERM_ACTIONS: 'delete_actionsPerm',
+  RESTORE_DELETED_ACTION: 'edit_actionsPerm',
 };
 
 export type PermissionType = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

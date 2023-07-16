@@ -2,14 +2,14 @@ import { Box, Text, Flex, MediaQuery } from '@mantine/core';
 import logo from '../assets/logo.png';
 // import logo from '../assets/logo_dark.png';
 import HeaderUserInfo from './HeaderUserInfo';
-import { useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useMediaQuery } from '@mantine/hooks';
+// import { useLocation } from 'react-router-dom';
+// import { useEffect, useState } from 'react';
+// import { useMediaQuery } from '@mantine/hooks';
 
 const Header = () => {
-  const { pathname } = useLocation();
-  const [pageName, setPageName] = useState('');
-  const smallScreen = useMediaQuery('(max-width: 60em)');
+  // const { pathname } = useLocation();
+  // const [pageName, setPageName] = useState('');
+  // const smallScreen = useMediaQuery('(max-width: 60em)');
 
   // useEffect(() => {
   //   switch (pathname) {

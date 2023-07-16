@@ -88,15 +88,24 @@ const Sidebar = ({ setNavbarState }: Props) => {
   const setCurrentPage = useNotesStore((store) => store.setCurrentPage);
   const setLastPage = useNotesStore((store) => store.setLastPage);
   const canManageUsers = usePermissions(PERMISSIONS.EDIT_USERS);
+  const canViewActions = usePermissions(PERMISSIONS.VIEW_ACTIONS);
+  const canViewArchivedActions = usePermissions(PERMISSIONS.VIEW_ARCHIVED_ACTIONS);
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { classes } = useStyles();
 
   const links = navigationLinks.map((item) => {
+    if (item.link === '/open-actions') {
+      if (!canViewActions) return;
+    }
+    if (item.link === '/archived-actions') {
+      if (!canViewArchivedActions) return;
+    }
     if (item.link === '/manage-users') {
       if (!canManageUsers) return;
     }
+
     return (
       <NavLink
         className={({ isActive }) =>

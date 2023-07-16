@@ -174,7 +174,10 @@ const ManageUsers = () => {
 
   return (
     <ViewWrapper>
-      <Title mb={12}>Manage Users</Title>
+      <Group>
+        <Title mb={12}>Manage Users & Teams</Title>
+      </Group>
+
       <Grid>
         <Grid.Col span="auto" sx={getPadding()}>
           {/* <Button size="sm" mb={16} variant="light">
