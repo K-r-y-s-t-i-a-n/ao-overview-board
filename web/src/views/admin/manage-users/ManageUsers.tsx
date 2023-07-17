@@ -11,6 +11,7 @@ import {
   Grid,
   Alert,
   Title,
+  SegmentedControl,
 } from '@mantine/core';
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react';
 import { useEmployees } from '../../../app/api/hooks/admin/useEmployees';
@@ -31,6 +32,7 @@ import { api, queryKeys } from '../../../app/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Employee } from '../../../app/interfaces';
 import { AxiosError } from 'axios';
+import { UI } from '../../../app/constants';
 
 const ManageUsers = () => {
   const queryCache = useQueryClient();
@@ -174,8 +176,15 @@ const ManageUsers = () => {
 
   return (
     <ViewWrapper>
-      <Group>
-        <Title mb={12}>Manage Users & Teams</Title>
+      <Group position="apart" mb={UI.PAGE_TITLE_MB}>
+        <Title>Manage Users & Teams</Title>
+
+        <SegmentedControl
+          data={[
+            { label: 'Users', value: 'users' },
+            { label: 'Teams', value: 'teams' },
+          ]}
+        />
       </Group>
 
       <Grid>

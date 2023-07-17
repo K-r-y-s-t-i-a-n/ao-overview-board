@@ -8,4 +8,5 @@ export const queryKeys = {
   roles: 'roles',
   actions: 'actions',
   deletedActions: 'actions-deleted',
+  permissions: 'permissions',
 };

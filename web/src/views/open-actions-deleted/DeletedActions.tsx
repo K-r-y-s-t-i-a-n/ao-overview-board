@@ -32,6 +32,7 @@ import { useDeletedActions } from '../../app/api/hooks/useDeletedActions';
 import { useActions } from '../../app/api/hooks/useActions';
 import { useNavigate } from 'react-router-dom';
 import { PERMISSIONS } from '../../app/constants/permissions';
+import { UI } from '../../app/constants';
 
 const getColor = (status: string) => {
   return status === 'Stopped'
@@ -427,7 +428,7 @@ const DeletedActions = () => {
 
   return (
     <ViewWrapper>
-      <Title mb={12}>Archived Actions</Title>
+      <Title mb={UI.PAGE_TITLE_MB}>Archived Actions</Title>
       <Grid>
         <Grid.Col span="auto" sx={getPadding()}>
           {isLoading ? (

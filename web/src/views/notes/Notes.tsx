@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { usePermissions } from '../../app/hooks';
 import { PERMISSIONS } from '../../app/constants/permissions';
 import { ViewWrapper } from '../../components/core';
+import { UI } from '../../app/constants';
 
 const Notes = () => {
   const { smMaxScreen } = useScreenSize();
@@ -43,7 +44,7 @@ const Notes = () => {
 
   return (
     <ViewWrapper>
-      <Title mb={12}>Communication Notes</Title>
+      <Title mb={UI.PAGE_TITLE_MB}>Communication Notes</Title>
       {/* NOTES */}
       <Grid>
         <Grid.Col span="auto" sx={getPadding()}>

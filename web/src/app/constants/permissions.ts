@@ -1,7 +1,8 @@
 export const PERMISSIONS = {
-  // ROLES
+  // ADMIN
   EDIT_USERS: 'edit_users',
   EDIT_ROLES: 'edit_roles',
+  EDIT_TAGS: 'edit_tags',
   // NOTES
   VIEW_NOTES: 'view_notes',
   CREATE_NOTES: 'create_notes',

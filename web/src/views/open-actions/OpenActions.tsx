@@ -36,6 +36,7 @@ import AddStepModal from './AddStepModal';
 import { useDeletedActions } from '../../app/api/hooks/useDeletedActions';
 import { StatsGroup } from './Stats';
 import { useNavigate } from 'react-router-dom';
+import { UI } from '../../app/constants';
 
 const getColor = (status: string) => {
   return status === 'Stopped'
@@ -129,7 +130,7 @@ const OpenActions = () => {
   if (showActionDetails)
     return (
       <ViewWrapper>
-        <Title mb={12}> Action Details</Title>
+        <Title mb={UI.PAGE_TITLE_MB}> Action Details</Title>
         <Group position="apart">
           <Button color="dark" onClick={() => setshowActionDetails(undefined)} mb={16}>
             Back to table
@@ -182,7 +183,7 @@ const OpenActions = () => {
                             Asset:
                           </Text>
                           <Text fz={'1rem'} fw={600} lineClamp={1.55}>
-                            {showActionDetails.asset.name}
+                            {showActionDetails.asset.name || ''}
                           </Text>
                         </Group>
 
@@ -191,7 +192,7 @@ const OpenActions = () => {
                             Issue:
                           </Text>
                           <Text fz={'1rem'} fw={600} lineClamp={1.55} ml="3px">
-                            {showActionDetails.issue}
+                            {showActionDetails.issue || ''}
                           </Text>
                         </Group>
                       </Box>
@@ -325,7 +326,7 @@ const OpenActions = () => {
                           size="lg"
                           // variant="filled"
                         >
-                          {el.asset.name}
+                          {el.asset.name || ''}
                         </Badge>
                         <Group>
                           <Text fw={600} fz="sm" ml={2}>
@@ -340,7 +341,7 @@ const OpenActions = () => {
                             Current step:
                           </Text>
                           <Text fw={500} fz="sm">
-                            {el.steps[0].text}
+                            {el.steps[0].text || ''}
                           </Text>
                         </Group>
                         <Group>
@@ -371,28 +372,28 @@ const OpenActions = () => {
                           <tbody>
                             {actions.map((el) => (
                               <tr
-                                key={el.id}
+                                key={el.id + 'tableRow'}
                                 onClick={() => {
                                   setshowActionDetails(el);
                                 }}
                                 className={classes.tableRow}
                               >
                                 <td>
-                                  <Text fw={500}>{el.asset.name}</Text>
+                                  <Text fw={500}>{el.asset.name || ''}</Text>
                                 </td>
                                 <td>
                                   <Badge color={getColor(el.status)}>{el.status}</Badge>
                                 </td>
 
                                 <td>
-                                  <Text fw={500}>{el.issue}</Text>
+                                  <Text fw={500}>{el.issue || ''}</Text>
                                 </td>
                                 <td>
                                   <Text
                                     fw={500}
                                     // color={getColor(el.status)}
                                   >
-                                    {el.steps[0].text}
+                                    {el.steps[0].text || ''}
                                   </Text>
                                 </td>
                                 <td>

@@ -12,7 +12,7 @@ export const CardTitle = ({ title }: Props) => {
       size={16}
       fw={600}
       mb={4}
-      ml={12}
+      // ml={12}
       // sx={{
       //     color: theme.colorScheme === 'dark' ? '#0F462A' : '',
       // }}

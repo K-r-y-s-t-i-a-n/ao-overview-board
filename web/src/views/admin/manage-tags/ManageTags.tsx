@@ -1,17 +1,34 @@
-import { useTags } from '../../../app/api/hooks/useTags';
-import { AppCard, ViewWrapper } from '../../../components/core';
-import { Title } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { PERMISSIONS, UI } from '../../../app/constants';
+import { AppCard, CardTitle, ViewWrapper } from '../../../components/core';
+import { Group, Title } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { usePermissions } from '../../../app/hooks';
 
 const ManageTags = () => {
-  const {} = useTags();
+  const canManageTags = usePermissions(PERMISSIONS.EDIT_TAGS);
+  const navigate = useNavigate();
+  const [isEditing] = useState();
+
+  useEffect(() => {
+    if (!canManageTags) navigate('/');
+  }, [canManageTags, navigate]);
+
   return (
     <ViewWrapper>
-      <Title mb={12}>Manage Tags & Categories</Title>
+      <Title mb={UI.PAGE_TITLE_MB}>Manage Tags & Categories</Title>
 
-      <div>ManageTags</div>
-      <AppCard>
-        This is the manage tags page. Here you can add and remove teams as well
-      </AppCard>
+      <Group grow>
+        <div>
+          <CardTitle title={isEditing ? 'Edit selected tag' : 'Create new tag'} />
+          <AppCard>Manage Tags</AppCard>
+        </div>
+
+        <div>
+          <CardTitle title="Available tags" />
+          <AppCard>Manage Categories</AppCard>
+        </div>
+      </Group>
     </ViewWrapper>
   );
 };
