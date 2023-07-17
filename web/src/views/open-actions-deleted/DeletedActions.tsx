@@ -75,7 +75,7 @@ const DeletedActions = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!canViewArchivedActions || !canRestoreActions || !canDeletePermDeleteActions)
+    if (!canViewArchivedActions && !canRestoreActions && !canDeletePermDeleteActions)
       navigate('/');
   }, [canViewArchivedActions, canRestoreActions, canDeletePermDeleteActions, navigate]);
 

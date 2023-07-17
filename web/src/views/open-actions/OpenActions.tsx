@@ -77,10 +77,10 @@ const OpenActions = () => {
 
   useEffect(() => {
     if (
-      !canViewActions ||
-      !canCreateActions ||
-      !canAddSteps ||
-      !canChangeStatus ||
+      !canViewActions &&
+      !canCreateActions &&
+      !canAddSteps &&
+      !canChangeStatus &&
       !canCloseAction
     )
       navigate('/');

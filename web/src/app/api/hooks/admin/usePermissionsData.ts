@@ -3,11 +3,11 @@ import { api, queryKeys } from '../..';
 import { Role } from '../../../interfaces/role.interface';
 
 async function getPermissions() {
-  return await api.get<Role['permissions'][]>('/permissions').then((res) => res.data);
+  return await api.get<Role['permissions']>('/permissions').then((res) => res.data);
 }
 
 interface ReturnProps {
-  data: Role['permissions'][];
+  data: Role['permissions'];
   isLoading: boolean;
   isError: boolean;
 }

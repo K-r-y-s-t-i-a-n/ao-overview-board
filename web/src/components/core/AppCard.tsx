@@ -1,4 +1,4 @@
-import { Card } from '@mantine/core';
+import { Card, Sx } from '@mantine/core';
 import { FC, ReactNode } from 'react';
 
 interface Props {
@@ -7,11 +7,12 @@ interface Props {
   p?: number;
   px?: number;
   bg?: string;
+  sx?: Sx | (Sx | undefined)[] | undefined;
 }
 
-export const AppCard: FC<Props> = ({ children, mb = 4, p, px, bg }): JSX.Element => {
+export const AppCard: FC<Props> = ({ children, mb = 4, p, px, bg, sx }): JSX.Element => {
   return (
-    <Card shadow="sm" radius="md" mb={mb} p={p} px={px} bg={bg}>
+    <Card sx={sx} shadow="sm" radius="md" mb={mb} p={p} px={px} bg={bg}>
       {children}
     </Card>
   );

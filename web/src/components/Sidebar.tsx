@@ -90,6 +90,8 @@ const Sidebar = ({ setNavbarState }: Props) => {
   const canManageUsers = usePermissions(PERMISSIONS.EDIT_USERS);
   const canViewActions = usePermissions(PERMISSIONS.VIEW_ACTIONS);
   const canViewArchivedActions = usePermissions(PERMISSIONS.VIEW_ARCHIVED_ACTIONS);
+  const canViewManageTags = usePermissions(PERMISSIONS.EDIT_TAGS);
+  const canViewManageRoles = usePermissions(PERMISSIONS.EDIT_ROLES);
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -102,8 +104,14 @@ const Sidebar = ({ setNavbarState }: Props) => {
     if (item.link === '/archived-actions') {
       if (!canViewArchivedActions) return;
     }
+    if (item.link === '/manage-tags') {
+      if (!canViewManageTags) return;
+    }
     if (item.link === '/manage-users') {
       if (!canManageUsers) return;
+    }
+    if (item.link === '/manage-permissions') {
+      if (!canViewManageRoles) return;
     }
 
     return (

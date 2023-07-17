@@ -59,6 +59,6 @@ class RoleController extends Controller
 
         Role::destroy($id);
 
-        return response(null, Response::HTTP_NO_CONTENT);
+        return response(["id" => $id], Response::HTTP_ACCEPTED);
     }
 }

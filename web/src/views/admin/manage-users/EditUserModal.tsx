@@ -183,7 +183,6 @@ const EditUserModal = ({ id, employee }: Props) => {
                 defaultValue={employee.team.id || ''}
                 onChange={(e) => {
                   setFormTeamId(e.target.value);
-                  console.log('onChange: ', e.target.value);
                 }}
                 disabled={mutation.isLoading}
                 data={teams}
