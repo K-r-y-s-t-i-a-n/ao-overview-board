@@ -1,19 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { api, queryKeys } from '../..';
-import { Role } from '../../../interfaces/role.interface';
+import { Team } from '../../interfaces';
+import { api, queryKeys } from '..';
 
-async function getRoles() {
-  return await api.get<Role[]>('/roles').then((res) => res.data);
+async function getTeams() {
+  return await api.get<Team[]>('/teams').then((res) => res.data);
 }
 
 interface ReturnProps {
-  data: Role[];
+  data: Team[];
   isLoading: boolean;
   isError: boolean;
   refetch: () => void;
 }
 
-export function useRolesData(): ReturnProps {
+export function useTeams(): ReturnProps {
   // const queryCache = useQueryClient();
 
   const {
@@ -22,8 +22,8 @@ export function useRolesData(): ReturnProps {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: [queryKeys.roles],
-    queryFn: getRoles,
+    queryKey: [queryKeys.teams],
+    queryFn: getTeams,
   });
 
   return { data, isLoading, isError, refetch };

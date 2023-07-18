@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
+use App\Models\Teambgcolor;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TeamController extends Controller
 {
@@ -16,12 +18,9 @@ class TeamController extends Controller
         return TeamResource::collection(Team::all()->sortBy('name'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function indexColors()
     {
-        //
+        return Teambgcolor::all();
     }
 
     /**
@@ -29,21 +28,26 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('edit', 'users');
+
+        $request->validate([
+            'name' => ['required', 'string', 'min:2', 'max:64', 'unique:teams,name'],
+            'color' => ['integer', 'distinct', Rule::exists('teambgcolors', 'id')]
+        ]);
+
+        $team = new Team();
+        $team->name = request('name');
+        $team->color_id = request('color');
+
+        $team->save();
+
+        return new TeamResource($team);
     }
 
     /**
      * Display the specified resource.
      */
     public function show(Team $team)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Team $team)
     {
         //
     }

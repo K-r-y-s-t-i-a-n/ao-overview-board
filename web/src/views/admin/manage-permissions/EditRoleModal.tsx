@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from '@mantine/form';
 import { api, queryKeys } from '../../../app/api';
 import { LoadingElement, ModalTitle, Notification } from '../../../components/core';
-import { usePermissionsData } from '../../../app/api/hooks/admin';
+import { usePermissionsData, useRolesData } from '../../../app/api/hooks/admin';
 import { useState } from 'react';
 import { Role } from '../../../app/interfaces/role.interface';
 import { AxiosError } from 'axios';
@@ -24,6 +24,7 @@ const EditRoleModal = ({ role }: Props) => {
   );
   const queryCache = useQueryClient();
   const isLoading = false;
+  const { refetch: refetchRoles } = useRolesData();
 
   const mutation = useMutation({
     mutationFn: (name: string) => {
@@ -47,6 +48,7 @@ const EditRoleModal = ({ role }: Props) => {
         console.log(e);
       }
       queryCache.invalidateQueries([queryKeys.roles]);
+      refetchRoles();
       close();
       // form.reset();
       Notification({ color: 'green', message: role.name + ' has been updated.' });
@@ -82,14 +84,12 @@ const EditRoleModal = ({ role }: Props) => {
     },
   });
 
-  console.log(selectedPermissions);
-
   return (
     <>
       <Modal
         opened={opened}
         onClose={close}
-        title={<ModalTitle text="New Role" />}
+        title={<ModalTitle text="Edit Role" />}
         size={mobileScreen ? '100%' : 'xl'}
       >
         {/* Modal content */}
@@ -107,10 +107,13 @@ const EditRoleModal = ({ role }: Props) => {
               autoComplete="off"
               mb={14}
             />
-            <SimpleGrid cols={2}>
+            <SimpleGrid
+              cols={2}
+              breakpoints={[{ maxWidth: 'xs', cols: 1, spacing: 'sm' }]}
+            >
               {permissions.data.map((permission) => (
                 <Checkbox
-                  key={permission.id + 'checkbox'}
+                  key={permission.id + role.id + 'checkbox'}
                   // checked={role.permissions.some((perm) => perm.id === permission.id)}
                   checked={selectedPermissions.includes(permission.id)}
                   radius="md"

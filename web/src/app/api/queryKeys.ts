@@ -9,4 +9,5 @@ export const queryKeys = {
   actions: 'actions',
   deletedActions: 'actions-deleted',
   permissions: 'permissions',
+  colors: 'colors',
 };

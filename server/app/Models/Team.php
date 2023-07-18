@@ -9,6 +9,10 @@ class Team extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'color_id'];
+
+    public $timestamps = false;
+
     public function color()
     {
         return $this->belongsTo(Teambgcolor::class);

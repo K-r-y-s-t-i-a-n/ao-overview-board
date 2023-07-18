@@ -103,7 +103,10 @@ const NewRoleModal = () => {
               autoComplete="off"
               mb={14}
             />
-            <SimpleGrid cols={2}>
+            <SimpleGrid
+              cols={2}
+              breakpoints={[{ maxWidth: 'xs', cols: 1, spacing: 'sm' }]}
+            >
               {permissions.data.map((permission) => (
                 <Checkbox
                   key={permission.id + 'checkbox'}

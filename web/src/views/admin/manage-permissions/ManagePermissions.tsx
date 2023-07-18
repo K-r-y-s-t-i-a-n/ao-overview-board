@@ -7,7 +7,7 @@ import {
   ViewWrapper,
   Notification,
 } from '../../../components/core';
-import { ActionIcon, Alert, Badge, Grid, Group, Title } from '@mantine/core';
+import { ActionIcon, Alert, Badge, Grid, Group, Text, Title } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { usePermissions } from '../../../app/hooks';
 import { useRolesData, usePermissionsData } from '../../../app/api/hooks/admin';
@@ -66,17 +66,13 @@ const ManagePermissions = () => {
       ) : (
         rolesList.data.map((role) => (
           <Grid grow key={role.id + 'role'}>
-            <Grid.Col span={3}>
+            <Grid.Col lg={3}>
               <Group>
                 <ActionIcon
                   color="red"
                   onClick={() => {
                     openConfirmModal({
-                      title: (
-                        <>
-                          <h4>Role Deletion</h4>
-                        </>
-                      ),
+                      title: <Text fw={600}>Role Deletion</Text>,
                       confirmProps: {
                         color: 'red',
                         size: 'xs',
@@ -91,7 +87,7 @@ const ManagePermissions = () => {
                         <>
                           <Alert
                             icon={<IconAlertCircle size="1rem" />}
-                            title={`Are you certain you want to proceed with deleting the ${role.name} role?`}
+                            title={`Are you certain you want to proceed with deleting ${role.name} role?`}
                             color="red"
                           >
                             {/* <Text weight={500}>{employee.display_name} ?</Text> */}
@@ -116,7 +112,7 @@ const ManagePermissions = () => {
               </Group>
             </Grid.Col>
 
-            <Grid.Col span={9} onClick={() => console.log('CCCCC')}>
+            <Grid.Col lg={9}>
               <AppCard
               // sx={{ '&:hover': { cursor: 'pointer', background: '#F8F9FA' } }}
               >
@@ -127,7 +123,7 @@ const ManagePermissions = () => {
                     <>
                       {role.permissions.map((userPermission) => (
                         <Badge
-                          key={userPermission.display_name + 'rolep'}
+                          key={userPermission.id + role.id + 'rolep'}
                           variant="outline"
                         >
                           {userPermission.display_name}

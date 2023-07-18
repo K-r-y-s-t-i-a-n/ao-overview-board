@@ -10,13 +10,15 @@ import {
 } from '@mantine/core';
 import { IconNewSection } from '@tabler/icons-react';
 import { UseFormReturnType, useForm } from '@mantine/form';
-import { LoadingElement, ModalTitle } from '../../../components/core';
+import { LoadingElement, ModalTitle, Notification } from '../../../components/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { queryKeys } from '../../../app/api';
-import { getRoles, getTeams } from '../../../app/api/axios';
+import { getRoles } from '../../../app/api/axios';
 import { api } from '../../../app/api/axios';
 import { Employee } from '../../../app/interfaces';
+import { AxiosError } from 'axios';
+import { useTeams } from '../../../app/api/hooks/useTeams';
 
 type FormProps = {
   first_name: string;
@@ -34,10 +36,12 @@ const NewUserModal = () => {
   const [teams, setTeams] = useState<{ value: string; label: string }[]>([]);
   const [roles, setRoles] = useState<{ value: string; label: string }[]>([]);
 
-  const teamsQuery = useQuery({
-    queryKey: [queryKeys.teams],
-    queryFn: getTeams,
-  });
+  // const teamsQuery = useQuery({
+  //   queryKey: [queryKeys.teams],
+  //   queryFn: getTeams,
+  // });
+
+  const teamsQuery = useTeams();
 
   const rolesQuery = useQuery({
     queryKey: [queryKeys.roles],
@@ -130,6 +134,14 @@ const NewUserModal = () => {
       queryCache.invalidateQueries([queryKeys.employees]);
       close();
       form.reset();
+    },
+    onError: (err) => {
+      if (err instanceof AxiosError) {
+        Notification({
+          error: true,
+          message: `Could not create user. ${err.response?.data.message || err.message}`,
+        });
+      }
     },
   });
 
