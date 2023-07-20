@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Notification } from '../../../components/core';
 
-const baseURL = `http://localhost:8000`;
-// const baseURL = `https://apiv2.olkowski.dev`;
+// const baseURL = `http://localhost:8000`;
+const baseURL = `https://apiv2.olkowski.dev`;
 
 const headers = {
   'X-Requested-With': 'XMLHttpRequest',
