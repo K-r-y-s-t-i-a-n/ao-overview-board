@@ -7,6 +7,7 @@ use App\Models\Team;
 use App\Models\Teambgcolor;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Response;
 
 class TeamController extends Controller
 {
@@ -44,27 +45,28 @@ class TeamController extends Controller
         return new TeamResource($team);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Team $team)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Team $team)
     {
-        //
+        $this->authorize('edit', 'users');
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'min:2', 'max:64', Rule::unique('teams')->ignore($team)],
+            'color' => ['integer', 'distinct', Rule::exists('teambgcolors', 'id')]
+        ]);
+
+        $validated['color_id'] = $validated['color'];
+
+        $team->update($validated);
+
+        return new TeamResource($team);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Team $team)
     {
-        //
+        $id = $team->id;
+        $team->delete();
+
+        return response(["id" => $id], Response::HTTP_ACCEPTED);
     }
 }

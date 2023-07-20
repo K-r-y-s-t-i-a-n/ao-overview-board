@@ -51,6 +51,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     // Teams
     Route::get('teams', [TeamController::class, 'index']);
     Route::post('teams', [TeamController::class, 'store']);
+    Route::put('teams/{team}', [TeamController::class, 'update']);
+    Route::delete('teams/{team}', [TeamController::class, 'destroy']);
 
     // Colors
     Route::get('colors', [TeamController::class, 'indexColors']);

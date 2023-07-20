@@ -1,10 +1,10 @@
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { Modal, Button, Group, Text, SimpleGrid, TextInput, Badge } from '@mantine/core';
-import { IconNewSection } from '@tabler/icons-react';
+import { Modal, Button, Group, SimpleGrid, TextInput, Badge } from '@mantine/core';
+import { IconPencil } from '@tabler/icons-react';
 import { UseFormReturnType, useForm } from '@mantine/form';
 import { LoadingElement, ModalTitle, Notification } from '../../../components/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { queryKeys } from '../../../app/api';
 import { api } from '../../../app/api/axios';
 import { Team } from '../../../app/interfaces';
@@ -21,7 +21,11 @@ async function getColors() {
   return await api.get<Color[]>('/colors').then((res) => res.data);
 }
 
-const NewTeamModal = () => {
+interface Props {
+  team: Team;
+}
+
+const NewTeamModal = ({ team }: Props) => {
   const queryCache = useQueryClient();
   const mobileScreen = useMediaQuery('(max-width: 48em)');
   const [opened, { open, close }] = useDisclosure(false);
@@ -34,15 +38,21 @@ const NewTeamModal = () => {
     queryFn: getColors,
   });
 
+  useEffect(() => {
+    setSelectedColor(colorsQuery.data?.find((v) => v.color_name === team.color));
+  }, [colorsQuery.data, team.color]);
+
   const teamExists = (value: string): boolean => {
     const teamNames = teamsQuery.data.map((t) => t.name.toLowerCase());
-    if (teamNames.includes(value.toLowerCase())) return true;
+    if (team.name != value) {
+      if (teamNames.includes(value.toLowerCase())) return true;
+    }
     return false;
   };
 
   const form: UseFormReturnType<FormProps> = useForm({
     initialValues: {
-      name: '',
+      name: team.name,
       color: '',
     },
 
@@ -60,13 +70,14 @@ const NewTeamModal = () => {
   const mutation = useMutation({
     mutationFn: (inForm: FormProps) => {
       const newTeam = { name: inForm.name, color: selectedColor?.id || '' };
-      return api.post('/teams', newTeam);
+      return api.put('/teams/' + team.id, newTeam);
     },
     onSuccess: (res) => {
       try {
         queryCache.setQueryData([queryKeys.teams], (teams?: Team[]) => {
           if (teams) {
-            teams = [res.data, ...(teams || [])];
+            const index = teams.findIndex((t) => t.id === res.data.id);
+            if (index !== -1) teams[index] = res.data;
           }
           return teams || undefined;
         });
@@ -79,14 +90,16 @@ const NewTeamModal = () => {
       form.reset();
       Notification({
         color: 'green',
-        message: `Team has been created`,
+        message: `Team has been edited`,
       });
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
         Notification({
           error: true,
-          message: `Could not create team. ${err.response?.data.message || err.message}`,
+          message: `Could not edit the team. ${
+            err.response?.data.message || err.message
+          }`,
         });
       }
     },
@@ -97,7 +110,7 @@ const NewTeamModal = () => {
       <Modal
         opened={opened}
         onClose={close}
-        title={<ModalTitle text="New Team" />}
+        title={<ModalTitle text="Edit Team" />}
         size={mobileScreen ? '100%' : 'xl'}
       >
         {/* Modal content */}
@@ -136,7 +149,7 @@ const NewTeamModal = () => {
               <Group>
                 {colorsQuery.data.map((color) => (
                   <Badge
-                    key={color.color_name + 'newteam'}
+                    key={color.color_name + 'editteam'}
                     color={color.color_name}
                     sx={{ '&:hover': { cursor: 'pointer' } }}
                     onClick={() => {
@@ -156,7 +169,7 @@ const NewTeamModal = () => {
                 // color="spec"
                 onClick={() => {
                   close();
-                  setSelectedColor(undefined);
+                  // setSelectedColor(undefined);
                   form.reset();
                 }}
                 disabled={mutation.isLoading}
@@ -172,11 +185,9 @@ const NewTeamModal = () => {
         )}
       </Modal>
 
-      <Group position="center">
-        <Button onClick={open} size="sm" fullWidth variant="light" mb={16}>
-          <IconNewSection /> <Text ml={6}>NEW TEAM</Text>
-        </Button>
-      </Group>
+      <Button onClick={open} size="xs" variant="light">
+        <IconPencil size="1rem" stroke={2.5} />
+      </Button>
     </>
   );
 };

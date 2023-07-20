@@ -11,6 +11,7 @@ interface ReturnProps {
   isLoading: boolean;
   isError: boolean;
   refetch: () => void;
+  isFetching: boolean;
 }
 
 export function useTeams(): ReturnProps {
@@ -21,10 +22,11 @@ export function useTeams(): ReturnProps {
     isError,
     isLoading,
     refetch,
+    isFetching,
   } = useQuery({
     queryKey: [queryKeys.teams],
     queryFn: getTeams,
   });
 
-  return { data, isLoading, isError, refetch };
+  return { data, isLoading, isError, refetch, isFetching };
 }

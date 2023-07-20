@@ -22,16 +22,24 @@ import { UI } from '../../../app/constants';
 import ConfirmDelete from './ConfirmDelete';
 import NewTeamModal from './NewTeamModal';
 import { useTeams } from '../../../app/api/hooks/useTeams';
+import ConfirmTeamDelete from './ConfirmTeamDelete';
+import EditTeamModal from './EditTeamModal';
+import { Team } from '../../../app/interfaces';
 
 //! COMPONENT
 const ManageUsers = () => {
   const canManageUsers = usePermissions(PERMISSIONS.EDIT_USERS);
   const navigate = useNavigate();
   const { employees, isLoading } = useEmployees();
-  const teamsQuery = useTeams();
+  const [teamsQuery, setTeamsQuery] = useState<Team[]>([]);
+  const teamsQueryData = useTeams();
   const theme = useMantineTheme();
   const { smMaxScreen } = useScreenSize();
   const [displaying, setDisplaying] = useState<'users' | 'teams'>('users');
+
+  useEffect(() => {
+    setTeamsQuery(teamsQueryData.data);
+  }, [teamsQueryData.data]);
 
   useEffect(() => {
     if (!canManageUsers) navigate('/');
@@ -162,28 +170,48 @@ const ManageUsers = () => {
         <NewTeamModal />
         {isLoading ? (
           <LoadingElement text="Loading users" />
-        ) : smMaxScreen ? (
-          //! MOBILE SCREEN
-          teamsQuery.data
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((team) => (
-              <AppCard key={team.id + 'teamM'} mb={8}>
-                {team.name}
-              </AppCard>
-            ))
         ) : (
           //! NORMAL SCREEN
-          <>
+          <AppCard>
             <ScrollArea sx={{ animation: 'slide-up .3s' }}>
-              {teamsQuery.data
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((team) => (
-                  <AppCard key={team.id + 'teamM'} mb={8}>
-                    {team.name}
-                  </AppCard>
-                ))}
+              <Table
+                sx={{ overflow: 'scroll' }}
+                horizontalSpacing="sm"
+                verticalSpacing="sm"
+                highlightOnHover
+              >
+                <thead>
+                  <tr>
+                    <th>Team Name</th>
+                    <th>Colour</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {teamsQuery
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((team) => (
+                      <tr key={team.id + 'teamM'}>
+                        <td>
+                          <Text fw={500}>{team.name}</Text>
+                        </td>
+                        <td>
+                          <Badge color={team.color}>{team.color}</Badge>
+                        </td>
+                        <td></td>
+                        <td>
+                          <Group spacing={0} position="right">
+                            <EditTeamModal team={team} />
+                            <ConfirmTeamDelete team={team} />
+                          </Group>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </Table>
             </ScrollArea>
-          </>
+          </AppCard>
         )}
       </Grid.Col>
     </Grid>
@@ -196,8 +224,8 @@ const ManageUsers = () => {
         <Title>Manage Users & Teams</Title>
 
         <SegmentedControl
-          color="green"
-          size="md"
+          // color="green"
+          size="sm"
           data={[
             { label: 'Users', value: 'users' },
             { label: 'Teams', value: 'teams' },
