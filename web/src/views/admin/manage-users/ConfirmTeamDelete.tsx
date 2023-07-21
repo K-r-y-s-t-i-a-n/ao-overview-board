@@ -3,7 +3,7 @@ import { openConfirmModal } from '@mantine/modals';
 import { IconAlertCircle, IconTrash } from '@tabler/icons-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, queryKeys } from '../../../app/api';
-import { Employee, Team } from '../../../app/interfaces';
+import { Team } from '../../../app/interfaces';
 import { Notification } from '../../../components/core';
 import { AxiosError } from 'axios';
 

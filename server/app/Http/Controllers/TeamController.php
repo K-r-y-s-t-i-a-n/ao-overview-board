@@ -64,6 +64,8 @@ class TeamController extends Controller
 
     public function destroy(Team $team)
     {
+        $this->authorize('edit', 'users');
+
         $id = $team->id;
         $team->delete();
 
