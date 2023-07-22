@@ -2,14 +2,22 @@ import { useEffect } from 'react';
 import { PERMISSIONS, UI } from '../../../app/constants';
 import {
   AppCard,
-  CardTitle,
   LoadingElement,
   ViewWrapper,
   Notification,
 } from '../../../components/core';
-import { ActionIcon, Alert, Badge, Grid, Group, Text, Title } from '@mantine/core';
+import {
+  ActionIcon,
+  Alert,
+  Badge,
+  Group,
+  ScrollArea,
+  Table,
+  Text,
+  Title,
+} from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { usePermissions } from '../../../app/hooks';
+import { usePermissions, useScreenSize } from '../../../app/hooks';
 import { useRolesData, usePermissionsData } from '../../../app/api/hooks/admin';
 import NewRoleModal from './NewRoleModal';
 import EditRoleModal from './EditRoleModal';
@@ -26,6 +34,7 @@ const ManagePermissions = () => {
   const navigate = useNavigate();
   const permissionsList = usePermissionsData();
   const rolesList = useRolesData();
+  const { smMaxScreen } = useScreenSize();
 
   useEffect(() => {
     if (!canManageRoles) navigate('/');
@@ -64,78 +73,88 @@ const ManagePermissions = () => {
       {permissionsList.isLoading ? (
         <LoadingElement />
       ) : (
-        rolesList.data.map((role) => (
-          <Grid grow key={role.id + 'role'}>
-            <Grid.Col lg={3}>
-              <Group>
-                <ActionIcon
-                  color="red"
-                  onClick={() => {
-                    openConfirmModal({
-                      title: <Text fw={600}>Role Deletion</Text>,
-                      confirmProps: {
-                        color: 'red',
-                        size: 'xs',
-                        radius: 'md',
-                      },
-                      cancelProps: {
-                        color: 'gray',
-                        size: 'xs',
-                        radius: 'md',
-                      },
-                      children: (
-                        <>
-                          <Alert
-                            icon={<IconAlertCircle size="1rem" />}
-                            title={`Are you certain you want to proceed with deleting ${role.name} role?`}
-                            color="red"
-                          >
-                            {/* <Text weight={500}>{employee.display_name} ?</Text> */}
-                          </Alert>
-                        </>
-                      ),
-                      labels: {
-                        confirm: 'DELETE ROLE',
-                        cancel: 'Cancel',
-                      },
-                      onCancel: () => {
-                        // setSelectedTagId(undefined);
-                      },
-                      onConfirm: () => deleteRole.mutate(role.id),
-                    });
-                  }}
-                >
-                  <IconTrash size="1rem" stroke={1.5} />
-                </ActionIcon>
-                <EditRoleModal role={role} />
-                <CardTitle title={role.name} variant="text" />
-              </Group>
-            </Grid.Col>
+        <AppCard>
+          <ScrollArea sx={{ animation: 'slide-up .3s' }}>
+            <Table striped withColumnBorders>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  {!smMaxScreen && <th>Permissions</th>}
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rolesList.data.map((role) => (
+                  <tr>
+                    <td>
+                      <Text fw={600}>{role.name}</Text>
+                    </td>
+                    {!smMaxScreen && (
+                      <td>
+                        <Group>
+                          {role.permissions.map((permission) => (
+                            <Badge
+                              key={permission.id + role.id + 'rolep'}
+                              variant="outline"
+                            >
+                              {permission.display_name}
+                            </Badge>
+                          ))}
+                        </Group>
+                      </td>
+                    )}
 
-            <Grid.Col lg={9}>
-              <AppCard
-              // sx={{ '&:hover': { cursor: 'pointer', background: '#F8F9FA' } }}
-              >
-                <Group sx={{ animation: 'slide-left .3s' }}>
-                  {role.permissions.length === 0 ? (
-                    <Badge color="red">No permissions</Badge>
-                  ) : (
-                    <>
-                      {role.permissions.map((userPermission) => (
-                        <Badge
-                          key={userPermission.id + role.id + 'rolep'}
-                          variant="outline"
-                        >
-                          {userPermission.display_name}
-                        </Badge>
-                      ))}
-                    </>
-                  )}
-                </Group>
-              </AppCard>
-            </Grid.Col>
-          </Grid>
-        ))
+                    <td>
+                      <EditRoleModal role={role} />
+                    </td>
+                    <td>
+                      <ActionIcon
+                        color="red"
+                        onClick={() => {
+                          openConfirmModal({
+                            title: <Text fw={600}>Role Deletion</Text>,
+                            confirmProps: {
+                              color: 'red',
+                              size: 'xs',
+                              radius: 'md',
+                            },
+                            cancelProps: {
+                              color: 'gray',
+                              size: 'xs',
+                              radius: 'md',
+                            },
+                            children: (
+                              <>
+                                <Alert
+                                  icon={<IconAlertCircle size="1rem" />}
+                                  title={`Are you certain you want to proceed with deleting ${role.name} role?`}
+                                  color="red"
+                                >
+                                  {/* <Text weight={500}>{employee.display_name} ?</Text> */}
+                                </Alert>
+                              </>
+                            ),
+                            labels: {
+                              confirm: 'DELETE ROLE',
+                              cancel: 'Cancel',
+                            },
+                            onCancel: () => {
+                              // setSelectedTagId(undefined);
+                            },
+                            onConfirm: () => deleteRole.mutate(role.id),
+                          });
+                        }}
+                      >
+                        <IconTrash size="1rem" stroke={1.5} />
+                      </ActionIcon>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </ScrollArea>
+        </AppCard>
       )}
     </ViewWrapper>
   );

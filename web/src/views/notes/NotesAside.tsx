@@ -17,7 +17,7 @@ const NotesAside = () => {
   const [teams, setTeams] = useState<{ value: string; label: string }[]>([]);
 
   const tagsQuery = useQuery({
-    queryKey: ['tagsByCategory'],
+    queryKey: [queryKeys.tagsByCategory],
     queryFn: getTagsByCategory,
   });
 

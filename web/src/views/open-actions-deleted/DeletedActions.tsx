@@ -34,16 +34,6 @@ import { useNavigate } from 'react-router-dom';
 import { PERMISSIONS } from '../../app/constants/permissions';
 import { UI } from '../../app/constants';
 
-const getColor = (status: string) => {
-  return status === 'Stopped'
-    ? 'red'
-    : status === 'RWI'
-    ? 'blue'
-    : status === 'Testing'
-    ? 'green'
-    : 'gray';
-};
-
 const deleteRequest = async (id: string) => {
   return await api.delete(`/actions/force/${id}`).then((res) => res.data);
 };
@@ -442,43 +432,58 @@ const DeletedActions = () => {
                   {/* ========== ACTIONS MOBILE VIEW ============== */}
                   {smMaxScreen ? (
                     actions.map((el) => (
-                      <AppCard key={el.id + 'el'} p={4} mb={8}>
-                        <Badge
-                          color={getColor(el.status)}
-                          radius="sm"
-                          w="100%"
-                          m={0}
-                          mb={4}
-                          size="lg"
-                          // variant="filled"
-                        >
-                          {el.asset.name}
-                        </Badge>
-                        <Group>
-                          <Text fw={600} fz="sm" ml={2}>
-                            Issue:
-                          </Text>
-                          <Text fw={500} fz="sm">
-                            {el.issue}
-                          </Text>
-                        </Group>
-                        <Group>
-                          <Text fw={600} fz="sm" ml={2}>
-                            Current step:
-                          </Text>
-                          <Text fw={500} fz="sm">
-                            {el.steps[0].text}
-                          </Text>
-                        </Group>
-                        <Group>
-                          <Text fw={600} fz="sm" ml={2}>
-                            Last updated:
-                          </Text>
-                          <Text fw={500} fz="sm">
-                            DATE HERE
-                          </Text>
-                        </Group>
-                      </AppCard>
+                      <div
+                        key={el.id + 'el'}
+                        onClick={() => {
+                          setshowActionDetails(el);
+                        }}
+                      >
+                        <AppCard p={0} mb={12}>
+                          {/* <Card.Section> */}
+                          <Group position="apart" px={10} mb={6} bg="#f4f6fa" py={10}>
+                            <Text fz={16} fw={700}>
+                              {el.asset.name || ''}
+                            </Text>
+                            <Badge
+                              color="gray"
+                              radius="sm"
+                              // w="100%"
+                              m={0}
+                              size="sm"
+                              // variant="filled"
+                            >
+                              <div>Closed</div>
+                            </Badge>
+                          </Group>
+                          {/* </Card.Section> */}
+                          <Group px={10} position="apart" mb={6}>
+                            <Text fw={600} fz="sm" ml={2}>
+                              Issue:
+                            </Text>
+                            <Text fw={500} fz="sm">
+                              {el.issue}
+                            </Text>
+                          </Group>
+                          <Group px={10} position="apart" mb={6}>
+                            <Text fw={600} fz="sm" ml={2}>
+                              Current step:
+                            </Text>
+                            <Text fw={500} fz="sm">
+                              {el.steps[0].text || ''}
+                            </Text>
+                          </Group>
+                          <Group px={10} position="apart" mb={6}>
+                            <Text fw={600} fz="sm" ml={2}>
+                              Last updated:
+                            </Text>
+                            <Text fw={500} fz="sm">
+                              {format(new Date(el.steps[0].updated_at), 'dd MMM yyyy')}
+                            </Text>
+                          </Group>
+                          {/* BUTTONS */}
+                          <Group></Group>
+                        </AppCard>
+                      </div>
                     ))
                   ) : (
                     <Card shadow="md" m={0} radius="md">

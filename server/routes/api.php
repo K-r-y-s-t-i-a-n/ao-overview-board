@@ -43,6 +43,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Tags
     Route::get('tags', [TagController::class, 'index']);
+    Route::post('tags', [TagController::class, 'store']);
+    Route::put('tags/{id}', [TagController::class, 'update']);
+    Route::delete('tags/{id}', [TagController::class, 'delete']);
     Route::get('tags-by-category', [TagController::class, 'indexCategories']);
 
     // Machine categories

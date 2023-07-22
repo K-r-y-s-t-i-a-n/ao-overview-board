@@ -45,7 +45,7 @@ const ConfirmDelete = ({ employee }: Props) => {
       onClick={() => {
         openConfirmModal({
           title: <Text fw={600}>Account Deletion Confirmation</Text>,
-          centered: true,
+          // centered: true,
           confirmProps: {
             color: 'red',
             size: 'xs',

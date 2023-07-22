@@ -34,7 +34,7 @@ const ManageUsers = () => {
   const [teamsQuery, setTeamsQuery] = useState<Team[]>([]);
   const teamsQueryData = useTeams();
   const theme = useMantineTheme();
-  const { smMaxScreen } = useScreenSize();
+  const { smMaxScreen, mdMaxScreen } = useScreenSize();
   const [displaying, setDisplaying] = useState<'users' | 'teams'>('users');
 
   useEffect(() => {
@@ -57,46 +57,15 @@ const ManageUsers = () => {
   const usersView = (
     <Grid>
       <Grid.Col span="auto" sx={getPadding()}>
-        <NewUserModal />
+        {/* <NewUserModal /> */}
         {isLoading ? (
           <LoadingElement text="Loading users" />
-        ) : smMaxScreen ? (
-          //! MOBILE SCREEN
-          employees
-            .sort((a, b) => a.email.localeCompare(b.email))
-            .map((employee) => (
-              <AppCard key={employee.email + 'employee'} mb={8}>
-                <Group noWrap>
-                  <Avatar size="xl">
-                    {employee.first_name[0].toUpperCase()}
-                    {employee.last_name[0].toUpperCase()}
-                  </Avatar>
-                  <div>
-                    <Text fz="md" fw={600}>
-                      {employee.display_name}
-                    </Text>
-                    <Text fw={400} fz="sm">
-                      Team: {employee.team.name || 'N/A'}
-                    </Text>
-                    <Text fw={400} fz="sm">
-                      Role: {employee.role.name}
-                    </Text>
-                    {/* <Group>
-              <Button size="xs">Edit</Button>
-              <Button size="xs" color="red">
-                Delete
-              </Button>
-            </Group> */}
-                  </div>
-                </Group>
-              </AppCard>
-            ))
         ) : (
           //! NORMAL SCREEN
           <AppCard>
             <ScrollArea sx={{ animation: 'slide-up .3s' }}>
               <Table
-                sx={{ minWidth: 800, overflow: 'scroll' }}
+                sx={{ overflow: 'scroll' }}
                 horizontalSpacing="sm"
                 verticalSpacing="sm"
                 highlightOnHover
@@ -104,9 +73,14 @@ const ManageUsers = () => {
                 <thead>
                   <tr>
                     <th>Account Name</th>
-                    <th>Team</th>
-                    <th>Access</th>
-                    <th>Email</th>
+                    {!smMaxScreen && (
+                      <>
+                        <th>Team</th>
+                        <th>Access</th>
+                        {!mdMaxScreen && <th>Email</th>}
+                      </>
+                    )}
+
                     <th></th>
                     <th></th>
                   </tr>
@@ -124,26 +98,34 @@ const ManageUsers = () => {
                             </Text>
                           </Group>
                         </td>
-
-                        <td>
-                          <Badge
-                            color={employee.team.color || 'dark'}
-                            variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
-                          >
-                            {employee.team.name || 'N/A'}
-                          </Badge>
-                        </td>
-                        <td>{employee.role.name || 'No role assigned'}</td>
-                        <td>
-                          <Text fz="sm" c="dimmed">
-                            {employee.email}
-                          </Text>
-                        </td>
+                        {!smMaxScreen && (
+                          <>
+                            <td>
+                              <Badge
+                                color={employee.team.color || 'dark'}
+                                variant={
+                                  theme.colorScheme === 'dark' ? 'light' : 'outline'
+                                }
+                              >
+                                {employee.team.name || 'N/A'}
+                              </Badge>
+                            </td>
+                            <td>{employee.role.name || 'No role assigned'}</td>
+                            {!mdMaxScreen && (
+                              <td>
+                                <Text fz="sm" c="dimmed">
+                                  {employee.email}
+                                </Text>
+                              </td>
+                            )}
+                          </>
+                        )}
                         <td>
                           <Text fz="sm" c="dimmed">
                             {/* {item.phone} */}
                           </Text>
                         </td>
+
                         <td>
                           {employee.display_name !== 'View Account' && (
                             <Group spacing={0} position="right">
@@ -167,7 +149,7 @@ const ManageUsers = () => {
   const teamsView = (
     <Grid>
       <Grid.Col span="auto" sx={getPadding()}>
-        <NewTeamModal />
+        {/* <NewTeamModal /> */}
         {isLoading ? (
           <LoadingElement text="Loading users" />
         ) : (
@@ -220,20 +202,21 @@ const ManageUsers = () => {
   //! ==========   JSX    ============
   return (
     <ViewWrapper>
-      <Group position="apart" mb={UI.PAGE_TITLE_MB}>
-        <Title>Manage Users & Teams</Title>
-
-        <SegmentedControl
-          // color="green"
-          size="sm"
-          data={[
-            { label: 'Users', value: 'users' },
-            { label: 'Teams', value: 'teams' },
-          ]}
-          value={displaying}
-          onChange={(v) => setDisplaying(v as 'teams' | 'users')}
-        />
-      </Group>
+      {/* <Group position="apart" mb={UI.PAGE_TITLE_MB}> */}
+      <Title mb={UI.PAGE_TITLE_MB}>Manage Users & Teams</Title>
+      {displaying === 'teams' ? <NewTeamModal /> : <NewUserModal />}
+      <SegmentedControl
+        fullWidth
+        sx={{ width: '100%' }}
+        size="sm"
+        data={[
+          { label: 'Users', value: 'users' },
+          { label: 'Teams', value: 'teams' },
+        ]}
+        value={displaying}
+        onChange={(v) => setDisplaying(v as 'teams' | 'users')}
+      />
+      {/* </Group> */}
       {displaying === 'teams' ? teamsView : usersView}
     </ViewWrapper>
   );

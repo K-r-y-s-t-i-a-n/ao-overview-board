@@ -45,7 +45,7 @@ const ConfirmTeamDelete = ({ team }: Props) => {
       onClick={() => {
         openConfirmModal({
           title: <Text fw={600}>Team Deletion Confirmation</Text>,
-          centered: true,
+          // centered: true,
           confirmProps: {
             color: 'red',
             size: 'xs',

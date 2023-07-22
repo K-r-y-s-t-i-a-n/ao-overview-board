@@ -2,6 +2,7 @@ export const queryKeys = {
   user: 'user',
   notes: 'notes',
   tags: 'tags',
+  tagsByCategory: 'tagsByCategory',
   employees: 'employees',
   employee: 'employee',
   teams: 'teams',
@@ -10,4 +11,5 @@ export const queryKeys = {
   deletedActions: 'actions-deleted',
   permissions: 'permissions',
   colors: 'colors',
+  categories: 'categories',
 };
