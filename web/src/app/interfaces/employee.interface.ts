@@ -4,6 +4,7 @@ export interface Employee {
   first_name: string;
   last_name: string;
   display_name: string;
+  last_visited_at: Date;
   avatar?: string;
   team: {
     id: string | undefined;

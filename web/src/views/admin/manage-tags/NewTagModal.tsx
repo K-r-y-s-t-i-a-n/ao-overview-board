@@ -21,7 +21,7 @@ import { AxiosError } from 'axios';
 
 type FormProps = {
   name: string;
-  category: string | null;
+  category: string;
 };
 
 const NewTagModal = () => {
@@ -78,19 +78,20 @@ const NewTagModal = () => {
 
   const form = useForm({
     initialValues: {
-      category: null,
+      category: '',
       name: '',
     },
 
     validate: {
       name: (value) =>
-        value.length < 5
+        value.length < 2
           ? 'The tag must be at least 2 characters.'
           : value.length > 255
           ? 'Maximum 255 characters.'
           : tagExists(value)
           ? 'The tag already exists.'
           : null,
+      category: (value) => (value === '' ? 'Category is required.' : null),
     },
   });
 
@@ -133,7 +134,7 @@ const NewTagModal = () => {
                 disabled={mutation.isLoading}
                 withAsterisk
                 variant="filled"
-                data={selectCategories}
+                data={[{ value: '', label: 'Choose category' }, ...selectCategories]}
                 label="Category"
                 placeholder="Choose category"
                 mb={12}

@@ -25,6 +25,7 @@ import { useTeams } from '../../../app/api/hooks/useTeams';
 import ConfirmTeamDelete from './ConfirmTeamDelete';
 import EditTeamModal from './EditTeamModal';
 import { Team } from '../../../app/interfaces';
+import { addHours, formatDistance } from 'date-fns';
 
 //! COMPONENT
 const ManageUsers = () => {
@@ -77,7 +78,7 @@ const ManageUsers = () => {
                       <>
                         <th>Team</th>
                         <th>Access</th>
-                        {!mdMaxScreen && <th>Email</th>}
+                        {!mdMaxScreen && <th>Last active</th>}
                       </>
                     )}
 
@@ -114,7 +115,15 @@ const ManageUsers = () => {
                             {!mdMaxScreen && (
                               <td>
                                 <Text fz="sm" c="dimmed">
-                                  {employee.email}
+                                  {employee.last_visited_at
+                                    ? formatDistance(
+                                        addHours(new Date(employee.last_visited_at), 1),
+                                        new Date(),
+                                        {
+                                          addSuffix: true,
+                                        }
+                                      )
+                                    : 'N/A'}
                                 </Text>
                               </td>
                             )}

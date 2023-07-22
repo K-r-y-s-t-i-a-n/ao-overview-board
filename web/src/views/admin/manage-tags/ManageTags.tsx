@@ -33,6 +33,9 @@ const ManageTags = () => {
     undefined
   );
 
+  // !! USUNAC TYLKO ZEBY UNKNAC ERRORU PRZY KOMPILACJI
+  console.log(selectedCategory);
+
   useEffect(() => {
     if (!canManageTags) navigate('/');
   }, [canManageTags, navigate]);
@@ -141,15 +144,18 @@ const ManageTags = () => {
                     </td>
                     <td>
                       <Group>
-                        {category.tags.map((t) => (
-                          <TagMenu
-                            key={t.name + 'tag'}
-                            tag={t}
-                            category={category}
-                            onDelete={onDelete}
-                            onEdit={onEdit}
-                          />
-                        ))}
+                        {category.tags
+                          .slice()
+                          .sort((a, b) => a.name.localeCompare(b.name))
+                          .map((t) => (
+                            <TagMenu
+                              key={t.name + 'tag'}
+                              tag={t}
+                              category={category}
+                              onDelete={onDelete}
+                              onEdit={onEdit}
+                            />
+                          ))}
                       </Group>
                     </td>
                   </tr>
