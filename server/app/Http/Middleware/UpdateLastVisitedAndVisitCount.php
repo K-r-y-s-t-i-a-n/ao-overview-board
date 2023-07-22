@@ -25,6 +25,7 @@ class UpdateLastVisitedAndVisitCount
 
         if (Auth::check()) {
             $user = Auth::user();
+            $user->timestamps = false;
 
             $lastVisitedTime = $user->last_visited_at;
 
@@ -38,6 +39,7 @@ class UpdateLastVisitedAndVisitCount
 
             $user->last_visited_at = $currentTime;
             $user->save();
+            $user->timestamps = true;
         }
 
         return $next($request);
