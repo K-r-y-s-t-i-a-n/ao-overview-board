@@ -26,6 +26,7 @@ import ConfirmTeamDelete from './ConfirmTeamDelete';
 import EditTeamModal from './EditTeamModal';
 import { Team } from '../../../app/interfaces';
 import { addHours, formatDistance } from 'date-fns';
+import { useUser } from '../../../app/api/hooks/useUser';
 
 //! COMPONENT
 const ManageUsers = () => {
@@ -37,6 +38,7 @@ const ManageUsers = () => {
   const theme = useMantineTheme();
   const { smMaxScreen, mdMaxScreen } = useScreenSize();
   const [displaying, setDisplaying] = useState<'users' | 'teams'>('users');
+  const user = useUser();
 
   useEffect(() => {
     setTeamsQuery(teamsQueryData.data);
@@ -47,6 +49,15 @@ const ManageUsers = () => {
   }, [canManageUsers, navigate]);
 
   if (!canManageUsers) return;
+
+  const getDate = (date: Date, dn: string): string => {
+    if (user?.display_name === dn) return 'Active now';
+    const response = formatDistance(addHours(new Date(date), 1), new Date(), {
+      addSuffix: true,
+    });
+    if (response === 'less than a minute ago') return 'Active now';
+    return response;
+  };
 
   const getPadding = () => {
     if (smMaxScreen) {
@@ -116,12 +127,9 @@ const ManageUsers = () => {
                               <td>
                                 <Text fz="sm" c="dimmed">
                                   {employee.last_visited_at
-                                    ? formatDistance(
-                                        addHours(new Date(employee.last_visited_at), 1),
-                                        new Date(),
-                                        {
-                                          addSuffix: true,
-                                        }
+                                    ? getDate(
+                                        employee.last_visited_at,
+                                        employee.display_name
                                       )
                                     : 'N/A'}
                                 </Text>
