@@ -22,8 +22,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 // - correct wide screen --> DONE
 // - no team - no adding notes or anhything --> DONE
 // - poprawic wylogowanie po czasie (mutate) --> DONE in HeaderInfo (useUser())
+// - H - administracja uzytkownikami - DONE
 //* - H - logowanie - zapamietaj (Remember Me)
-//* - H - administracja uzytkownikami
 //* - H - upload avatarow
 //* - H - reset hasla
 //* - H - block users route
