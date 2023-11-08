@@ -25,7 +25,8 @@ import { useTeams } from '../../../app/api/hooks/useTeams';
 import ConfirmTeamDelete from './ConfirmTeamDelete';
 import EditTeamModal from './EditTeamModal';
 import { Team } from '../../../app/interfaces';
-import { addHours, formatDistance } from 'date-fns';
+// import { addHours, formatDistance } from 'date-fns';
+import { formatDistance } from 'date-fns';
 import { useUser } from '../../../app/api/hooks/useUser';
 
 //! COMPONENT
@@ -50,12 +51,22 @@ const ManageUsers = () => {
 
   if (!canManageUsers) return;
 
+  //TODO - TO CHECK ACTIVE NOW AND REMOVE ADD HOURS ON HOSTINGER COMMENTED ADDING AN HOUR?
+  // const getDate = (date: Date, dn: string): string => {
+  //   if (user?.display_name === dn) return 'Active now';
+  //   const response = formatDistance(addHours(new Date(date), 1), new Date(), {
+  //     addSuffix: true,
+  //   });
+  //   if (response === 'less than a minute ago') return 'active now';
+  //   return response;
+  // };
+
   const getDate = (date: Date, dn: string): string => {
     if (user?.display_name === dn) return 'Active now';
-    const response = formatDistance(addHours(new Date(date), 1), new Date(), {
+    const response = formatDistance(new Date(date), new Date(), {
       addSuffix: true,
     });
-    if (response === 'less than a minute ago') return 'Active now';
+    if (response === 'less than a minute ago') return 'active now';
     return response;
   };
 
