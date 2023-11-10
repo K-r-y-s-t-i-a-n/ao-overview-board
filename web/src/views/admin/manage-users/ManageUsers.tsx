@@ -62,11 +62,12 @@ const ManageUsers = () => {
   // };
 
   const getDate = (date: Date, dn: string): string => {
-    if (user?.display_name === dn) return 'Active now';
+    if (user?.display_name === dn) return 'active now';
     const response = formatDistance(new Date(date), new Date(), {
       addSuffix: true,
     });
-    if (response === 'less than a minute ago') return 'active now';
+    if (response === 'less than a minute ago' || response === 'in less than a minute')
+      return 'active now';
     return response;
   };
 
