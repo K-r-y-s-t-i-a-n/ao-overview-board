@@ -23,6 +23,8 @@ const NoteCreateModal = () => {
   const mobileScreen = useMediaQuery('(max-width: 48em)');
   const queryCache = useQueryClient();
 
+  
+
   const mutation = useMutation({
     mutationFn: (newNote: FormProps) => {
       return api.post<Note>('/notes', newNote);
@@ -66,6 +68,15 @@ const NoteCreateModal = () => {
     },
   });
 
+  const submitForm = form.onSubmit((values) => mutation.mutate(values));
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      submitForm()
+    }
+  };
+
   return (
     <>
       <Modal
@@ -78,7 +89,8 @@ const NoteCreateModal = () => {
         {isLoading ? (
           <LoadingElement />
         ) : (
-          <form onSubmit={form.onSubmit((values) => mutation.mutate(values))}>
+              
+              <form onSubmit={submitForm} >
             <MultiSelect
               {...form.getInputProps('tags')}
               withAsterisk
@@ -94,6 +106,7 @@ const NoteCreateModal = () => {
 
             <Textarea
               {...form.getInputProps('text')}
+              onKeyDown={handleKeyPress}
               variant="filled"
               label="Note"
               withAsterisk
